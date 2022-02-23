@@ -120,6 +120,7 @@ class ComposerStaticInit31f61a15da19925398578e149bf73580
         ),
         'F' => 
         array (
+            'Fruitcake\\Cors\\' => 15,
             'Fideloper\\Proxy\\' => 16,
             'Faker\\' => 6,
         ),
@@ -147,6 +148,7 @@ class ComposerStaticInit31f61a15da19925398578e149bf73580
         ),
         'A' => 
         array (
+            'Asm89\\Stack\\' => 12,
             'App\\' => 4,
         ),
     );
@@ -358,6 +360,10 @@ class ComposerStaticInit31f61a15da19925398578e149bf73580
         array (
             0 => __DIR__ . '/..' . '/laravel/framework/src/Illuminate',
         ),
+        'Fruitcake\\Cors\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/fruitcake/laravel-cors/src',
+        ),
         'Fideloper\\Proxy\\' => 
         array (
             0 => __DIR__ . '/..' . '/fideloper/proxy/src',
@@ -406,6 +412,10 @@ class ComposerStaticInit31f61a15da19925398578e149bf73580
         array (
             0 => __DIR__ . '/..' . '/beyondcode/laravel-dump-server/src',
         ),
+        'Asm89\\Stack\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/asm89/stack-cors/src',
+        ),
         'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app',
@@ -430,29 +440,71 @@ class ComposerStaticInit31f61a15da19925398578e149bf73580
     );
 
     public static $classMap = array (
+        'App\\Bank' => __DIR__ . '/../..' . '/app/Bank.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
+        'App\\Customer' => __DIR__ . '/../..' . '/app/Customer.php',
+        'App\\Detail_jurnal_umum' => __DIR__ . '/../..' . '/app/Detail_jurnal_umum.php',
+        'App\\Detail_kwitansi' => __DIR__ . '/../..' . '/app/Detail_kwitansi.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
+        'App\\Http\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/AuthController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
         'App\\Http\\Controllers\\Auth\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/LoginController.php',
         'App\\Http\\Controllers\\Auth\\RegisterController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/RegisterController.php',
         'App\\Http\\Controllers\\Auth\\ResetPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ResetPasswordController.php',
         'App\\Http\\Controllers\\Auth\\VerificationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/VerificationController.php',
+        'App\\Http\\Controllers\\BankController' => __DIR__ . '/../..' . '/app/Http/Controllers/BankController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\CustomerController' => __DIR__ . '/../..' . '/app/Http/Controllers/CustomerController.php',
+        'App\\Http\\Controllers\\Detail_jurnal_umumController' => __DIR__ . '/../..' . '/app/Http/Controllers/Detail_jurnal_umumController.php',
+        'App\\Http\\Controllers\\Detail_kwitansiController' => __DIR__ . '/../..' . '/app/Http/Controllers/Detail_kwitansiController.php',
+        'App\\Http\\Controllers\\GraphController' => __DIR__ . '/../..' . '/app/Http/Controllers/GraphController.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
+        'App\\Http\\Controllers\\Jurnal_penyesuaianController' => __DIR__ . '/../..' . '/app/Http/Controllers/Jurnal_penyesuaianController.php',
+        'App\\Http\\Controllers\\Jurnal_umumController' => __DIR__ . '/../..' . '/app/Http/Controllers/Jurnal_umumController.php',
+        'App\\Http\\Controllers\\Kode_akun_debitController' => __DIR__ . '/../..' . '/app/Http/Controllers/Kode_akun_debitController.php',
+        'App\\Http\\Controllers\\Kode_akun_kreditController' => __DIR__ . '/../..' . '/app/Http/Controllers/Kode_akun_kreditController.php',
+        'App\\Http\\Controllers\\KwitansiController' => __DIR__ . '/../..' . '/app/Http/Controllers/KwitansiController.php',
+        'App\\Http\\Controllers\\PerkiraanController' => __DIR__ . '/../..' . '/app/Http/Controllers/PerkiraanController.php',
+        'App\\Http\\Controllers\\Perkiraan_levelController' => __DIR__ . '/../..' . '/app/Http/Controllers/Perkiraan_levelController.php',
+        'App\\Http\\Controllers\\ReportController' => __DIR__ . '/../..' . '/app/Http/Controllers/ReportController.php',
+        'App\\Http\\Controllers\\SatuanController' => __DIR__ . '/../..' . '/app/Http/Controllers/SatuanController.php',
+        'App\\Http\\Controllers\\SupplierController' => __DIR__ . '/../..' . '/app/Http/Controllers/SupplierController.php',
+        'App\\Http\\Controllers\\Truck_petaniController' => __DIR__ . '/../..' . '/app/Http/Controllers/Truck_petaniController.php',
+        'App\\Http\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/UserController.php',
+        'App\\Http\\Controllers\\WilayahController' => __DIR__ . '/../..' . '/app/Http/Controllers/WilayahController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\CheckForMaintenanceMode' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckForMaintenanceMode.php',
+        'App\\Http\\Middleware\\Cors' => __DIR__ . '/../..' . '/app/Http/Middleware/Cors.php',
         'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
+        'App\\Http\\Middleware\\JWTMiddleware' => __DIR__ . '/../..' . '/app/Http/Middleware/JWTMiddleware.php',
         'App\\Http\\Middleware\\RedirectIfAuthenticated' => __DIR__ . '/../..' . '/app/Http/Middleware/RedirectIfAuthenticated.php',
         'App\\Http\\Middleware\\TrimStrings' => __DIR__ . '/../..' . '/app/Http/Middleware/TrimStrings.php',
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
+        'App\\Jurnal_penyesuaian' => __DIR__ . '/../..' . '/app/Jurnal_penyesuaian.php',
+        'App\\Jurnal_umum' => __DIR__ . '/../..' . '/app/Jurnal_umum.php',
+        'App\\Kecamatan' => __DIR__ . '/../..' . '/app/Kecamatan.php',
+        'App\\Kelurahan' => __DIR__ . '/../..' . '/app/Kelurahan.php',
+        'App\\Keuntungan' => __DIR__ . '/../..' . '/app/Keuntungan.php',
+        'App\\Kode_akun_debit' => __DIR__ . '/../..' . '/app/Kode_akun_debit.php',
+        'App\\Kode_akun_kredit' => __DIR__ . '/../..' . '/app/Kode_akun_kredit.php',
+        'App\\Kota' => __DIR__ . '/../..' . '/app/Kota.php',
+        'App\\Kwitansi' => __DIR__ . '/../..' . '/app/Kwitansi.php',
+        'App\\Perkiraan' => __DIR__ . '/../..' . '/app/Perkiraan.php',
+        'App\\Perkiraan_level' => __DIR__ . '/../..' . '/app/Perkiraan_level.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
+        'App\\Provinsi' => __DIR__ . '/../..' . '/app/Provinsi.php',
+        'App\\Satuan' => __DIR__ . '/../..' . '/app/Satuan.php',
+        'App\\Supplier' => __DIR__ . '/../..' . '/app/Supplier.php',
+        'App\\Truck_petani' => __DIR__ . '/../..' . '/app/Truck_petani.php',
         'App\\User' => __DIR__ . '/../..' . '/app/User.php',
+        'Asm89\\Stack\\Cors' => __DIR__ . '/..' . '/asm89/stack-cors/src/Cors.php',
+        'Asm89\\Stack\\CorsService' => __DIR__ . '/..' . '/asm89/stack-cors/src/CorsService.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'BeyondCode\\DumpServer\\DumpServerCommand' => __DIR__ . '/..' . '/beyondcode/laravel-dump-server/src/DumpServerCommand.php',
         'BeyondCode\\DumpServer\\DumpServerServiceProvider' => __DIR__ . '/..' . '/beyondcode/laravel-dump-server/src/DumpServerServiceProvider.php',
@@ -1158,6 +1210,8 @@ class ComposerStaticInit31f61a15da19925398578e149bf73580
         'Faker\\ValidGenerator' => __DIR__ . '/..' . '/fzaninotto/faker/src/Faker/ValidGenerator.php',
         'Fideloper\\Proxy\\TrustProxies' => __DIR__ . '/..' . '/fideloper/proxy/src/TrustProxies.php',
         'Fideloper\\Proxy\\TrustedProxyServiceProvider' => __DIR__ . '/..' . '/fideloper/proxy/src/TrustedProxyServiceProvider.php',
+        'Fruitcake\\Cors\\CorsServiceProvider' => __DIR__ . '/..' . '/fruitcake/laravel-cors/src/CorsServiceProvider.php',
+        'Fruitcake\\Cors\\HandleCors' => __DIR__ . '/..' . '/fruitcake/laravel-cors/src/HandleCors.php',
         'Hamcrest\\Arrays\\IsArray' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Arrays/IsArray.php',
         'Hamcrest\\Arrays\\IsArrayContaining' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Arrays/IsArrayContaining.php',
         'Hamcrest\\Arrays\\IsArrayContainingInAnyOrder' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Arrays/IsArrayContainingInAnyOrder.php',

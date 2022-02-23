@@ -1,15 +1,24 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => NULL,
+        'reference' => '899b4457a9065331bf5851a85c32d525bf5a766a',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
     'versions' => array(
+        'asm89/stack-cors' => array(
+            'pretty_version' => 'v2.1.1',
+            'version' => '2.1.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../asm89/stack-cors',
+            'aliases' => array(),
+            'reference' => '73e5b88775c64ccc0b84fb60836b30dc9d92ac4a',
+            'dev_requirement' => false,
+        ),
         'beyondcode/laravel-dump-server' => array(
             'pretty_version' => '1.3.0',
             'version' => '1.3.0.0',
@@ -111,6 +120,15 @@
             'aliases' => array(),
             'reference' => '89584ce67dd32307f1063cc43846674f4679feda',
             'dev_requirement' => true,
+        ),
+        'fruitcake/laravel-cors' => array(
+            'pretty_version' => 'v2.0.1',
+            'version' => '2.0.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../fruitcake/laravel-cors',
+            'aliases' => array(),
+            'reference' => 'dbfc311b25d4873c3c2382b26860be3567492bd6',
+            'dev_requirement' => false,
         ),
         'fzaninotto/faker' => array(
             'pretty_version' => 'v1.9.2',
@@ -326,12 +344,12 @@
             'dev_requirement' => false,
         ),
         'laravel/laravel' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => NULL,
+            'reference' => '899b4457a9065331bf5851a85c32d525bf5a766a',
             'dev_requirement' => false,
         ),
         'laravel/tinker' => array(
