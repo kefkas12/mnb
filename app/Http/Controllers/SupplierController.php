@@ -18,6 +18,7 @@ class SupplierController extends Controller
 			return 'SUP-0000001-MNB';
 		} else {
 			$no = intval(substr($last->kode_supplier_mnb, 4, 7)) + 1;
+			
 			if ($no < 10) {
 				return 'SUP-000000'.$no.'-MNB';
 			} elseif ($no < 100) {

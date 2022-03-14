@@ -68,11 +68,6 @@ class KwitansiController extends Controller
                     ->orWhere('total_ppn_kwitansi', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('total_nilai_kwitansi', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('keterangan_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('tanggal_kwitansi_pengembalian', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('dpp_pengembalian', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('ppn_pengembalian', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('total_pengembalian', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('keterangan_pengembalian', 'like', '%' . $_GET['search'] . '%')
 
                     ->orderBy('created_at', 'desc')
                     ->paginate($_GET['per_page']);
@@ -92,11 +87,6 @@ class KwitansiController extends Controller
                         ->orWhere('total_ppn_kwitansi', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('total_nilai_kwitansi', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('keterangan_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('tanggal_kwitansi_pengembalian', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('dpp_pengembalian', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('ppn_pengembalian', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('total_pengembalian', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('keterangan_pengembalian', 'like', '%' . $_GET['search'] . '%')
                         ->orderBy($_GET['sort'], 'desc')
                         ->paginate($_GET['per_page']);
                     if (isset($_GET['order'])) {
@@ -115,11 +105,6 @@ class KwitansiController extends Controller
                             ->orWhere('total_ppn_kwitansi', 'like', '%' . $_GET['search'] . '%')
                             ->orWhere('total_nilai_kwitansi', 'like', '%' . $_GET['search'] . '%')
                             ->orWhere('keterangan_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('tanggal_kwitansi_pengembalian', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('dpp_pengembalian', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('ppn_pengembalian', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('total_pengembalian', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('keterangan_pengembalian', 'like', '%' . $_GET['search'] . '%')
                             ->orderBy($_GET['sort'], $_GET['order'])
                             ->paginate($_GET['per_page']);
                     }
@@ -153,11 +138,6 @@ class KwitansiController extends Controller
                     ->orWhere('total_ppn_kwitansi', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('total_nilai_kwitansi', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('keterangan_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('tanggal_kwitansi_pengembalian', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('dpp_pengembalian', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('ppn_pengembalian', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('total_pengembalian', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('keterangan_pengembalian', 'like', '%' . $_GET['search'] . '%')
                     ->orderBy('created_at', 'desc')
                     ->paginate();
                 if (isset($_GET['sort'])) {
@@ -176,11 +156,6 @@ class KwitansiController extends Controller
                         ->orWhere('total_ppn_kwitansi', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('total_nilai_kwitansi', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('keterangan_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('tanggal_kwitansi_pengembalian', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('dpp_pengembalian', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('ppn_pengembalian', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('total_pengembalian', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('keterangan_pengembalian', 'like', '%' . $_GET['search'] . '%')
                         ->orderBy($_GET['sort'], 'desc')
                         ->paginate();
                     if (isset($_GET['order'])) {
@@ -199,11 +174,6 @@ class KwitansiController extends Controller
                             ->orWhere('total_ppn_kwitansi', 'like', '%' . $_GET['search'] . '%')
                             ->orWhere('total_nilai_kwitansi', 'like', '%' . $_GET['search'] . '%')
                             ->orWhere('keterangan_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('tanggal_kwitansi_pengembalian', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('dpp_pengembalian', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('ppn_pengembalian', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('total_pengembalian', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('keterangan_pengembalian', 'like', '%' . $_GET['search'] . '%')
                             ->orderBy($_GET['sort'], $_GET['order'])
                             ->paginate();
                     }
@@ -258,11 +228,6 @@ class KwitansiController extends Controller
         $kwitansi->total_ppn_kwitansi = $request->total_ppn_kwitansi;
         $kwitansi->total_nilai_kwitansi = $request->total_nilai_kwitansi;
         $kwitansi->keterangan_kwitansi = $request->keterangan_kwitansi;
-        $kwitansi->tanggal_kwitansi_pengembalian = $request->tanggal_kwitansi_pengembalian;
-        $kwitansi->dpp_pengembalian = $request->dpp_pengembalian;
-        $kwitansi->ppn_pengembalian = $request->ppn_pengembalian;
-        $kwitansi->total_pengembalian = $request->total_pengembalian;
-        $kwitansi->keterangan_pengembalian = $request->keterangan_pengembalian;
         $kwitansi->save();
 
         return $kwitansi;
@@ -285,11 +250,6 @@ class KwitansiController extends Controller
         $kwitansi->total_ppn_kwitansi = $request->total_ppn_kwitansi;
         $kwitansi->total_nilai_kwitansi = $request->total_nilai_kwitansi;
         $kwitansi->keterangan_kwitansi = $request->keterangan_kwitansi;
-        $kwitansi->tanggal_kwitansi_pengembalian = $request->tanggal_kwitansi_pengembalian;
-        $kwitansi->dpp_pengembalian = $request->dpp_pengembalian;
-        $kwitansi->ppn_pengembalian = $request->ppn_pengembalian;
-        $kwitansi->total_pengembalian = $request->total_pengembalian;
-        $kwitansi->keterangan_pengembalian = $request->keterangan_pengembalian;
         $kwitansi->save();
 
         return $kwitansi;
