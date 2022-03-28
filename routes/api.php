@@ -171,9 +171,9 @@ Route::put('/detail_jurnal_pengeluaran_kas/{id}', 'Detail_jurnal_pengeluaran_kas
 Route::delete('/detail_jurnal_pengeluaran_kas/{id}', 'Detail_jurnal_pengeluaran_kasController@delete');
 
 Route::get('/bukti_kas/{id_jurnal_umum}', 'Jurnal_umumController@bukti_kas');
-Route::get('/all_jurnal', 'Jurnal_umumController@all_jurnal');
+//Route::get('/all_jurnal', 'Jurnal_umumController@all_jurnal');
 
-Route::get('export/jurnal', 'Jurnal_umumController@jurnal');
+// Route::get('export/jurnal', 'Jurnal_umumController@jurnal');
 Route::get('export/jurnal/{id}', 'Jurnal_umumController@select_jurnal');
 
 Route::get('/jurnal_penyesuaian', 'Jurnal_penyesuaianController@index');
@@ -196,8 +196,9 @@ Route::get('/report/pendapatan/pendapatan_usaha', 'ReportController@pendapatan_u
 Route::get('/report/pendapatan/pendapatan_lain', 'ReportController@pendapatan_lain');
 Route::get('/report/pendapatan/pendapatan_uang_muka', 'ReportController@pendapatan_uang_muka');
 Route::get('/report/jurnal', 'Jurnal_umumController@jurnal');
-Route::get('/report/buku_besar/buku_besar_hutang_supplier', 'ReportController@buku_besar_hutang_supplier');
-Route::get('/report/buku_besar/buku_besar_piutang_customer', 'ReportController@buku_besar_piutang_customer');
+
+Route::get('/report/buku_besar', 'ReportController@buku_besar');
+
 Route::get('/report/hutang', 'ReportController@hutang');
 Route::get('/report/piutang', 'ReportController@piutang');
 Route::get('/report/giro', 'ReportController@giro');
@@ -209,6 +210,7 @@ Route::get('/report/laba_rugi', 'ReportController@laba_rugi');
 Route::get('/report/neraca', 'ReportController@neraca');
 
 Route::get('/report/rekap/pembagian', 'ReportController@pembagian');
+Route::get('/report/rekap/penjualan', 'ReportController@penjualan');
 
 Route::get('/graph/kwitansi', 'GraphController@graph_kwitansi');
 Route::get('/graph/omset', 'GraphController@graph_omset');
