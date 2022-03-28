@@ -168,6 +168,7 @@ class PerkiraanController extends Controller
         $perkiraan->tipe_akun = $request->tipe_akun;
         $perkiraan->perkiraan_level = $request->perkiraan_level;
         $perkiraan->kode_akun_induk = $request->kode_akun_induk;
+        $perkiraan->nama_perkiraan_akun_induk = $request->nama_perkiraan_akun_induk;
         $perkiraan->nama_perkiraan = $request->nama_perkiraan;
         $perkiraan->neraca = $request->neraca;
         $perkiraan->saldo_awal_debet = $request->saldo_awal_debet;
@@ -188,6 +189,7 @@ class PerkiraanController extends Controller
         $perkiraan->tipe_akun = $request->tipe_akun;
         $perkiraan->perkiraan_level = $request->perkiraan_level;
         $perkiraan->kode_akun_induk = $request->kode_akun_induk;
+        $perkiraan->nama_perkiraan_akun_induk = $request->nama_perkiraan_akun_induk;
         $perkiraan->nama_perkiraan = $request->nama_perkiraan;
         $perkiraan->neraca = $request->neraca;
         $perkiraan->saldo_awal_debet = $request->saldo_awal_debet;

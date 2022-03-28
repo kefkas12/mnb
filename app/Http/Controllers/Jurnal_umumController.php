@@ -127,8 +127,8 @@ class Jurnal_umumController extends Controller
                     }
                 } else if (isset($_GET['tanggal_dari'])) {
                     if ($_GET['tanggal_dari'] != '') {
-                        $from = $_GET['tanggal_dari'];
-                        $to = $_GET['tanggal_sampai'];
+                        $from = date("Y-m-d", strtotime($_GET['tanggal_dari']));
+                        $to = date("Y-m-d", strtotime($_GET['tanggal_sampai']));
                         $jurnal_umum = Jurnal_umum::whereBetween('tanggal_jurnal', [$from, $to])
                             ->paginate($_GET['per_page']);
                     } else {
@@ -151,8 +151,8 @@ class Jurnal_umumController extends Controller
                     }
                 }
             } else if (isset($_GET['tanggal_dari'])) {
-                $from = $_GET['tanggal_dari'];
-                $to = $_GET['tanggal_sampai'];
+                $from = date("Y-m-d", strtotime($_GET['tanggal_dari']));
+                $to = date("Y-m-d", strtotime($_GET['tanggal_sampai']));
                 $jurnal_umum = Jurnal_umum::whereBetween('tanggal_jurnal', [$from, $to])
                     ->paginate($_GET['per_page']);
             } else {
@@ -248,7 +248,6 @@ class Jurnal_umumController extends Controller
         $jurnal_umum->nomor_jurnal_induk = $request->nomor_jurnal_induk;
         $jurnal_umum->nomor_jurnal = $request->nomor_jurnal;
         $jurnal_umum->tanggal_jurnal = $request->tanggal_jurnal;
-        $jurnal_umum->nomor_jurnal_print = $request->nomor_jurnal_print;
         $jurnal_umum->tanggal_bukti_kas = $request->tanggal_bukti_kas;
         $jurnal_umum->nomor_bukti = $request->nomor_bukti;
         $jurnal_umum->jenis_pembayaran = $request->jenis_pembayaran;
@@ -257,6 +256,7 @@ class Jurnal_umumController extends Controller
         $jurnal_umum->nomor_rekening_penerima = $request->nomor_rekening_penerima;
         $jurnal_umum->deskripsi = $request->deskripsi;
         $jurnal_umum->kode_akun_kredit = $request->kode_akun_kredit;
+        $jurnal_umum->detail_kode_akun_kredit = $request->detail_kode_akun_kredit;
         $jurnal_umum->id_supplier = $request->id_supplier;
         $jurnal_umum->id_customer = $request->id_customer;
         $jurnal_umum->save();
@@ -269,7 +269,6 @@ class Jurnal_umumController extends Controller
         $jurnal_umum->nomor_jurnal_induk = $request->nomor_jurnal_induk;
         $jurnal_umum->nomor_jurnal = $request->nomor_jurnal;
         $jurnal_umum->tanggal_jurnal = $request->tanggal_jurnal;
-        $jurnal_umum->nomor_jurnal_print = $request->nomor_jurnal_print;
         $jurnal_umum->tanggal_bukti_kas = $request->tanggal_bukti_kas;
         $jurnal_umum->nomor_bukti = $request->nomor_bukti;
         $jurnal_umum->jenis_pembayaran = $request->jenis_pembayaran;
@@ -278,6 +277,7 @@ class Jurnal_umumController extends Controller
         $jurnal_umum->nomor_rekening_penerima = $request->nomor_rekening_penerima;
         $jurnal_umum->deskripsi = $request->deskripsi;
         $jurnal_umum->kode_akun_kredit = $request->kode_akun_kredit;
+        $jurnal_umum->detail_kode_akun_kredit = $request->detail_kode_akun_kredit;
         $jurnal_umum->id_supplier = $request->id_supplier;
         $jurnal_umum->id_customer = $request->id_customer;
         $jurnal_umum->save();
@@ -321,7 +321,7 @@ class Jurnal_umumController extends Controller
     public function select_jurnal(Request $request, $id)
     {
         $jurnal = Jurnal_umum::leftjoin('detail_jurnal_umum', 'jurnal_umum.id', '=', 'detail_jurnal_umum.id_jurnal_umum')->leftjoin('perkiraan', 'detail_jurnal_umum.kode_akun_debit', '=', 'perkiraan.kode_akun')->leftjoin('perkiraan as pk', 'jurnal_umum.kode_akun_kredit', '=', 'pk.kode_akun')->select('jurnal_umum.id', 'jurnal_umum.tanggal_jurnal', 'jurnal_umum.nomor_jurnal_induk', 'jurnal_umum.nomor_bukti', 'jurnal_umum.kode_akun_kredit as kode_akun', DB::raw('SUM(detail_jurnal_umum.sub_total) as total_kredit'))->groupBy('jurnal_umum.id', 'jurnal_umum.tanggal_jurnal', 'jurnal_umum.nomor_jurnal_induk', 'jurnal_umum.nomor_bukti', 'jurnal_umum.kode_akun_kredit', 'pk.nama_perkiraan')->where('jurnal_umum.id', $id)->with(['detail_jurnal_umum' => function ($query) {
-            $query->select('id', 'id_jurnal_umum', 'nomor_jurnal', 'kode_detail', 'banyaknya', 'nama_satuan', 'harga', 'sub_total', 'keterangan', 'kode_akun_debit as kode_akun', 'nama_perusahaan_supplier', 'nama_perusahaan_customer', 'nama_karyawan', 'alat_berat', 'peralatan', 'truck', 'mobil', 'motor');
+            $query->select('id', 'id_jurnal_umum', 'nomor_jurnal', 'kode_detail', 'banyaknya', 'nama_satuan', 'harga', 'sub_total', 'keterangan', 'kode_akun_debit as kode_akun','detail_kode_akun_debit as detail_kode_akun', 'nama_perusahaan_supplier', 'nama_perusahaan_customer', 'nama_karyawan', 'alat_berat', 'peralatan', 'truck', 'mobil', 'motor');
         }])->get();
 
         $detail_jurnal_umum = new Detail_jurnal_umum;
@@ -337,20 +337,20 @@ class Jurnal_umumController extends Controller
     public function jurnal(Request $request)
     {
         if (isset($_GET['tanggal_dari'])) {
-            $from = $_GET['tanggal_dari'];
-            $to = $_GET['tanggal_sampai'];
+            $from = date("Y-m-d", strtotime($_GET['tanggal_dari']));
+            $to = date("Y-m-d", strtotime($_GET['tanggal_sampai']));
             if ($to) {
-                $jurnal = Jurnal_umum::leftjoin('detail_jurnal_umum', 'jurnal_umum.id', '=', 'detail_jurnal_umum.id_jurnal_umum')->leftjoin('perkiraan', 'detail_jurnal_umum.kode_akun_debit', '=', 'perkiraan.kode_akun')->leftjoin('perkiraan as pk', 'jurnal_umum.kode_akun_kredit', '=', 'pk.kode_akun')->select('jurnal_umum.id', 'jurnal_umum.tanggal_jurnal', 'jurnal_umum.nomor_jurnal_induk', 'jurnal_umum.nomor_bukti', 'jurnal_umum.kode_akun_kredit as kode_akun', DB::raw('SUM(detail_jurnal_umum.sub_total) as total_kredit'))->groupBy('jurnal_umum.id', 'jurnal_umum.tanggal_jurnal', 'jurnal_umum.nomor_jurnal_induk', 'jurnal_umum.nomor_bukti', 'jurnal_umum.kode_akun_kredit', 'pk.nama_perkiraan')->whereBetween('jurnal_umum.tanggal_jurnal', [$from, $to])->with(['detail_jurnal_umum' => function ($query) {
-                    $query->select('id', 'id_jurnal_umum', 'nomor_jurnal', 'kode_detail', 'banyaknya', 'nama_satuan', 'harga', 'sub_total', 'keterangan', 'kode_akun_debit as kode_akun', 'nama_perusahaan_supplier', 'nama_perusahaan_customer', 'nama_karyawan', 'alat_berat', 'peralatan', 'truck', 'mobil', 'motor');
+                $jurnal = Jurnal_umum::leftjoin('detail_jurnal_umum', 'jurnal_umum.id', '=', 'detail_jurnal_umum.id_jurnal_umum')->leftjoin('perkiraan', 'detail_jurnal_umum.kode_akun_debit', '=', 'perkiraan.kode_akun')->leftjoin('perkiraan as pk', 'jurnal_umum.kode_akun_kredit', '=', 'pk.kode_akun')->select('jurnal_umum.id', 'jurnal_umum.tanggal_jurnal', 'jurnal_umum.nomor_jurnal_induk', 'jurnal_umum.nomor_bukti', 'jurnal_umum.kode_akun_kredit as kode_akun','pk.nama_perkiraan', DB::raw('SUM(detail_jurnal_umum.sub_total) as total_kredit'))->groupBy('jurnal_umum.id', 'jurnal_umum.tanggal_jurnal', 'jurnal_umum.nomor_jurnal_induk', 'jurnal_umum.nomor_bukti', 'jurnal_umum.kode_akun_kredit', 'pk.nama_perkiraan')->whereBetween('jurnal_umum.tanggal_jurnal', [$from, $to])->with(['detail_jurnal_umum' => function ($query) {
+                    $query->select('id', 'id_jurnal_umum', 'nomor_jurnal', 'kode_detail', 'banyaknya', 'nama_satuan', 'harga', 'sub_total', 'keterangan', 'kode_akun_debit as kode_akun','detail_kode_akun_debit as nama_perkiraan', 'nama_perusahaan_supplier', 'nama_perusahaan_customer', 'nama_karyawan', 'alat_berat', 'peralatan', 'truck', 'mobil', 'motor');
                 }])->get();
             } else {
-                $jurnal = Jurnal_umum::leftjoin('detail_jurnal_umum', 'jurnal_umum.id', '=', 'detail_jurnal_umum.id_jurnal_umum')->leftjoin('perkiraan', 'detail_jurnal_umum.kode_akun_debit', '=', 'perkiraan.kode_akun')->leftjoin('perkiraan as pk', 'jurnal_umum.kode_akun_kredit', '=', 'pk.kode_akun')->select('jurnal_umum.id', 'jurnal_umum.tanggal_jurnal', 'jurnal_umum.nomor_jurnal_induk', 'jurnal_umum.nomor_bukti', 'jurnal_umum.kode_akun_kredit as kode_akun', DB::raw('SUM(detail_jurnal_umum.sub_total) as total_kredit'))->groupBy('jurnal_umum.id', 'jurnal_umum.tanggal_jurnal', 'jurnal_umum.nomor_jurnal_induk', 'jurnal_umum.nomor_bukti', 'jurnal_umum.kode_akun_kredit', 'pk.nama_perkiraan')->with(['detail_jurnal_umum' => function ($query) {
-                    $query->select('id', 'id_jurnal_umum', 'nomor_jurnal', 'kode_detail', 'banyaknya', 'nama_satuan', 'harga', 'sub_total', 'keterangan', 'kode_akun_debit as kode_akun', 'nama_perusahaan_supplier', 'nama_perusahaan_customer', 'nama_karyawan', 'alat_berat', 'peralatan', 'truck', 'mobil', 'motor');
+                $jurnal = Jurnal_umum::leftjoin('detail_jurnal_umum', 'jurnal_umum.id', '=', 'detail_jurnal_umum.id_jurnal_umum')->leftjoin('perkiraan', 'detail_jurnal_umum.kode_akun_debit', '=', 'perkiraan.kode_akun')->leftjoin('perkiraan as pk', 'jurnal_umum.kode_akun_kredit', '=', 'pk.kode_akun')->select('jurnal_umum.id', 'jurnal_umum.tanggal_jurnal', 'jurnal_umum.nomor_jurnal_induk', 'jurnal_umum.nomor_bukti', 'jurnal_umum.kode_akun_kredit as kode_akun','pk.nama_perkiraan', DB::raw('SUM(detail_jurnal_umum.sub_total) as total_kredit'))->groupBy('jurnal_umum.id', 'jurnal_umum.tanggal_jurnal', 'jurnal_umum.nomor_jurnal_induk', 'jurnal_umum.nomor_bukti', 'jurnal_umum.kode_akun_kredit', 'pk.nama_perkiraan')->with(['detail_jurnal_umum' => function ($query) {
+                    $query->select('id', 'id_jurnal_umum', 'nomor_jurnal', 'kode_detail', 'banyaknya', 'nama_satuan', 'harga', 'sub_total', 'keterangan', 'kode_akun_debit as kode_akun','detail_kode_akun_debit as nama_perkiraan', 'nama_perusahaan_supplier', 'nama_perusahaan_customer', 'nama_karyawan', 'alat_berat', 'peralatan', 'truck', 'mobil', 'motor');
                 }])->get();
             }
         } else {
-            $jurnal = Jurnal_umum::leftjoin('detail_jurnal_umum', 'jurnal_umum.id', '=', 'detail_jurnal_umum.id_jurnal_umum')->leftjoin('perkiraan', 'detail_jurnal_umum.kode_akun_debit', '=', 'perkiraan.kode_akun')->leftjoin('perkiraan as pk', 'jurnal_umum.kode_akun_kredit', '=', 'pk.kode_akun')->select('jurnal_umum.id', 'jurnal_umum.tanggal_jurnal', 'jurnal_umum.nomor_jurnal_induk', 'jurnal_umum.nomor_bukti', 'jurnal_umum.kode_akun_kredit as kode_akun', DB::raw('SUM(detail_jurnal_umum.sub_total) as total_kredit'))->groupBy('jurnal_umum.id', 'jurnal_umum.tanggal_jurnal', 'jurnal_umum.nomor_jurnal_induk', 'jurnal_umum.nomor_bukti', 'jurnal_umum.kode_akun_kredit', 'pk.nama_perkiraan')->with(['detail_jurnal_umum' => function ($query) {
-                $query->select('id', 'id_jurnal_umum', 'nomor_jurnal', 'kode_detail', 'banyaknya', 'nama_satuan', 'harga', 'sub_total', 'keterangan', 'kode_akun_debit as kode_akun', 'nama_perusahaan_supplier', 'nama_perusahaan_customer', 'nama_karyawan', 'alat_berat', 'peralatan', 'truck', 'mobil', 'motor');
+            $jurnal = Jurnal_umum::leftjoin('detail_jurnal_umum', 'jurnal_umum.id', '=', 'detail_jurnal_umum.id_jurnal_umum')->leftjoin('perkiraan', 'detail_jurnal_umum.kode_akun_debit', '=', 'perkiraan.kode_akun')->leftjoin('perkiraan as pk', 'jurnal_umum.kode_akun_kredit', '=', 'pk.kode_akun')->select('jurnal_umum.id', 'jurnal_umum.tanggal_jurnal', 'jurnal_umum.nomor_jurnal_induk', 'jurnal_umum.nomor_bukti', 'jurnal_umum.kode_akun_kredit as kode_akun','pk.nama_perkiraan', DB::raw('SUM(detail_jurnal_umum.sub_total) as total_kredit'))->groupBy('jurnal_umum.id', 'jurnal_umum.tanggal_jurnal', 'jurnal_umum.nomor_jurnal_induk', 'jurnal_umum.nomor_bukti', 'jurnal_umum.kode_akun_kredit', 'pk.nama_perkiraan')->with(['detail_jurnal_umum' => function ($query) {
+                $query->select('id', 'id_jurnal_umum', 'nomor_jurnal', 'kode_detail', 'banyaknya', 'nama_satuan', 'harga', 'sub_total', 'keterangan', 'kode_akun_debit as kode_akun','detail_kode_akun_debit as nama_perkiraan', 'nama_perusahaan_supplier', 'nama_perusahaan_customer', 'nama_karyawan', 'alat_berat', 'peralatan', 'truck', 'mobil', 'motor');
             }])->get();
         }
 

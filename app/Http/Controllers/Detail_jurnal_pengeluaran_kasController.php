@@ -205,7 +205,7 @@ class Detail_jurnal_pengeluaran_kasController extends Controller
         $detail_jurnal_pengeluaran_kas->id = Str::uuid()->toString();
         $detail_jurnal_pengeluaran_kas->id_jurnal_pengeluaran_kas = $request->id_jurnal_pengeluaran_kas;
         $detail_jurnal_pengeluaran_kas->nomor_jurnal = $request->nomor_jurnal;
-        $detail_jurnal_pengeluaran_kas->tanggal_jurnal = $request->tanggal_jurnal;
+        $detail_jurnal_pengeluaran_kas->tanggal_jurnal = date("Y-m-d", strtotime($request->tanggal_jurnal));
         $detail_jurnal_pengeluaran_kas->kode_akun_kredit = $request->kode_akun_kredit;
         $detail_jurnal_pengeluaran_kas->detail_kode_akun_kredit = $request->detail_kode_akun_kredit;
         $detail_jurnal_pengeluaran_kas->kode_detail = $request->kode_detail;
@@ -233,7 +233,7 @@ class Detail_jurnal_pengeluaran_kasController extends Controller
         $detail_jurnal_pengeluaran_kas = Detail_jurnal_pengeluaran_kas::find($id);
         $detail_jurnal_pengeluaran_kas->id_jurnal_pengeluaran_kas = $request->id_jurnal_pengeluaran_kas;
         $detail_jurnal_pengeluaran_kas->nomor_jurnal = $request->nomor_jurnal;
-        $detail_jurnal_pengeluaran_kas->tanggal_jurnal = $request->tanggal_jurnal;
+        $detail_jurnal_pengeluaran_kas->tanggal_jurnal = date("Y-m-d", strtotime($request->tanggal_jurnal));
         $detail_jurnal_pengeluaran_kas->kode_akun_kredit = $request->kode_akun_kredit;
         $detail_jurnal_pengeluaran_kas->detail_kode_akun_kredit = $request->detail_kode_akun_kredit;
         $detail_jurnal_pengeluaran_kas->kode_detail = $request->kode_detail;

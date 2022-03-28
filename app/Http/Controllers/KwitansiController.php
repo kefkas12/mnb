@@ -108,10 +108,36 @@ class KwitansiController extends Controller
                             ->orderBy($_GET['sort'], $_GET['order'])
                             ->paginate($_GET['per_page']);
                     }
+                } else if (isset($_GET['tanggal_dari'])) {
+                    if ($_GET['tanggal_dari'] != '') {
+                        $from = date("Y-m-d", strtotime($_GET['tanggal_dari']));
+                        $to = date("Y-m-d", strtotime($_GET['tanggal_sampai']));
+                        $kwitansi = Kwitansi::whereBetween('tanggal_kwitansi', [$from, $to])
+                            ->paginate($_GET['per_page']);
+                    } else {
+                        $kwitansi = Kwitansi::Where('kode_kwitansi', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('tanggal_kwitansi', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('jenis_pembayaran', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('status_kwitansi', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('nama_customer', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('nomor_rekening', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('tanda_tangan', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('no_invoice', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('no_seri_faktur_pajak', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('no_kwitansi', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('total_dpp_kwitansi', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('total_pph_kwitansi', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('total_ppn_kwitansi', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('total_nilai_kwitansi', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('keterangan_kwitansi', 'like', '%' . $_GET['search'] . '%')
+    
+                        ->orderBy('created_at', 'desc')
+                        ->paginate($_GET['per_page']);
+                    }
                 }
             } else if(isset($_GET['tanggal_dari'])){
-                $from = date($_GET['tanggal_dari']);
-                $to = date($_GET['tanggal_sampai']);
+                $from = date("Y-m-d", strtotime($_GET['tanggal_dari']));
+                $to = date("Y-m-d", strtotime($_GET['tanggal_sampai']));
                 $kwitansi = Kwitansi::whereBetween('tanggal_kwitansi', [$from, $to])
                             ->paginate($_GET['per_page']);
             } else {
@@ -214,7 +240,7 @@ class KwitansiController extends Controller
         $kwitansi = new Kwitansi;
         $kwitansi->id = Str::uuid()->toString();
         $kwitansi->kode_kwitansi = $request->kode_kwitansi;
-        $kwitansi->tanggal_kwitansi = $request->tanggal_kwitansi;
+        $kwitansi->tanggal_kwitansi = date("Y-m-d", strtotime($request->tanggal_kwitansi));
         $kwitansi->jenis_pembayaran = $request->jenis_pembayaran;
         $kwitansi->status_kwitansi = $request->status_kwitansi;
         $kwitansi->nama_customer = $request->nama_customer;
@@ -236,7 +262,7 @@ class KwitansiController extends Controller
     {
         $kwitansi = Kwitansi::find($id);
         $kwitansi->kode_kwitansi = $request->kode_kwitansi;
-        $kwitansi->tanggal_kwitansi = $request->tanggal_kwitansi;
+        $kwitansi->tanggal_kwitansi = date("Y-m-d", strtotime($request->tanggal_kwitansi));
         $kwitansi->jenis_pembayaran = $request->jenis_pembayaran;
         $kwitansi->status_kwitansi = $request->status_kwitansi;
         $kwitansi->nama_customer = $request->nama_customer;
@@ -275,7 +301,7 @@ class KwitansiController extends Controller
         $nominal[0]->offsetSet('nama_customer', $kwitansi->nama_customer);
         $nominal[0]->offsetSet('terbilang', $detail_kwitansi->terbilang($nominal[0]->nominal));
         $nominal[0]->offsetSet('keterangan', $kwitansi->keterangan_kwitansi);
-        $nominal[0]->offsetSet('tanggal', $kwitansi->tanggal_kwitansi);
+        $nominal[0]->offsetSet('tanggal', date("Y-m-d", strtotime($kwitansi->tanggal_kwitansi)));
         $nominal[0]->offsetSet('tanda_tangan', $kwitansi->tanda_tangan);
 
         return $nominal;
@@ -325,7 +351,7 @@ class KwitansiController extends Controller
         $nominal[0]->offsetSet('nomor_rekening',$kwitansi->nomor_rekening);
         $nominal[0]->offsetSet('keterangan_kwitansi',$kwitansi->keterangan_kwitansi);
         $nominal[0]->offsetSet('tanda_tangan',$kwitansi->tanda_tangan);
-        $nominal[0]->offsetSet('tanggal_kwitansi',$kwitansi->tanggal_kwitansi);
+        $nominal[0]->offsetSet('tanggal_kwitansi',date("Y-m-d", strtotime($kwitansi->tanggal_kwitansi)));
         $nominal[0]->offsetSet('terbilang', $detail_kwitansi->terbilang($nominal[0]->nominal));
         $nominal[0]->offsetSet('nominal',$nominal_round);
         return $nominal;
@@ -341,15 +367,15 @@ class KwitansiController extends Controller
         $nominal[0]->offsetSet('nomor_rekening',$kwitansi->nomor_rekening);
         $nominal[0]->offsetSet('keterangan_kwitansi',$kwitansi->keterangan_kwitansi);
         $nominal[0]->offsetSet('tanda_tangan',$kwitansi->tanda_tangan);
-        $nominal[0]->offsetSet('tanggal_kwitansi',$kwitansi->tanggal_kwitansi);
+        $nominal[0]->offsetSet('tanggal_kwitansi',date("Y-m-d", strtotime($kwitansi->tanggal_kwitansi)));
         $nominal[0]->offsetSet('terbilang', $detail_kwitansi->terbilang($nominal[0]->nominal));
         $nominal[0]->offsetSet('nominal',$nominal_round);
         return $nominal;
     }
     public function report(Request $request)
     {
-        $from = $_GET['tanggal_dari'];
-        $to = $_GET['tanggal_sampai'];
+        $from = date("Y-m-d", strtotime($_GET['tanggal_dari']));
+        $to = date("Y-m-d", strtotime($_GET['tanggal_sampai']));
         // $customer = $_GET['customer'];
         $data['report'] = Kwitansi::leftjoin('detail_kwitansi', 'kwitansi.id', '=', 'detail_kwitansi.id_kwitansi')->select('kwitansi.no_kwitansi', 'kwitansi.tanggal_kwitansi', 'kwitansi.nama_customer',DB::raw('cast(SUM(detail_kwitansi.berat_bersih*detail_kwitansi.harga_satuan) as decimal(65,2)) as dpp'),DB::raw('cast(SUM(detail_kwitansi.berat_bersih*detail_kwitansi.harga_satuan)*0.1 as decimal(65,2)) as ppn'),DB::raw('cast(SUM(detail_kwitansi.berat_bersih*detail_kwitansi.harga_satuan)/400 as decimal(65,2)) as pph'),DB::raw('cast(SUM(detail_kwitansi.berat_bersih*detail_kwitansi.harga_satuan)*1.1 as decimal(65,2)) as sub_total'))->groupBy('kwitansi.no_kwitansi', 'kwitansi.tanggal_kwitansi', 'kwitansi.nama_customer')->whereBetween('kwitansi.tanggal_kwitansi', [$from, $to])->get();
         $data['tanggal'] = $from.' '.$to;
@@ -357,8 +383,8 @@ class KwitansiController extends Controller
     }
     public function report_petani(Request $request)
     {
-        $from = $_GET['tanggal_dari'];
-        $to = $_GET['tanggal_sampai'];
+        $from = date("Y-m-d", strtotime($_GET['tanggal_dari']));
+        $to = date("Y-m-d", strtotime($_GET['tanggal_sampai']));
         // $customer = $_GET['customer'];
         $data['report'] = Detail_kwitansi::select('tanggal_tagihan as tanggal','nomor','nomor_polisi',DB::raw('cast(berat_bruto as decimal(65,2)) as berat_bruto'),'satuan_berat_bruto',DB::raw('cast(potongan as decimal(65,2)) as potongan'),'satuan_potongan',DB::raw('cast(berat_bersih as decimal(65,2)) as berat_bersih'),'satuan_berat_bersih', DB::raw('cast(harga_beli as decimal(65,2)) as harga_beli'), DB::raw('cast(berat_bersih*harga_beli as decimal(65,2)) as jumlah'))->whereBetween('tanggal_tagihan', [$from, $to])->orderBy('tanggal_tagihan','DESC')->get();
 

@@ -205,7 +205,7 @@ class Detail_jurnal_umumController extends Controller
         $detail_jurnal_umum->id = Str::uuid()->toString();
         $detail_jurnal_umum->id_jurnal_umum = $request->id_jurnal_umum;
         $detail_jurnal_umum->nomor_jurnal = $request->nomor_jurnal;
-        $detail_jurnal_umum->tanggal_jurnal = $request->tanggal_jurnal;
+        $detail_jurnal_umum->tanggal_jurnal = date("Y-m-d", strtotime($request->tanggal_jurnal));
         $detail_jurnal_umum->kode_akun_kredit = $request->kode_akun_kredit;
         $detail_jurnal_umum->detail_kode_akun_kredit = $request->detail_kode_akun_kredit;
         $detail_jurnal_umum->kode_detail = $request->kode_detail;
@@ -233,7 +233,7 @@ class Detail_jurnal_umumController extends Controller
         $detail_jurnal_umum = Detail_jurnal_umum::find($id);
         $detail_jurnal_umum->id_jurnal_umum = $request->id_jurnal_umum;
         $detail_jurnal_umum->nomor_jurnal = $request->nomor_jurnal;
-        $detail_jurnal_umum->tanggal_jurnal = $request->tanggal_jurnal;
+        $detail_jurnal_umum->tanggal_jurnal = date("Y-m-d", strtotime($request->tanggal_jurnal));
         $detail_jurnal_umum->kode_akun_kredit = $request->kode_akun_kredit;
         $detail_jurnal_umum->detail_kode_akun_kredit = $request->detail_kode_akun_kredit;
         $detail_jurnal_umum->kode_detail = $request->kode_detail;
