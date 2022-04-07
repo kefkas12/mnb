@@ -247,7 +247,7 @@ class Jurnal_umumController extends Controller
         $jurnal_umum->id = Str::uuid()->toString();
         $jurnal_umum->nomor_jurnal_induk = $request->nomor_jurnal_induk;
         $jurnal_umum->nomor_jurnal = $request->nomor_jurnal;
-        $jurnal_umum->tanggal_jurnal = $request->tanggal_jurnal;
+        $jurnal_umum->tanggal_jurnal = date("Y-m-d", strtotime($request->tanggal_jurnal));
         $jurnal_umum->nomor_jurnal_print = $request->nomor_jurnal_print;
         $jurnal_umum->tanggal_bukti_kas = $request->tanggal_bukti_kas;
         $jurnal_umum->nomor_bukti = $request->nomor_bukti;
@@ -258,8 +258,12 @@ class Jurnal_umumController extends Controller
         $jurnal_umum->deskripsi = $request->deskripsi;
         $jurnal_umum->kode_akun_kredit = $request->kode_akun_kredit;
         $jurnal_umum->detail_kode_akun_kredit = $request->detail_kode_akun_kredit;
-        $jurnal_umum->id_supplier = $request->id_supplier;
-        $jurnal_umum->id_customer = $request->id_customer;
+        if($request->id_supplier){
+            $jurnal_umum->id_supplier = $request->id_supplier;
+        }
+        if($request->id_customer){
+            $jurnal_umum->id_customer = $request->id_customer;
+        }
         $jurnal_umum->save();
 
         return $jurnal_umum;
@@ -269,7 +273,7 @@ class Jurnal_umumController extends Controller
         $jurnal_umum = Jurnal_umum::find($id);
         $jurnal_umum->nomor_jurnal_induk = $request->nomor_jurnal_induk;
         $jurnal_umum->nomor_jurnal = $request->nomor_jurnal;
-        $jurnal_umum->tanggal_jurnal = $request->tanggal_jurnal;
+        $jurnal_umum->tanggal_jurnal = date("Y-m-d", strtotime($request->tanggal_jurnal));
         $jurnal_umum->nomor_jurnal_print = $request->nomor_jurnal_print;
         $jurnal_umum->tanggal_bukti_kas = $request->tanggal_bukti_kas;
         $jurnal_umum->nomor_bukti = $request->nomor_bukti;

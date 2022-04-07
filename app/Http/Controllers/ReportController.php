@@ -320,14 +320,14 @@ class ReportController extends Controller
                 //     })
                 //     ->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])
                 //     ->get();
-                $data['debit'] = Detail_jurnal_umum::select('nama_perusahaan_supplier','kode_akun_debit','kode_akun_kredit','keterangan','sub_total')
+                $data['debit'] = Detail_jurnal_umum::select('tanggal_jurnal as tanggal','keterangan','sub_total as debit')
                     ->where('nama_perusahaan_supplier',$supplier)
                     ->where('kode_akun_debit','220.001')
                     ->whereBetween('tanggal_jurnal', [$from, $to])
                     ->orderBy('tanggal_jurnal','DESC')
                     ->get();
                 
-                $data['kredit'] = Detail_jurnal_umum::select('nama_perusahaan_supplier','kode_akun_debit','kode_akun_kredit','keterangan','sub_total')
+                $data['kredit'] = Detail_jurnal_umum::select('tanggal_jurnal as tanggal','keterangan','sub_total as kredit')
                     ->where('nama_perusahaan_supplier',$supplier)
                     ->where('kode_akun_kredit','220.001')
                     ->whereBetween('tanggal_jurnal', [$from, $to])

@@ -80,6 +80,11 @@ Route::post('/master/bank', 'BankController@insert');
 Route::put('/master/bank/{id}', 'BankController@edit');
 Route::delete('/master/bank/{id}', 'BankController@delete');
 
+Route::get('/master/pembagian', 'PembagianController@index');
+Route::post('/master/pembagian', 'PembagianController@insert');
+Route::put('/master/pembagian/{id}', 'PembagianController@edit');
+Route::delete('/master/pembagian/{id}', 'PembagianController@delete');
+
 Route::get('/master/kode_akun_debit', 'Kode_akun_debitController@index');
 Route::get('/master/kode_akun_debit/{id}', 'Kode_akun_debitController@select');
 Route::post('/master/kode_akun_debit', 'Kode_akun_debitController@insert');
