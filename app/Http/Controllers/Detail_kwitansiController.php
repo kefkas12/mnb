@@ -259,7 +259,7 @@ class Detail_kwitansiController extends Controller
         if(count($periode) == 1){
             $kwitansi->keterangan_kwitansi = 'Penjualan tbs ke '.$request->nama_customer.' periode '.date("d-m-Y", strtotime($request->tanggal));
         }else{
-            $kwitansi->keterangan_kwitansi = 'Penjualan tbs ke '.$request->nama_customer.' periode '.date("d-m-Y", strtotime($periode[0]->tanggal)).' sd '.date("Y-m-d", strtotime($request->tanggal));
+            $kwitansi->keterangan_kwitansi = 'Penjualan tbs ke '.$request->nama_customer.' periode '.date("d-m-Y", strtotime($periode[0]->tanggal)).' sd '.date("d-m-Y", strtotime($request->tanggal));
         }
         
         $kwitansi->save();
