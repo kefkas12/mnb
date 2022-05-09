@@ -842,9 +842,9 @@ class ReportController extends Controller
         $tahun = $_GET['tahun'];
         $from = $_GET['tahun'].'-'.$_GET['bulan'].'-1';
         
-        $data['to_date'] = Detail_kwitansi::select(DB::raw('sum(berat_bruto * harga_satuan) as to_date_pks'), DB::raw('sum(berat_bruto * harga_beli) as to_date_petani'))->whereDate('tanggal_tagihan','<',$from)->get();
+        $data['to_date'] = Detail_kwitansi::select(DB::raw('sum(berat_bersih * harga_satuan) as to_date_pks'), DB::raw('sum(berat_bersih * harga_beli) as to_date_petani'))->whereDate('tanggal_tagihan','<',$from)->get();
         
-        $data['report'] = Detail_kwitansi::select('tanggal','berat_bruto as qty', 'harga_satuan as harga_pks', 'harga_beli as harga_petani',DB::raw('berat_bruto * (harga_satuan - harga_beli) as keuntungan'))->whereYear('tanggal',$tahun)->whereMonth('tanggal',$bulan)->orderBy('tanggal','DESC')->get();
+        $data['report'] = Detail_kwitansi::select('tanggal','berat_bersih as qty', 'harga_satuan as harga_pks', 'harga_beli as harga_petani',DB::raw('berat_bersih * (harga_satuan - harga_beli) as keuntungan'))->whereYear('tanggal',$tahun)->whereMonth('tanggal',$bulan)->orderBy('tanggal','DESC')->get();
         
         return $data;
     }

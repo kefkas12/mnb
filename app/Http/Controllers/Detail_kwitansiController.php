@@ -255,11 +255,11 @@ class Detail_kwitansiController extends Controller
         $kwitansi->total_nilai_kwitansi = $kwitansi->total_nilai_kwitansi+$request->total;
         
         //periode
-        $periode = Detail_kwitansi::where('id_kwitansi',$request->id_kwitansi)->get();
+        $periode = Detail_kwitansi::where('id_kwitansi',$request->id_kwitansi)->orderBy('tanggal','ASC')->get();
         if(count($periode) == 1){
             $kwitansi->keterangan_kwitansi = 'Penjualan tbs ke '.$request->nama_customer.' periode '.date("d-m-Y", strtotime($request->tanggal));
         }else{
-            $kwitansi->keterangan_kwitansi = 'Penjualan tbs ke '.$request->nama_customer.' periode '.date("d-m-Y", strtotime($periode[0]->tanggal)).' sd '.date("d-m-Y", strtotime($request->tanggal));
+            $kwitansi->keterangan_kwitansi = 'Penjualan tbs ke '.$request->nama_customer.' periode '.date("d-m-Y", strtotime($periode[0]->tanggal)).' sd '.date("d-m-Y", strtotime($periode[count($periode)-1]->tanggal));
         }
         
         $kwitansi->save();
@@ -268,8 +268,17 @@ class Detail_kwitansiController extends Controller
     }
     public function edit(Request $request, $id)
     {
+        $kwitansi = Kwitansi::find($request->id_kwitansi);
+        
         $detail_kwitansi = Detail_kwitansi::find($id);
         $detail_kwitansi->id_kwitansi = $request->id_kwitansi;
+        
+        $kwitansi->total_dpp_kwitansi = $kwitansi->total_dpp_kwitansi-$detail_kwitansi->dpp+$request->dpp;
+        $kwitansi->total_pph_kwitansi = $kwitansi->total_pph_kwitansi-$detail_kwitansi->pph+$request->pph;
+        $kwitansi->total_ppn_kwitansi = $kwitansi->total_ppn_kwitansi-$detail_kwitansi->ppn+$request->ppn;
+        $kwitansi->total_nilai_kwitansi = $kwitansi->total_nilai_kwitansi-$detail_kwitansi->total+$request->total;
+        
+        
         $detail_kwitansi->kode_kwitansi = $request->kode_kwitansi;
         $detail_kwitansi->tanggal_tagihan = date("Y-m-d", strtotime($request->tanggal_tagihan));
         $detail_kwitansi->jenis_pembayaran = $request->jenis_pembayaran;
@@ -294,7 +303,17 @@ class Detail_kwitansiController extends Controller
         $detail_kwitansi->keterangan = $request->keterangan;
         $detail_kwitansi->status = $request->status;
         $detail_kwitansi->save();
-
+        
+        //periode
+        $periode = Detail_kwitansi::where('id_kwitansi',$request->id_kwitansi)->orderBy('tanggal','ASC')->get();
+        if(count($periode) == 1){
+            $kwitansi->keterangan_kwitansi = 'Penjualan tbs ke '.$request->nama_customer.' periode '.date("d-m-Y", strtotime($request->tanggal));
+        }else{
+            $kwitansi->keterangan_kwitansi = 'Penjualan tbs ke '.$request->nama_customer.' periode '.date("d-m-Y", strtotime($periode[0]->tanggal)).' sd '.date("d-m-Y", strtotime($periode[count($periode)-1]->tanggal));
+        }
+        
+        $kwitansi->save();
+    
         return $detail_kwitansi;
     }
     public function delete(Request $request, $id)

@@ -342,8 +342,8 @@ class KwitansiController extends Controller
 
     public function kwt_plus_ppn(Request $request, $id)
     {
-        $nominal = Detail_kwitansi::select(DB::raw('SUM(berat_bersih*harga_satuan)-(0.25/100 * SUM(berat_bersih*harga_satuan) ) + (0.1 * SUM(berat_bersih*harga_satuan)) as nominal'))->where('id_kwitansi', $id)->get();
-        $nominal_round = round($nominal[0]->nominal);
+        $nominal = Detail_kwitansi::select(DB::raw('SUM(berat_bersih*harga_satuan)-(0.25/100 * SUM(berat_bersih*harga_satuan) ) + (0.11 * SUM(berat_bersih*harga_satuan)) as nominal'))->where('id_kwitansi', $id)->get();
+        $nominal_round = $nominal[0]->nominal;
         $kwitansi = Kwitansi::where('id', $id)->first();
         $detail_kwitansi = new Detail_kwitansi;
         $nominal[0]->offsetSet('no_invoice',$kwitansi->no_invoice);
@@ -377,7 +377,7 @@ class KwitansiController extends Controller
         $from = date("Y-m-d", strtotime($_GET['tanggal_dari']));
         $to = date("Y-m-d", strtotime($_GET['tanggal_sampai']));
         // $customer = $_GET['customer'];
-        $data['report'] = Kwitansi::leftjoin('detail_kwitansi', 'kwitansi.id', '=', 'detail_kwitansi.id_kwitansi')->select('kwitansi.no_kwitansi', 'kwitansi.tanggal_kwitansi', 'kwitansi.nama_customer',DB::raw('cast(SUM(detail_kwitansi.berat_bersih*detail_kwitansi.harga_satuan) as decimal(65,2)) as dpp'),DB::raw('cast(SUM(detail_kwitansi.berat_bersih*detail_kwitansi.harga_satuan)*0.1 as decimal(65,2)) as ppn'),DB::raw('cast(SUM(detail_kwitansi.berat_bersih*detail_kwitansi.harga_satuan)/400 as decimal(65,2)) as pph'),DB::raw('cast(SUM(detail_kwitansi.berat_bersih*detail_kwitansi.harga_satuan)*1.1 as decimal(65,2)) as sub_total'))->groupBy('kwitansi.no_kwitansi', 'kwitansi.tanggal_kwitansi', 'kwitansi.nama_customer')->whereBetween('kwitansi.tanggal_kwitansi', [$from, $to])->get();
+        $data['report'] = Kwitansi::leftjoin('detail_kwitansi', 'kwitansi.id', '=', 'detail_kwitansi.id_kwitansi')->select('kwitansi.no_kwitansi', 'kwitansi.tanggal_kwitansi', 'kwitansi.nama_customer',DB::raw('cast(SUM(detail_kwitansi.berat_bersih*detail_kwitansi.harga_satuan) as decimal(65,2)) as dpp'),DB::raw('cast(SUM(detail_kwitansi.berat_bersih*detail_kwitansi.harga_satuan)*0.11 as decimal(65,2)) as ppn'),DB::raw('cast(SUM(detail_kwitansi.berat_bersih*detail_kwitansi.harga_satuan)/400 as decimal(65,2)) as pph'),DB::raw('cast(SUM(detail_kwitansi.berat_bersih*detail_kwitansi.harga_satuan)*1.11 as decimal(65,2)) as sub_total'))->groupBy('kwitansi.no_kwitansi', 'kwitansi.tanggal_kwitansi', 'kwitansi.nama_customer')->whereBetween('kwitansi.tanggal_kwitansi', [$from, $to])->get();
         $data['tanggal'] = $from.' '.$to;
         return $data;
     }
