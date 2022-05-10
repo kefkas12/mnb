@@ -16,12 +16,10 @@ class Detail_kwitansiController extends Controller
     public function index()
     {
 
-        if (isset($_GET['per_page'])) {
             if ($_GET['per_page'] == -1) {
                 $detail_kwitansi = Detail_kwitansi::count();
                 $_GET['per_page'] = $detail_kwitansi;
             }
-            $detail_kwitansi = Detail_kwitansi::orderBy('created_at', 'desc')->paginate($_GET['per_page']);
             if (isset($_GET['search'])) {
                 $detail_kwitansi = Detail_kwitansi::Where('id_kwitansi', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('kode_kwitansi', 'like', '%' . $_GET['search'] . '%')
@@ -111,98 +109,7 @@ class Detail_kwitansiController extends Controller
                         ->paginate($_GET['per_page']);
                 }
             }
-        } else {
-            $detail_kwitansi = Detail_kwitansi::orderBy('created_at', 'desc')->paginate();
-            if (isset($_GET['search'])) {
-                $detail_kwitansi = Detail_kwitansi::Where('id_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('kode_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('tanggal_tagihan', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('jenis_pembayaran', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('nama_customer', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('kode_detail', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('tanggal', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('nomor', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('berat_bruto', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('satuan_berat_bruto', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('potongan', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('satuan_potongan', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('berat_bersih', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('satuan_berat_bersih', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('harga_satuan', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('nomor_polisi', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('ongkos_bongkar', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('harga_beli', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('dpp', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('pph', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('ppn', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('total', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('keterangan', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
-                    ->orderBy('created_at', 'desc')
-                    ->paginate();
-                if (isset($_GET['sort'])) {
-                    $detail_kwitansi = Detail_kwitansi::Where('id_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('kode_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('tanggal_tagihan', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('jenis_pembayaran', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('nama_customer', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('kode_detail', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('tanggal', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('nomor', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('berat_bruto', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('satuan_berat_bruto', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('potongan', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('satuan_potongan', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('berat_bersih', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('satuan_berat_bersih', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('harga_satuan', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('nomor_polisi', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('ongkos_bongkar', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('harga_beli', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('dpp', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('pph', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('ppn', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('total', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('keterangan', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
-                        ->orderBy($_GET['sort'], 'desc')
-                        ->paginate();
-                    if (isset($_GET['order'])) {
-                        $detail_kwitansi = Detail_kwitansi::Where('id_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('kode_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('tanggal_tagihan', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('jenis_pembayaran', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('nama_customer', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('kode_detail', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('tanggal', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('nomor', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('berat_bruto', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('satuan_berat_bruto', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('potongan', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('satuan_potongan', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('berat_bersih', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('satuan_berat_bersih', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('harga_satuan', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('nomor_polisi', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('ongkos_bongkar', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('harga_beli', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('dpp', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('pph', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('ppn', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('total', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('keterangan', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
-                            ->orderBy($_GET['sort'], $_GET['order'])
-                            ->paginate();
-                    }
-                }
-            } else {
-                if (isset($_GET['sort']) && isset($_GET['order'])) {
-                    $detail_kwitansi = Detail_kwitansi::orderBy($_GET['sort'], $_GET['order'])
-                        ->paginate();
-                }
-            }
-        }
+
 
         return $detail_kwitansi;
     }

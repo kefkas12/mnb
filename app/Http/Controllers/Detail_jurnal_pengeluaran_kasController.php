@@ -14,14 +14,36 @@ class Detail_jurnal_pengeluaran_kasController extends Controller
     }
     public function index()
     {
-
-        if (isset($_GET['per_page'])) {
-            if($_GET['per_page'] == -1){
-                $detail_jurnal_pengeluaran_kas = Detail_jurnal_pengeluaran_kas::count();
-                $_GET['per_page'] = $detail_jurnal_pengeluaran_kas;
-            }
-            $detail_jurnal_pengeluaran_kas = Detail_jurnal_pengeluaran_kas::orderBy('created_at', 'desc')->paginate($_GET['per_page']);
-            if (isset($_GET['search'])) {
+        ///api/kwitansi?per_page=5&page=1&search=&tanggal_dari=2022-02-01&tanggal_sampai=2022-02-12
+        if ($_GET['per_page'] == -1) {
+            $detail_jurnal_pengeluaran_kas = Detail_jurnal_pengeluaran_kas::count();
+            $_GET['per_page'] = $detail_jurnal_pengeluaran_kas;
+        }
+        if (isset($_GET['search'])) {
+            $detail_jurnal_pengeluaran_kas = Detail_jurnal_pengeluaran_kas::Where('id_jurnal_pengeluaran_kas', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('nomor_jurnal', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('tanggal_jurnal', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('kode_akun_kredit', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('detail_kode_akun_kredit', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('kode_detail', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('banyaknya', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('nama_satuan', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('harga', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('sub_total', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('keterangan', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('kode_akun_debit', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('detail_kode_akun_debit', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('nama_perusahaan_supplier', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('nama_perusahaan_customer', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('nama_karyawan', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('alat_berat', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('peralatan', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('truck', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('mobil', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('motor', 'like', '%' . $_GET['search'] . '%')
+                ->orderBy('created_at', 'desc')
+                ->paginate($_GET['per_page']);
+            if (isset($_GET['sort'])) {
                 $detail_jurnal_pengeluaran_kas = Detail_jurnal_pengeluaran_kas::Where('id_jurnal_pengeluaran_kas', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('nomor_jurnal', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('tanggal_jurnal', 'like', '%' . $_GET['search'] . '%')
@@ -43,9 +65,9 @@ class Detail_jurnal_pengeluaran_kasController extends Controller
                     ->orWhere('truck', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('mobil', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('motor', 'like', '%' . $_GET['search'] . '%')
-                    ->orderBy('created_at', 'desc')
+                    ->orderBy($_GET['sort'], 'desc')
                     ->paginate($_GET['per_page']);
-                if (isset($_GET['sort'])) {
+                if (isset($_GET['order'])) {
                     $detail_jurnal_pengeluaran_kas = Detail_jurnal_pengeluaran_kas::Where('id_jurnal_pengeluaran_kas', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('nomor_jurnal', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('tanggal_jurnal', 'like', '%' . $_GET['search'] . '%')
@@ -67,123 +89,17 @@ class Detail_jurnal_pengeluaran_kasController extends Controller
                         ->orWhere('truck', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('mobil', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('motor', 'like', '%' . $_GET['search'] . '%')
-                        ->orderBy($_GET['sort'], 'desc')
-                        ->paginate($_GET['per_page']);
-                    if (isset($_GET['order'])) {
-                        $detail_jurnal_pengeluaran_kas = Detail_jurnal_pengeluaran_kas::Where('id_jurnal_pengeluaran_kas', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('nomor_jurnal', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('tanggal_jurnal', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('kode_akun_kredit', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('detail_kode_akun_kredit', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('kode_detail', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('banyaknya', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('nama_satuan', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('harga', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('sub_total', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('keterangan', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('kode_akun_debit', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('detail_kode_akun_debit', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('nama_perusahaan_supplier', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('nama_perusahaan_customer', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('nama_karyawan', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('alat_berat', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('peralatan', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('truck', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('mobil', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('motor', 'like', '%' . $_GET['search'] . '%')
-                            ->orderBy($_GET['sort'], $_GET['order'])
-                            ->paginate($_GET['per_page']);
-                    }
-                }
-            } else {
-                if (isset($_GET['sort']) && isset($_GET['order'])) {
-                    $detail_jurnal_pengeluaran_kas = Detail_jurnal_pengeluaran_kas::orderBy($_GET['sort'], $_GET['order'])
+                        ->orderBy($_GET['sort'], $_GET['order'])
                         ->paginate($_GET['per_page']);
                 }
             }
         } else {
-            $detail_jurnal_pengeluaran_kas = Detail_jurnal_pengeluaran_kas::orderBy('created_at', 'desc')->paginate();
-            if (isset($_GET['search'])) {
-                $detail_jurnal_pengeluaran_kas = Detail_jurnal_pengeluaran_kas::Where('id_jurnal_pengeluaran_kas', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('nomor_jurnal', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('tanggal_jurnal', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('kode_akun_kredit', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('detail_kode_akun_kredit', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('kode_detail', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('banyaknya', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('nama_satuan', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('harga', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('sub_total', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('keterangan', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('kode_akun_debit', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('detail_kode_akun_debit', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('nama_perusahaan_supplier', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('nama_perusahaan_customer', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('nama_karyawan', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('alat_berat', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('peralatan', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('truck', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('mobil', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('motor', 'like', '%' . $_GET['search'] . '%')
-                    ->orderBy('created_at', 'desc')
-                    ->paginate();
-                if (isset($_GET['sort'])) {
-                    $detail_jurnal_pengeluaran_kas = Detail_jurnal_pengeluaran_kas::Where('id_jurnal_pengeluaran_kas', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('nomor_jurnal', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('tanggal_jurnal', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('kode_akun_kredit', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('detail_kode_akun_kredit', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('kode_detail', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('banyaknya', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('nama_satuan', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('harga', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('sub_total', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('keterangan', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('kode_akun_debit', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('detail_kode_akun_debit', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('nama_perusahaan_supplier', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('nama_perusahaan_customer', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('nama_karyawan', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('alat_berat', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('peralatan', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('truck', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('mobil', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('motor', 'like', '%' . $_GET['search'] . '%')
-                        ->orderBy($_GET['sort'], 'desc')
-                        ->paginate();
-                    if (isset($_GET['order'])) {
-                        $detail_jurnal_pengeluaran_kas = Detail_jurnal_pengeluaran_kas::Where('id_jurnal_pengeluaran_kas', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('nomor_jurnal', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('tanggal_jurnal', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('kode_akun_kredit', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('detail_kode_akun_kredit', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('kode_detail', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('banyaknya', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('nama_satuan', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('harga', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('sub_total', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('keterangan', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('kode_akun_debit', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('detail_kode_akun_debit', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('nama_perusahaan_supplier', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('nama_perusahaan_customer', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('nama_karyawan', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('alat_berat', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('peralatan', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('truck', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('mobil', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('motor', 'like', '%' . $_GET['search'] . '%')
-                            ->orderBy($_GET['sort'], $_GET['order'])
-                            ->paginate();
-                    }
-                }
-            } else {
-                if (isset($_GET['sort']) && isset($_GET['order'])) {
-                    $detail_jurnal_pengeluaran_kas = Detail_jurnal_pengeluaran_kas::orderBy($_GET['sort'], $_GET['order'])
-                        ->paginate();
-                }
+            if (isset($_GET['sort']) && isset($_GET['order'])) {
+                $detail_jurnal_pengeluaran_kas = Detail_jurnal_pengeluaran_kas::orderBy($_GET['sort'], $_GET['order'])
+                    ->paginate($_GET['per_page']);
             }
         }
+
 
         return $detail_jurnal_pengeluaran_kas;
     }

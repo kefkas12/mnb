@@ -67,12 +67,10 @@ class Jurnal_penerimaan_kasController extends Controller
     public function index()
     {
 
-        if (isset($_GET['per_page'])) {
             if ($_GET['per_page'] == -1) {
                 $jurnal_penerimaan_kas = Jurnal_penerimaan_kas::count();
                 $_GET['per_page'] = $jurnal_penerimaan_kas;
             }
-            $jurnal_penerimaan_kas = Jurnal_penerimaan_kas::orderBy('created_at', 'desc')->paginate($_GET['per_page']);
             if (isset($_GET['search'])) {
                 $jurnal_penerimaan_kas = Jurnal_penerimaan_kas::Where('nomor_jurnal_induk', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('nomor_jurnal', 'like', '%' . $_GET['search'] . '%')
@@ -161,77 +159,7 @@ class Jurnal_penerimaan_kasController extends Controller
                         ->paginate($_GET['per_page']);
                 }
             }
-        } else {
-            $jurnal_penerimaan_kas = Jurnal_penerimaan_kas::orderBy('created_at', 'desc')->paginate();
-            if (isset($_GET['search'])) {
-                $jurnal_penerimaan_kas = Jurnal_penerimaan_kas::Where('nomor_jurnal_induk', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('nomor_jurnal', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('tanggal_jurnal', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('nomor_jurnal_print', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('tanggal_bukti_kas', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('nomor_bukti', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('jenis_pembayaran', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('nomor_rekening_pengirim', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('nomor_rekening_penerima', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('deskripsi', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('kode_akun_kredit', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('id_supplier', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('id_customer', 'like', '%' . $_GET['search'] . '%')
-                    ->orderBy('created_at', 'desc')
-                    ->paginate();
-                if (isset($_GET['sort'])) {
-                    $jurnal_penerimaan_kas = Jurnal_penerimaan_kas::Where('nomor_jurnal_induk', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('nomor_jurnal', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('tanggal_jurnal', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('nomor_jurnal_print', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('tanggal_bukti_kas', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('nomor_bukti', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('jenis_pembayaran', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('nomor_rekening_pengirim', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('nomor_rekening_penerima', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('deskripsi', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('kode_akun_kredit', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('id_supplier', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('id_customer', 'like', '%' . $_GET['search'] . '%')
-                        ->orderBy($_GET['sort'], 'desc')
-                        ->paginate();
-                    if (isset($_GET['order'])) {
-                        $jurnal_penerimaan_kas = Jurnal_penerimaan_kas::Where('nomor_jurnal_induk', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('nomor_jurnal', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('tanggal_jurnal', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('nomor_jurnal_print', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('tanggal_bukti_kas', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('nomor_bukti', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('jenis_pembayaran', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('nomor_rekening_pengirim', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('nomor_rekening_penerima', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('deskripsi', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('kode_akun_kredit', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('id_supplier', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('id_customer', 'like', '%' . $_GET['search'] . '%')
-                            ->orderBy($_GET['sort'], $_GET['order'])
-                            ->paginate();
-                    }
-                } else if (isset($_GET['tanggal_dari'])) {
-                    $from = date("d-m-Y", strtotime($_GET['tanggal_dari']));
-                    $to = date("d-m-Y", strtotime($_GET['tanggal_sampai']));
-                    $jurnal_penerimaan_kas = Jurnal_penerimaan_kas::whereBetween('tanggal_jurnal', [$from, $to])
-                        ->paginate();
-                }
-            } else {
-                if (isset($_GET['sort']) && isset($_GET['order'])) {
-                    $jurnal_penerimaan_kas = Jurnal_penerimaan_kas::orderBy($_GET['sort'], $_GET['order'])
-                        ->paginate();
-                } else if (isset($_GET['tanggal_dari'])) {
-                    $from = $_GET['tanggal_dari'];
-                    $to = $_GET['tanggal_sampai'];
-                    $jurnal_penerimaan_kas = Jurnal_penerimaan_kas::whereBetween('tanggal_jurnal', [$from, $to])->paginate();
-                }
-            }
-        }
+
 
         return $jurnal_penerimaan_kas;
     }
