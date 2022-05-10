@@ -51,24 +51,6 @@ class KwitansiController extends Controller
             $kwitansi = Kwitansi::count();
             $_GET['per_page'] = $kwitansi;
         }
-        $kwitansi = Kwitansi::Where('kode_kwitansi', 'like', '%' . $_GET['search'] . '%')
-            ->orWhere('tanggal_kwitansi', 'like', '%' . $_GET['search'] . '%')
-            ->orWhere('jenis_pembayaran', 'like', '%' . $_GET['search'] . '%')
-            ->orWhere('status_kwitansi', 'like', '%' . $_GET['search'] . '%')
-            ->orWhere('nama_customer', 'like', '%' . $_GET['search'] . '%')
-            ->orWhere('nomor_rekening', 'like', '%' . $_GET['search'] . '%')
-            ->orWhere('tanda_tangan', 'like', '%' . $_GET['search'] . '%')
-            ->orWhere('no_invoice', 'like', '%' . $_GET['search'] . '%')
-            ->orWhere('no_seri_faktur_pajak', 'like', '%' . $_GET['search'] . '%')
-            ->orWhere('no_kwitansi', 'like', '%' . $_GET['search'] . '%')
-            ->orWhere('total_dpp_kwitansi', 'like', '%' . $_GET['search'] . '%')
-            ->orWhere('total_pph_kwitansi', 'like', '%' . $_GET['search'] . '%')
-            ->orWhere('total_ppn_kwitansi', 'like', '%' . $_GET['search'] . '%')
-            ->orWhere('total_nilai_kwitansi', 'like', '%' . $_GET['search'] . '%')
-            ->orWhere('keterangan_kwitansi', 'like', '%' . $_GET['search'] . '%')
-
-            ->orderBy('created_at', 'desc')
-            ->paginate($_GET['per_page']);
         if (isset($_GET['sort'])) {
             $kwitansi = Kwitansi::Where('kode_kwitansi', 'like', '%' . $_GET['search'] . '%')
                 ->orWhere('tanggal_kwitansi', 'like', '%' . $_GET['search'] . '%')
