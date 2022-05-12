@@ -140,7 +140,6 @@ class KwitansiController extends Controller
 
         return $keuntungan;
     }
-
     public function insert(Request $request)
     {
         $kwitansi = new Kwitansi;
