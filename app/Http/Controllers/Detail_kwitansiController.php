@@ -23,11 +23,11 @@ class Detail_kwitansiController extends Controller
             $total_pph_kwitansi = 0;
             $total_ppn_kwitansi = 0;
             $total_nilai_kwitansi = 0;
-            foreach ($detail_kwitansi as $v) {
-                $total_dpp_kwitansi += $v->dpp;
-                $total_pph_kwitansi += $v->pph;
-                $total_ppn_kwitansi += $v->ppn;
-                $total_nilai_kwitansi += $v->total;
+            foreach ($detail_kwitansi as $w) {
+                $total_dpp_kwitansi += $w->dpp;
+                $total_pph_kwitansi += $w->pph;
+                $total_ppn_kwitansi += $w->ppn;
+                $total_nilai_kwitansi += $w->total;
             }
             $kwitansi->total_dpp_kwitansi = $total_dpp_kwitansi;
             $kwitansi->total_pph_kwitansi = $total_pph_kwitansi;
@@ -35,7 +35,7 @@ class Detail_kwitansiController extends Controller
             $kwitansi->total_nilai_kwitansi = $total_nilai_kwitansi;
             $kwitansi->save();
         }
-        
+
         if ($_GET['per_page'] == -1) {
             $detail_kwitansi = Detail_kwitansi::count();
             $_GET['per_page'] = $detail_kwitansi;
