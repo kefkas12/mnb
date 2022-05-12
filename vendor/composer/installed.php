@@ -5,18 +5,18 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '899b4457a9065331bf5851a85c32d525bf5a766a',
+        'reference' => '0d99fc4c358f66b0d937586226cc89ca190adf1a',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
     'versions' => array(
         'asm89/stack-cors' => array(
-            'pretty_version' => 'v2.1.1',
-            'version' => '2.1.1.0',
+            'pretty_version' => '2.0.0',
+            'version' => '2.0.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../asm89/stack-cors',
             'aliases' => array(),
-            'reference' => '73e5b88775c64ccc0b84fb60836b30dc9d92ac4a',
+            'reference' => '1913589c6de3cc09de5a9bdb4f46fbd550246b40',
             'dev_requirement' => false,
         ),
         'beyondcode/laravel-dump-server' => array(
@@ -122,12 +122,12 @@
             'dev_requirement' => true,
         ),
         'fruitcake/laravel-cors' => array(
-            'pretty_version' => 'v2.0.1',
-            'version' => '2.0.1.0',
+            'pretty_version' => 'v2.0.0',
+            'version' => '2.0.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../fruitcake/laravel-cors',
             'aliases' => array(),
-            'reference' => 'dbfc311b25d4873c3c2382b26860be3567492bd6',
+            'reference' => '8cc9f7e5f1b9b280ae2378b3624e6b5603e63e8c',
             'dev_requirement' => false,
         ),
         'fzaninotto/faker' => array(
@@ -349,7 +349,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '899b4457a9065331bf5851a85c32d525bf5a766a',
+            'reference' => '0d99fc4c358f66b0d937586226cc89ca190adf1a',
             'dev_requirement' => false,
         ),
         'laravel/tinker' => array(

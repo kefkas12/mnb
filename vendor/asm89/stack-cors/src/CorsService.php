@@ -18,22 +18,22 @@ class CorsService
 {
     private $options;
 
-    public function __construct(array $options = [])
+    public function __construct(array $options = array())
     {
         $this->options = $this->normalizeOptions($options);
     }
 
-    private function normalizeOptions(array $options = []): array
+    private function normalizeOptions(array $options = array()): array
     {
-        $options += [
-            'allowedOrigins' => [],
-            'allowedOriginsPatterns' => [],
+        $options += array(
+            'allowedOrigins' => array(),
+            'allowedOriginsPatterns' => array(),
             'supportsCredentials' => false,
-            'allowedHeaders' => [],
-            'exposedHeaders' => [],
-            'allowedMethods' => [],
+            'allowedHeaders' => array(),
+            'exposedHeaders' => array(),
+            'allowedMethods' => array(),
             'maxAge' => 0,
-        ];
+        );
 
         // normalize array('*') to true
         if (in_array('*', $options['allowedOrigins'])) {
@@ -64,7 +64,7 @@ class CorsService
 
     public function isCorsRequest(Request $request): bool
     {
-        return $request->headers->has('Origin');
+        return $request->headers->has('Origin') && !$this->isSameHost($request);
     }
 
     public function isPreflightRequest(Request $request): bool
@@ -84,7 +84,7 @@ class CorsService
     public function addPreflightRequestHeaders(Response $response, Request $request): Response
     {
         $this->configureAllowedOrigin($response, $request);
-
+        
         if ($response->headers->has('Access-Control-Allow-Origin')) {
             $this->configureAllowCredentials($response, $request);
 
@@ -145,8 +145,8 @@ class CorsService
             // Single origins can be safely set
             $response->headers->set('Access-Control-Allow-Origin', array_values($this->options['allowedOrigins'])[0]);
         } else {
-            // For dynamic headers, set the requested Origin header when set and allowed
-            if ($this->isCorsRequest($request) && $this->isOriginAllowed($request)) {
+            // For dynamic headers, check the origin first
+            if ($this->isOriginAllowed($request)) {
                 $response->headers->set('Access-Control-Allow-Origin', $request->headers->get('Origin'));
             }
 
@@ -166,8 +166,12 @@ class CorsService
     private function configureAllowedMethods(Response $response, Request $request)
     {
         if ($this->options['allowedMethods'] === true) {
-            $allowMethods = strtoupper($request->headers->get('Access-Control-Request-Method'));
-            $this->varyHeader($response, 'Access-Control-Request-Method');
+            if ($this->options['supportsCredentials']) {
+                $allowMethods = strtoupper($request->headers->get('Access-Control-Request-Method'));
+                $this->varyHeader($response, 'Access-Control-Request-Method');
+            } else {
+                $allowMethods = '*';
+            }
         } else {
             $allowMethods = implode(', ', $this->options['allowedMethods']);
         }
@@ -178,8 +182,12 @@ class CorsService
     private function configureAllowedHeaders(Response $response, Request $request)
     {
         if ($this->options['allowedHeaders'] === true) {
-            $allowHeaders = $request->headers->get('Access-Control-Request-Headers');
-            $this->varyHeader($response, 'Access-Control-Request-Headers');
+            if ($this->options['supportsCredentials']) {
+                $allowHeaders = $request->headers->get('Access-Control-Request-Headers');
+                $this->varyHeader($response, 'Access-Control-Request-Headers');
+            } else {
+                $allowHeaders = '*';
+            }
         } else {
             $allowHeaders = implode(', ', $this->options['allowedHeaders']);
         }
