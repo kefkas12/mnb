@@ -14,10 +14,12 @@ class PerkiraanController extends Controller
     }
     public function index()
     {
+        if (isset($_GET['per_page'])) {
             if($_GET['per_page'] == -1){
                 $perkiraan = Perkiraan::count();
                 $_GET['per_page'] = $perkiraan;
             }
+            $perkiraan = Perkiraan::orderBy('created_at', 'desc')->paginate($_GET['per_page']);
             if (isset($_GET['search'])) {
                 $perkiraan = Perkiraan::Where('kode_akun', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('perkiraan_level', 'like', '%' . $_GET['search'] . '%')
@@ -71,6 +73,62 @@ class PerkiraanController extends Controller
                         ->paginate($_GET['per_page']);
                 }
             }
+        } else {
+            $perkiraan = Perkiraan::orderBy('created_at', 'desc')->paginate();
+            if (isset($_GET['search'])) {
+                $perkiraan = Perkiraan::Where('kode_akun', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('perkiraan_level', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('kode_akun_induk', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nama_perkiraan', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('neraca', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('saldo_awal_debet', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('saldo_awal_kredit', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('posisi', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('normal_balance', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('saldo_awal_debet_r', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('saldo_awal_kredit_r', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
+                    ->orderBy('created_at', 'desc')
+                    ->paginate();
+                if (isset($_GET['sort'])) {
+                    $perkiraan = Perkiraan::Where('kode_akun', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('perkiraan_level', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('kode_akun_induk', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('nama_perkiraan', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('neraca', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('saldo_awal_debet', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('saldo_awal_kredit', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('posisi', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('normal_balance', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('saldo_awal_debet_r', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('saldo_awal_kredit_r', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
+                        ->orderBy($_GET['sort'], 'desc')
+                        ->paginate();
+                    if (isset($_GET['order'])) {
+                        $perkiraan = Perkiraan::Where('kode_akun', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('perkiraan_level', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('kode_akun_induk', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('nama_perkiraan', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('neraca', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('saldo_awal_debet', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('saldo_awal_kredit', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('posisi', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('normal_balance', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('saldo_awal_debet_r', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('saldo_awal_kredit_r', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
+                            ->orderBy($_GET['sort'], $_GET['order'])
+                            ->paginate();
+                    }
+                }
+            } else {
+                if (isset($_GET['sort']) && isset($_GET['order'])) {
+                    $perkiraan = Perkiraan::orderBy($_GET['sort'], $_GET['order'])
+                        ->paginate();
+                }
+            }
+        }
 
 
 
