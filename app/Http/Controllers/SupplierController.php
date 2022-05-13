@@ -38,10 +38,12 @@ class SupplierController extends Controller
     }
     public function index()
     {
+        if (isset($_GET['per_page'])) {
             if($_GET['per_page'] == -1){
                 $supplier = Supplier::count();
                 $_GET['per_page'] = $supplier;
             }
+            $supplier = Supplier::orderBy('created_at', 'desc')->paginate($_GET['per_page']);
             if (isset($_GET['search'])) {
                 $supplier = Supplier::Where('kode_supplier_mnb', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('badan_usaha', 'like', '%' . $_GET['search'] . '%')
@@ -119,6 +121,88 @@ class SupplierController extends Controller
                         ->paginate($_GET['per_page']);
                 }
             }
+        } else {
+            $supplier = Supplier::orderBy('created_at', 'desc')->paginate();
+
+            $supplier = Supplier::orderBy('created_at', 'desc')->paginate();
+            if (isset($_GET['search'])) {
+                $supplier = Supplier::Where('kode_supplier_mnb', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('badan_usaha', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('jenis_badan_usaha', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nama_perusahaan', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('npwp_supplier', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('alamat', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nomor_telepon', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nomor_fax', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('email', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('website', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nama_pemilik', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('jenis_usaha', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nama_contact_person', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('jabatan_contact_person', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nomor_telepon_contact_person', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nama_provinsi', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nama_kabupaten', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('kode_pos', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('kode_supplier_induk', 'like', '%' . $_GET['search'] . '%')
+                    ->orderBy('created_at', 'desc')
+                    ->paginate();
+                if (isset($_GET['sort'])) {
+                    $supplier = Supplier::Where('kode_supplier_mnb', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('badan_usaha', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('jenis_badan_usaha', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('nama_perusahaan', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('npwp_supplier', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('alamat', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('nomor_telepon', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('nomor_fax', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('email', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('website', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('nama_pemilik', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('jenis_usaha', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('nama_contact_person', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('jabatan_contact_person', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('nomor_telepon_contact_person', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('nama_provinsi', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('nama_kabupaten', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('kode_pos', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('kode_supplier_induk', 'like', '%' . $_GET['search'] . '%')
+                        ->orderBy($_GET['sort'], 'desc')
+                        ->paginate();
+                    if (isset($_GET['order'])) {
+                        $supplier = Supplier::Where('kode_supplier_mnb', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('badan_usaha', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('jenis_badan_usaha', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('nama_perusahaan', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('npwp_supplier', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('alamat', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('nomor_telepon', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('nomor_fax', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('email', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('website', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('nama_pemilik', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('jenis_usaha', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('nama_contact_person', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('jabatan_contact_person', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('nomor_telepon_contact_person', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('nama_provinsi', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('nama_kabupaten', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('kode_pos', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('kode_supplier_induk', 'like', '%' . $_GET['search'] . '%')
+                            ->orderBy($_GET['sort'], $_GET['order'])
+                            ->paginate();
+                    }
+                }
+            } else {
+                if (isset($_GET['sort']) && isset($_GET['order'])) {
+                    $supplier = Supplier::orderBy($_GET['sort'], $_GET['order'])
+                        ->paginate();
+                }
+            }
+        }
 
 
 
