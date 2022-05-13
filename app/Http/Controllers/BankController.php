@@ -16,43 +16,83 @@ class BankController extends Controller
     {
         ///api/kwitansi?per_page=5&page=1&search=&tanggal_dari=2022-02-01&tanggal_sampai=2022-02-12
 
-        if ($_GET['per_page'] == -1) {
-            $bank = Bank::count();
-            $_GET['per_page'] = $bank;
-        }
-        if (isset($_GET['search'])) {
-            $bank = Bank::Where('kode_nama_bank', 'like', '%' . $_GET['search'] . '%')
-                ->orWhere('nama_bank', 'like', '%' . $_GET['search'] . '%')
-                ->orWhere('keterangan_nama_bank', 'like', '%' . $_GET['search'] . '%')
-                ->orWhere('nama_pemilik_rekening', 'like', '%' . $_GET['search'] . '%')
-                ->orWhere('nomor_rekening', 'like', '%' . $_GET['search'] . '%')
-                ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
-                ->orderBy('created_at', 'desc')
-                ->paginate($_GET['per_page']);
-            if (isset($_GET['sort'])) {
+        if (isset($_GET['per_page'])) {
+            if ($_GET['per_page'] == -1) {
+                $bank = Bank::count();
+                $_GET['per_page'] = $bank;
+            }
+            $bank = Bank::orderBy('created_at', 'desc')->paginate($_GET['per_page']);
+            if (isset($_GET['search'])) {
                 $bank = Bank::Where('kode_nama_bank', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('nama_bank', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('keterangan_nama_bank', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('nama_pemilik_rekening', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('nomor_rekening', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
-                    ->orderBy($_GET['sort'], 'desc')
+                    ->orderBy('created_at', 'desc')
                     ->paginate($_GET['per_page']);
-                if (isset($_GET['order'])) {
+                if (isset($_GET['sort'])) {
                     $bank = Bank::Where('kode_nama_bank', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('nama_bank', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('keterangan_nama_bank', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('nama_pemilik_rekening', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('nomor_rekening', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
-                        ->orderBy($_GET['sort'], $_GET['order'])
+                        ->orderBy($_GET['sort'], 'desc')
+                        ->paginate($_GET['per_page']);
+                    if (isset($_GET['order'])) {
+                        $bank = Bank::Where('kode_nama_bank', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('nama_bank', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('keterangan_nama_bank', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('nama_pemilik_rekening', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('nomor_rekening', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
+                            ->orderBy($_GET['sort'], $_GET['order'])
+                            ->paginate($_GET['per_page']);
+                    }
+                }
+            } else {
+                if (isset($_GET['sort']) && isset($_GET['order'])) {
+                    $bank = Bank::orderBy($_GET['sort'], $_GET['order'])
                         ->paginate($_GET['per_page']);
                 }
             }
         } else {
-            if (isset($_GET['sort']) && isset($_GET['order'])) {
-                $bank = Bank::orderBy($_GET['sort'], $_GET['order'])
-                    ->paginate($_GET['per_page']);
+            $bank = Bank::orderBy('created_at', 'desc')->paginate();
+            if (isset($_GET['search'])) {
+                $bank = Bank::Where('kode_nama_bank', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nama_bank', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('keterangan_nama_bank', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nama_pemilik_rekening', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nomor_rekening', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
+                    ->orderBy('created_at', 'desc')
+                    ->paginate();
+                if (isset($_GET['sort'])) {
+                    $bank = Bank::Where('kode_nama_bank', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('nama_bank', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('keterangan_nama_bank', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('nama_pemilik_rekening', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('nomor_rekening', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
+                        ->orderBy($_GET['sort'], 'desc')
+                        ->paginate();
+                    if (isset($_GET['order'])) {
+                        $bank = Bank::Where('kode_nama_bank', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('nama_bank', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('keterangan_nama_bank', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('nama_pemilik_rekening', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('nomor_rekening', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
+                            ->orderBy($_GET['sort'], $_GET['order'])
+                            ->paginate();
+                    }
+                }
+            } else {
+                if (isset($_GET['sort']) && isset($_GET['order'])) {
+                    $bank = Bank::orderBy($_GET['sort'], $_GET['order'])
+                        ->paginate();
+                }
             }
         }
 
