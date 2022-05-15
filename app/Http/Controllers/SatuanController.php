@@ -14,10 +14,12 @@ class SatuanController extends Controller
     }
     public function index()
     {
+        if(isset($_GET['per_page'])){
             if($_GET['per_page'] == -1){
                 $satuan = Satuan::count();
                 $_GET['per_page'] = $satuan;
             }
+            $satuan = Satuan::orderBy('created_at', 'desc')->paginate($_GET['per_page']);
             if(isset($_GET['search'])){
                 $satuan = Satuan::Where('kode_satuan', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('nama_satuan', 'like', '%' . $_GET['search'] . '%')
@@ -47,6 +49,38 @@ class SatuanController extends Controller
                         ->paginate($_GET['per_page']);
                 }
             }
+        }else{
+            $satuan = Satuan::orderBy('created_at', 'desc')->paginate();
+            if(isset($_GET['search'])){
+                $satuan = Satuan::Where('kode_satuan', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nama_satuan', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('keterangan_satuan', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('status_satuan', 'like', '%' . $_GET['search'] . '%')
+                    ->orderBy('created_at', 'desc')
+                    ->paginate();
+                if(isset($_GET['sort'])){
+                    $satuan = Satuan::Where('kode_satuan', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nama_satuan', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('keterangan_satuan', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('status_satuan', 'like', '%' . $_GET['search'] . '%')
+                    ->orderBy($_GET['sort'], 'desc')
+                    ->paginate();
+                    if(isset($_GET['order'])){
+                        $satuan = Satuan::Where('kode_satuan', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('nama_satuan', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('keterangan_satuan', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('status_satuan', 'like', '%' . $_GET['search'] . '%')
+                            ->orderBy($_GET['sort'], $_GET['order'])
+                            ->paginate();
+                    }
+                }
+            }else{
+                if(isset($_GET['sort']) && isset($_GET['order'])){
+                    $satuan = Satuan::orderBy($_GET['sort'], $_GET['order'])
+                        ->paginate();
+                }
+            }
+        }
 
         
 
