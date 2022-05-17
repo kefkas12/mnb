@@ -23,7 +23,7 @@ class GraphController extends Controller
     {
         // dd(1);
         $year = $_GET['year'];
-        $data['graph'] = Detail_kwitansi::select(DB::raw('MONTH(tanggal_tagihan) AS bulan'), DB::raw('cast(sum(dpp) as decimal(10,2)) AS dpp'), DB::raw('cast(sum(ppn) as decimal(10,2)) AS ppn'), DB::raw('cast(sum(total) as decimal(10,2)) AS subtotal'))->where(DB::raw('YEAR(tanggal_tagihan)'),'=', $year)->groupBy('bulan')->get();
+        $data['graph'] = Detail_kwitansi::select(DB::raw('MONTH(tanggal_tagihan) AS bulan'), DB::raw('cast(sum(dpp) as decimal(10,2)) AS dpp'), DB::raw('cast(sum(ppn) as decimal(10,2)) AS ppn'), DB::raw('cast(sum(total) as decimal(10,2)) AS subtotal'), DB::raw('cast(sum(berat_bruto) as decimal(10,2)) AS berat_bruto'))->where(DB::raw('YEAR(tanggal_tagihan)'),'=', $year)->groupBy('bulan')->get();
 
         return $data;
     }
