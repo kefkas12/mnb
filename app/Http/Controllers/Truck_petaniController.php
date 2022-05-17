@@ -14,10 +14,12 @@ class Truck_petaniController extends Controller
     }
     public function index()
     {
+        if (isset($_GET['per_page'])) {
             if($_GET['per_page'] == -1){
                 $truck_petani = Truck_petani::count();
                 $_GET['per_page'] = $truck_petani;
             }
+            $truck_petani = Truck_petani::orderBy('created_at', 'desc')->paginate($_GET['per_page']);
             if (isset($_GET['search'])) {
                 $truck_petani = Truck_petani::Where('kode_truck_petani_mnb', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('nomor_polisi', 'like', '%' . $_GET['search'] . '%')
@@ -44,6 +46,35 @@ class Truck_petaniController extends Controller
                         ->paginate($_GET['per_page']);
                 }
             }
+        } else {
+            $truck_petani = Truck_petani::orderBy('created_at', 'desc')->paginate();
+            if (isset($_GET['search'])) {
+                $truck_petani = Truck_petani::Where('kode_truck_petani_mnb', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nomor_polisi', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
+                    ->orderBy('created_at', 'desc')
+                    ->paginate();
+                if (isset($_GET['sort'])) {
+                    $truck_petani = Truck_petani::Where('kode_truck_petani_mnb', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('nomor_polisi', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
+                        ->orderBy($_GET['sort'], 'desc')
+                        ->paginate();
+                    if (isset($_GET['order'])) {
+                        $truck_petani = Truck_petani::Where('kode_truck_petani_mnb', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('nomor_polisi', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
+                            ->orderBy($_GET['sort'], $_GET['order'])
+                            ->paginate();
+                    }
+                }
+            } else {
+                if (isset($_GET['sort']) && isset($_GET['order'])) {
+                    $truck_petani = Truck_petani::orderBy($_GET['sort'], $_GET['order'])
+                        ->paginate();
+                }
+            }
+        }
 
 
         return $truck_petani;
