@@ -21,6 +21,7 @@ class GraphController extends Controller
     }
     public function graph_kwitansi(Request $request)
     {
+        dd(1);
         $year = $_GET['year'];
         $data['graph'] = Detail_kwitansi::select(DB::raw('MONTH(tanggal_tagihan) AS bulan'), DB::raw('cast(sum(dpp) as decimal(10,2)) AS dpp'), DB::raw('cast(sum(ppn) as decimal(10,2)) AS ppn'), DB::raw('cast(sum(total) as decimal(10,2)) AS subtotal'))->where(DB::raw('YEAR(tanggal_tagihan)'), '=', $year)->groupBy('bulan')->get();
 
