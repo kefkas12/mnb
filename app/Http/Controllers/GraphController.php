@@ -23,14 +23,14 @@ class GraphController extends Controller
     {
         // dd(1);
         $year = $_GET['year'];
-        $data['graph'] = Detail_kwitansi::select(DB::raw('MONTH(tanggal_tagihan) AS bulan'), DB::raw('cast(sum(dpp) as decimal(10,2)) AS dpp'), DB::raw('cast(sum(ppn) as decimal(10,2)) AS ppn'), DB::raw('cast(sum(total) as decimal(10,2)) AS subtotal'), DB::raw('cast(sum(berat_bruto) as decimal(10,2)) AS berat_bruto'))->where(DB::raw('YEAR(tanggal_tagihan)'),'=', $year)->groupBy('bulan')->get();
+        $data['graph'] = Detail_kwitansi::select(DB::raw('MONTH(tanggal_tagihan) AS bulan'), DB::raw('cast(sum(dpp) as decimal(65,2)) AS dpp'), DB::raw('cast(sum(ppn) as decimal(65,2)) AS ppn'), DB::raw('cast(sum(total) as decimal(65,2)) AS subtotal'), DB::raw('cast(sum(berat_bruto) as decimal(65,2)) AS berat_bruto'))->where(DB::raw('YEAR(tanggal_tagihan)'),'=', $year)->groupBy('bulan')->get();
 
         return $data;
     }
     public function graph_omset(Request $request)
     {
         $year = $_GET['year'];
-        $data['graph'] = Detail_kwitansi::select(DB::raw('MONTH(tanggal_tagihan) AS bulan'), DB::raw('cast(sum(berat_bruto) as decimal(10,2)) AS berat_bruto'), DB::raw('cast(sum(potongan) as decimal(10,2)) AS potongan'), DB::raw('cast(sum(berat_bersih) as decimal(10,2)) AS berat_bersih'), DB::raw('cast(sum(harga_beli) as decimal(10,2)) AS nilai_beli'), DB::raw('cast(sum(harga_satuan) as decimal(10,2)) AS nilai_jual'))->where(DB::raw('YEAR(tanggal_tagihan)'), '=', $year)->groupBy('bulan')->get();
+        $data['graph'] = Detail_kwitansi::select(DB::raw('MONTH(tanggal_tagihan) AS bulan'), DB::raw('cast(sum(berat_bruto) as decimal(65,2)) AS berat_bruto'), DB::raw('cast(sum(potongan) as decimal(65,2)) AS potongan'), DB::raw('cast(sum(berat_bersih) as decimal(65,2)) AS berat_bersih'), DB::raw('cast(sum(harga_beli) as decimal(65,2)) AS nilai_beli'), DB::raw('cast(sum(harga_satuan) as decimal(65,2)) AS nilai_jual'))->where(DB::raw('YEAR(tanggal_tagihan)'), '=', $year)->groupBy('bulan')->get();
 
         return $data;
     }
