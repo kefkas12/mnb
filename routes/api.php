@@ -108,7 +108,7 @@ Route::post('/kwitansi', 'KwitansiController@insert');
 Route::put('/kwitansi/{id}', 'KwitansiController@edit');
 Route::delete('/kwitansi/{id}', 'KwitansiController@delete');
 Route::get('/kode_kwitansi', 'KwitansiController@kode_kwitansi');
-Route::get('/kode_kwitansi_last', 'KwitansiController@kode_kwitansi_last');
+Route::get('/select_last_kwitansi', 'KwitansiController@select_last_kwitansi');
 
 Route::get('/detail_kwitansi', 'Detail_kwitansiController@index');
 // Route::get('/detail_kwitansi/nomor_jurnal/{id_kwitansi}', 'Detail_kwitansiController@select_by_nomor_jurnal');
@@ -137,6 +137,7 @@ Route::delete('/jurnal_umum/{id}', 'Jurnal_umumController@delete');
 Route::get('/kode_jurnal_umum', 'Jurnal_umumController@kode_jurnal_umum');
 Route::get('/kode_jurnal_umum_induk', 'Jurnal_umumController@kode_jurnal_umum_induk');
 Route::get('/kode_jurnal_umum_last', 'Jurnal_umumController@kode_jurnal_umum_last');
+Route::get('/select_last_jurnal', 'Jurnal_umumController@select_last_jurnal');
 
 Route::get('/detail_jurnal_umum', 'Detail_jurnal_umumController@index');
 // Route::get('/detail_jurnal_umum/nomor_jurnal/{id_jurnal_umum}', 'Detail_jurnal_umumController@select_by_nomor_jurnal');

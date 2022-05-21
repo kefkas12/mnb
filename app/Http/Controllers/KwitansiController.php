@@ -39,9 +39,9 @@ class KwitansiController extends Controller
             }
         }
     }
-    public function kode_kwitansi_last()
+    public function select_last_kwitansi()
     {
-        $last = Kwitansi::select("id", "nomor_kwitansi")->orderBy("created_at", "desc")->first();
+        $last = Kwitansi::orderBy("created_at", "desc")->first();
         return $last;
     }
     public function index()
