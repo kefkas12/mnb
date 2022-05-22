@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/refresh', 'HomeController@refresh');
+Route::get('kwitansi/refresh', 'HomeController@refresh');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
