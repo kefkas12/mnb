@@ -241,9 +241,10 @@ class Jurnal_umumController extends Controller
     }
     public function select_last_jurnal(Request $request)
     {
-        $last = Jurnal_umum::orderBy("created_at", "desc")->first();
+        $data['jurnal'] = Jurnal_umum::orderBy("created_at", "desc")->first();
+        $data['detail'] = Detail_jurnal_umum::where('id_jurnal_umum',$data['jurnal']->id)->orderBy("created_at", "desc")->first();
 
-        return $last;
+        return $data;
     }
 
     public function jurnal(Request $request)
