@@ -46,75 +46,77 @@ class KwitansiController extends Controller
     }
     public function index()
     {
+        $kwitansi = new Kwitansi;
+        dd($kwitansi->last_kode());
         //
-        if ($_GET['per_page'] == -1) {
-            $kwitansi = Kwitansi::count();
-            $_GET['per_page'] = $kwitansi;
-        }
-        if (isset($_GET['sort'])) {
-            $kwitansi = Kwitansi::Where('kode_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                ->orWhere('tanggal_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                ->orWhere('jenis_pembayaran', 'like', '%' . $_GET['search'] . '%')
-                ->orWhere('status_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                ->orWhere('nama_customer', 'like', '%' . $_GET['search'] . '%')
-                ->orWhere('nomor_rekening', 'like', '%' . $_GET['search'] . '%')
-                ->orWhere('tanda_tangan', 'like', '%' . $_GET['search'] . '%')
-                ->orWhere('no_invoice', 'like', '%' . $_GET['search'] . '%')
-                ->orWhere('no_seri_faktur_pajak', 'like', '%' . $_GET['search'] . '%')
-                ->orWhere('no_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                ->orWhere('total_dpp_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                ->orWhere('total_pph_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                ->orWhere('total_ppn_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                ->orWhere('total_nilai_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                ->orWhere('keterangan_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                ->orderBy($_GET['sort'], 'desc')
-                ->paginate($_GET['per_page']);
-            if (isset($_GET['order'])) {
-                $kwitansi = Kwitansi::Where('kode_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('tanggal_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('jenis_pembayaran', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('status_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('nama_customer', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('nomor_rekening', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('tanda_tangan', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('no_invoice', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('no_seri_faktur_pajak', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('no_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('total_dpp_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('total_pph_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('total_ppn_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('total_nilai_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('keterangan_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                    ->orderBy($_GET['sort'], $_GET['order'])
-                    ->paginate($_GET['per_page']);
-            }
-        } else if (isset($_GET['tanggal_dari'])) {
-            if ($_GET['tanggal_dari'] != '') {
-                $from = date("Y-m-d", strtotime($_GET['tanggal_dari']));
-                $to = date("Y-m-d", strtotime($_GET['tanggal_sampai']));
-                $kwitansi = Kwitansi::whereBetween('tanggal_kwitansi', [$from, $to])
-                    ->paginate($_GET['per_page']);
-            } else {
-                $kwitansi = Kwitansi::Where('kode_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('tanggal_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('jenis_pembayaran', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('status_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('nama_customer', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('nomor_rekening', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('tanda_tangan', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('no_invoice', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('no_seri_faktur_pajak', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('no_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('total_dpp_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('total_pph_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('total_ppn_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('total_nilai_kwitansi', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('keterangan_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        // if ($_GET['per_page'] == -1) {
+        //     $kwitansi = Kwitansi::count();
+        //     $_GET['per_page'] = $kwitansi;
+        // }
+        // if (isset($_GET['sort'])) {
+        //     $kwitansi = Kwitansi::Where('kode_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //         ->orWhere('tanggal_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //         ->orWhere('jenis_pembayaran', 'like', '%' . $_GET['search'] . '%')
+        //         ->orWhere('status_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //         ->orWhere('nama_customer', 'like', '%' . $_GET['search'] . '%')
+        //         ->orWhere('nomor_rekening', 'like', '%' . $_GET['search'] . '%')
+        //         ->orWhere('tanda_tangan', 'like', '%' . $_GET['search'] . '%')
+        //         ->orWhere('no_invoice', 'like', '%' . $_GET['search'] . '%')
+        //         ->orWhere('no_seri_faktur_pajak', 'like', '%' . $_GET['search'] . '%')
+        //         ->orWhere('no_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //         ->orWhere('total_dpp_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //         ->orWhere('total_pph_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //         ->orWhere('total_ppn_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //         ->orWhere('total_nilai_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //         ->orWhere('keterangan_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //         ->orderBy($_GET['sort'], 'desc')
+        //         ->paginate($_GET['per_page']);
+        //     if (isset($_GET['order'])) {
+        //         $kwitansi = Kwitansi::Where('kode_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('tanggal_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('jenis_pembayaran', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('status_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('nama_customer', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('nomor_rekening', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('tanda_tangan', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('no_invoice', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('no_seri_faktur_pajak', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('no_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('total_dpp_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('total_pph_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('total_ppn_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('total_nilai_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('keterangan_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //             ->orderBy($_GET['sort'], $_GET['order'])
+        //             ->paginate($_GET['per_page']);
+        //     }
+        // } else if (isset($_GET['tanggal_dari'])) {
+        //     if ($_GET['tanggal_dari'] != '') {
+        //         $from = date("Y-m-d", strtotime($_GET['tanggal_dari']));
+        //         $to = date("Y-m-d", strtotime($_GET['tanggal_sampai']));
+        //         $kwitansi = Kwitansi::whereBetween('tanggal_kwitansi', [$from, $to])
+        //             ->paginate($_GET['per_page']);
+        //     } else {
+        //         $kwitansi = Kwitansi::Where('kode_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('tanggal_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('jenis_pembayaran', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('status_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('nama_customer', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('nomor_rekening', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('tanda_tangan', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('no_invoice', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('no_seri_faktur_pajak', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('no_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('total_dpp_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('total_pph_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('total_ppn_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('total_nilai_kwitansi', 'like', '%' . $_GET['search'] . '%')
+        //             ->orWhere('keterangan_kwitansi', 'like', '%' . $_GET['search'] . '%')
 
-                    ->orderBy('created_at', 'desc')
-                    ->paginate($_GET['per_page']);
-            }
-        }
+        //             ->orderBy('created_at', 'desc')
+        //             ->paginate($_GET['per_page']);
+        //     }
+        // }
 
 
 
