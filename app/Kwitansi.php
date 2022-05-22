@@ -14,11 +14,10 @@ class Kwitansi extends Model
     }
     public function last_kode(){
         $last = Kwitansi::orderBy("created_at", "desc")->first();
-        dd($last->kode_kwitansi);
         if (!$last) {
             return 'KWP-' . date('Y') . '-000001-' . date('m') . '-MNB';
         } else {
-            $no = intval(substr($last->nomor_jurnal, 9, 15)) + 1;
+            $no = intval(substr($last->kode_kwitansi, 9, 15)) + 1;
             
             if ($no < 10) {
                 return 'KWP-' . date('Y') . '-00000' . $no . '-' . date('m') . '-MNB';
