@@ -66,73 +66,71 @@ class Jurnal_umumController extends Controller
     }
     public function index()
     {
-        $jurnal_umum = new Jurnal_umum();
-        dd($jurnal_umum->last_kode().' '.$jurnal_umum->last_kode_induk());
         ///api/kwitansi?per_page=5&page=1&search=&tanggal_dari=2022-02-01&tanggal_sampai=2022-02-12
-        // if ($_GET['per_page'] == -1) {
-        //     $jurnal_umum = Jurnal_umum::count();
-        //     $_GET['per_page'] = $jurnal_umum;
-        // }
-        // if (isset($_GET['sort'])) {
-        //     $jurnal_umum = Jurnal_umum::Where('nomor_jurnal_induk', 'like', '%' . $_GET['search'] . '%')
-        //         ->orWhere('nomor_jurnal', 'like', '%' . $_GET['search'] . '%')
-        //         ->orWhere('tanggal_jurnal', 'like', '%' . $_GET['search'] . '%')
-        //         ->orWhere('nomor_jurnal_print', 'like', '%' . $_GET['search'] . '%')
-        //         ->orWhere('tanggal_bukti_kas', 'like', '%' . $_GET['search'] . '%')
-        //         ->orWhere('nomor_bukti', 'like', '%' . $_GET['search'] . '%')
-        //         ->orWhere('jenis_pembayaran', 'like', '%' . $_GET['search'] . '%')
-        //         ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
-        //         ->orWhere('nomor_rekening_pengirim', 'like', '%' . $_GET['search'] . '%')
-        //         ->orWhere('nomor_rekening_penerima', 'like', '%' . $_GET['search'] . '%')
-        //         ->orWhere('deskripsi', 'like', '%' . $_GET['search'] . '%')
-        //         ->orWhere('kode_akun_kredit', 'like', '%' . $_GET['search'] . '%')
-        //         ->orWhere('id_supplier', 'like', '%' . $_GET['search'] . '%')
-        //         ->orWhere('id_customer', 'like', '%' . $_GET['search'] . '%')
-        //         ->orderBy($_GET['sort'], 'desc')
-        //         ->paginate($_GET['per_page']);
-        //     if (isset($_GET['order'])) {
-        //         $jurnal_umum = Jurnal_umum::Where('nomor_jurnal_induk', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('nomor_jurnal', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('tanggal_jurnal', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('nomor_jurnal_print', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('tanggal_bukti_kas', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('nomor_bukti', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('jenis_pembayaran', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('nomor_rekening_pengirim', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('nomor_rekening_penerima', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('deskripsi', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('kode_akun_kredit', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('id_supplier', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('id_customer', 'like', '%' . $_GET['search'] . '%')
-        //             ->orderBy($_GET['sort'], $_GET['order'])
-        //             ->paginate($_GET['per_page']);
-        //     }
-        // } else if (isset($_GET['tanggal_dari'])) {
-        //     if ($_GET['tanggal_dari'] != '') {
-        //         $from = date("Y-m-d", strtotime($_GET['tanggal_dari']));
-        //         $to = date("Y-m-d", strtotime($_GET['tanggal_sampai']));
-        //         $jurnal_umum = Jurnal_umum::whereBetween('tanggal_jurnal', [$from, $to])
-        //             ->paginate($_GET['per_page']);
-        //     } else {
-        //         $jurnal_umum = Jurnal_umum::Where('nomor_jurnal_induk', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('nomor_jurnal', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('tanggal_jurnal', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('nomor_jurnal_print', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('tanggal_bukti_kas', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('nomor_bukti', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('jenis_pembayaran', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('nomor_rekening_pengirim', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('nomor_rekening_penerima', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('deskripsi', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('kode_akun_kredit', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('id_supplier', 'like', '%' . $_GET['search'] . '%')
-        //             ->orWhere('id_customer', 'like', '%' . $_GET['search'] . '%')
-        //             ->orderBy('created_at', 'desc')
-        //             ->paginate($_GET['per_page']);
-        //     }
-        // }
+        if ($_GET['per_page'] == -1) {
+            $jurnal_umum = Jurnal_umum::count();
+            $_GET['per_page'] = $jurnal_umum;
+        }
+        if (isset($_GET['sort'])) {
+            $jurnal_umum = Jurnal_umum::Where('nomor_jurnal_induk', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('nomor_jurnal', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('tanggal_jurnal', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('nomor_jurnal_print', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('tanggal_bukti_kas', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('nomor_bukti', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('jenis_pembayaran', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('nomor_rekening_pengirim', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('nomor_rekening_penerima', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('deskripsi', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('kode_akun_kredit', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('id_supplier', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('id_customer', 'like', '%' . $_GET['search'] . '%')
+                ->orderBy($_GET['sort'], 'desc')
+                ->paginate($_GET['per_page']);
+            if (isset($_GET['order'])) {
+                $jurnal_umum = Jurnal_umum::Where('nomor_jurnal_induk', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nomor_jurnal', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('tanggal_jurnal', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nomor_jurnal_print', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('tanggal_bukti_kas', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nomor_bukti', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('jenis_pembayaran', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nomor_rekening_pengirim', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nomor_rekening_penerima', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('deskripsi', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('kode_akun_kredit', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('id_supplier', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('id_customer', 'like', '%' . $_GET['search'] . '%')
+                    ->orderBy($_GET['sort'], $_GET['order'])
+                    ->paginate($_GET['per_page']);
+            }
+        } else if (isset($_GET['tanggal_dari'])) {
+            if ($_GET['tanggal_dari'] != '') {
+                $from = date("Y-m-d", strtotime($_GET['tanggal_dari']));
+                $to = date("Y-m-d", strtotime($_GET['tanggal_sampai']));
+                $jurnal_umum = Jurnal_umum::whereBetween('tanggal_jurnal', [$from, $to])
+                    ->paginate($_GET['per_page']);
+            } else {
+                $jurnal_umum = Jurnal_umum::Where('nomor_jurnal_induk', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nomor_jurnal', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('tanggal_jurnal', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nomor_jurnal_print', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('tanggal_bukti_kas', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nomor_bukti', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('jenis_pembayaran', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nomor_rekening_pengirim', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('nomor_rekening_penerima', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('deskripsi', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('kode_akun_kredit', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('id_supplier', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('id_customer', 'like', '%' . $_GET['search'] . '%')
+                    ->orderBy('created_at', 'desc')
+                    ->paginate($_GET['per_page']);
+            }
+        }
 
 
         return $jurnal_umum;
@@ -147,10 +145,10 @@ class Jurnal_umumController extends Controller
     {
         $jurnal_umum = new Jurnal_umum;
         $jurnal_umum->id = Str::uuid()->toString();
-        $jurnal_umum->nomor_jurnal_induk = $request->nomor_jurnal_induk;
-        $jurnal_umum->nomor_jurnal = $request->nomor_jurnal;
+        $jurnal_umum->nomor_jurnal_induk = $jurnal_umum->last_kode_induk();
+        $jurnal_umum->nomor_jurnal = $jurnal_umum->last_kode();
         $jurnal_umum->tanggal_jurnal = date("Y-m-d", strtotime($request->tanggal_jurnal));
-        $jurnal_umum->nomor_jurnal_print = $request->nomor_jurnal_print;
+        $jurnal_umum->nomor_jurnal_print = $jurnal_umum->last_kode();
         $jurnal_umum->tanggal_bukti_kas = $request->tanggal_bukti_kas;
         $jurnal_umum->nomor_bukti = $request->nomor_bukti;
         $jurnal_umum->jenis_pembayaran = $request->jenis_pembayaran;
@@ -173,10 +171,10 @@ class Jurnal_umumController extends Controller
     public function edit(Request $request, $id)
     {
         $jurnal_umum = Jurnal_umum::find($id);
-        $jurnal_umum->nomor_jurnal_induk = $request->nomor_jurnal_induk;
-        $jurnal_umum->nomor_jurnal = $request->nomor_jurnal;
+        // $jurnal_umum->nomor_jurnal_induk = $request->nomor_jurnal_induk;
+        // $jurnal_umum->nomor_jurnal = $request->nomor_jurnal;
         $jurnal_umum->tanggal_jurnal = date("Y-m-d", strtotime($request->tanggal_jurnal));
-        $jurnal_umum->nomor_jurnal_print = $request->nomor_jurnal_print;
+        // $jurnal_umum->nomor_jurnal_print = $request->nomor_jurnal_print;
         $jurnal_umum->tanggal_bukti_kas = $request->tanggal_bukti_kas;
         $jurnal_umum->nomor_bukti = $request->nomor_bukti;
         $jurnal_umum->jenis_pembayaran = $request->jenis_pembayaran;
