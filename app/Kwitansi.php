@@ -12,6 +12,28 @@ class Kwitansi extends Model
     {
         return $this->hasMany('App\Detail_kwitansi','id_kwitansi');
     }
+    public function last_kode(){
+        $last = Kwitansi::select("kode_kwitansi")->orderBy("created_at", "desc")->first();
+        if (!$last) {
+            return 'KWP-' . date('Y') . '-000001-' . date('m') . '-MNB';
+        } else {
+            $no = intval(substr($last->nomor_jurnal, 9, 14)) + 1;
+            dd($no);
+            if ($no < 10) {
+                return 'KWP-' . date('Y') . '-00000' . $no . '-' . date('m') . '-MNB';
+            } elseif ($no < 100) {
+                return 'KWP-' . date('Y') . '-0000' . $no . '-' . date('m') . '-MNB';
+            } elseif ($no < 1000) {
+                return 'KWP-' . date('Y') . '-000' . $no . '-' . date('m') . '-MNB';
+            } elseif ($no < 10000) {
+                return 'KWP-' . date('Y') . '-00' . $no . '-' . date('m') . '-MNB';
+            } elseif ($no < 100000) {
+                return 'KWP-' . date('Y') . '-0' . $no . '-' . date('m') . '-MNB';
+            } else {
+                return 'KWP-' . date('Y') . '-' . $no . '-' . date('m') . '-MNB';
+            }
+        }
+    }
     
     // protected $casts = [
     //     'ppn' => 'double',

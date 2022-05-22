@@ -144,7 +144,8 @@ class KwitansiController extends Controller
     {
         $kwitansi = new Kwitansi;
         $kwitansi->id = Str::uuid()->toString();
-        $kwitansi->kode_kwitansi = $request->kode_kwitansi;
+        // $kwitansi->kode_kwitansi = $request->kode_kwitansi;
+        $kwitansi->kode_kwitansi = $kwitansi->last_kode();
         $kwitansi->tanggal_kwitansi = date("Y-m-d", strtotime($request->tanggal_kwitansi));
         $kwitansi->jenis_pembayaran = $request->jenis_pembayaran;
         $kwitansi->status_kwitansi = $request->status_kwitansi;

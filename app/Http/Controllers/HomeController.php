@@ -49,6 +49,8 @@ class HomeController extends Controller
             $kwitansi->total_nilai_kwitansi = $total_nilai_kwitansi;
             $kwitansi->save();
         }
-        return 'Refresh Done'
+
+        
+        return 'Refresh Done';
     }
 }
