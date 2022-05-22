@@ -17,7 +17,7 @@ class Kwitansi extends Model
         if (!$last) {
             return 'KWP-' . date('Y') . '-000001-' . date('m') . '-MNB';
         } else {
-            $no = intval(substr($last->kode_kwitansi, 9, 15)) + 1;
+            $no = intval(substr($last->kode_kwitansi, 9, 14)) + 1;
             
             if ($no < 10) {
                 return 'KWP-' . date('Y') . '-00000' . $no . '-' . date('m') . '-MNB';
