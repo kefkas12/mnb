@@ -41,8 +41,10 @@ class KwitansiController extends Controller
     }
     public function select_last_kwitansi()
     {
-        $last = Kwitansi::orderBy("created_at", "desc")->first();
-        return $last;
+        $data['kwitansi'] = Kwitansi::orderBy("created_at", "desc")->first();
+        $data['detail'] = Detail_kwitansi::where('id_kwitansi',$data['kwitansi']->id)->orderBy("created_at", "desc")->first();
+
+        return $data;
     }
     public function index()
     {
