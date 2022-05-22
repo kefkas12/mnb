@@ -13,8 +13,8 @@ class Kwitansi extends Model
         return $this->hasMany('App\Detail_kwitansi','id_kwitansi');
     }
     public function last_kode(){
-        $last = Kwitansi::select("kode_kwitansi")->orderBy("created_at", "desc")->first();
-        dd(9);
+        $last = Kwitansi::orderBy("created_at", "desc")->first();
+        dd($last);
         if (!$last) {
             return 'KWP-' . date('Y') . '-000001-' . date('m') . '-MNB';
         } else {
