@@ -220,7 +220,11 @@ class ReportController extends Controller
         $dir = $_GET['dir'];
         if($dir == 'hutang_supplier'){
             $supplier = $_GET['supplier'];
-            $data['report'] = Detail_jurnal_umum::select('nama_perusahaan_supplier','kode_akun_debit','kode_akun_kredit','keterangan',DB::raw('if(kode_akun_debit = "220.001", sub_total, 0)as debit'), DB::raw('if(kode_akun_kredit = "220.001", sub_total, 0) as kredit'))->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])->Where('kode_akun_kredit', '220.001')->orWhere('kode_akun_debit', '220.001')->where('nama_perusahaan_supplier',$supplier)->get();
+            // dd($supplier);
+            $data['report'] = Detail_jurnal_umum::select('nama_perusahaan_supplier','kode_akun_debit','kode_akun_kredit','keterangan',DB::raw('if(kode_akun_debit = "220.001", sub_total, 0)as debit'), DB::raw('if(kode_akun_kredit = "220.001", sub_total, 0) as kredit'))->where('nama_perusahaan_supplier',$supplier)->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])->where(function($query) {
+                $query->where('kode_akun_kredit', '220.001')
+                      ->orWhere('kode_akun_debit', '220.001');
+            })->get();
             $saldo_awal = Detail_jurnal_umum::select(DB::raw('sum( if( kode_akun_debit = "610.001" , sub_total , -sub_total)) as saldo'))->Where('kode_akun_kredit', '220.001')->whereDate('tanggal_jurnal','<',$from)->first();
             $data['saldo_awal'] = $saldo_awal->saldo;
         }elseif($dir == 'piutang_customer'){
@@ -811,7 +815,8 @@ class ReportController extends Controller
                         
                         $period = '17-'.$tanggal.' '.date_format(date_create($to),"M").' '.$tahun;
                     }
-                    $rekap = Detail_jurnal_umum::select(DB::raw('sum( banyaknya ) as tonase'), DB::raw('avg( harga ) as harga_rata'), DB::raw('sum( if( kode_akun_debit = "610.001" , sub_total , -sub_total)) as total_pks'), DB::raw('cast(sum( if( kode_akun_debit = "610.001" , sub_total , -sub_total))*0.99 as decimal(65,0)) as total_petani'))->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])->Where('kode_akun_kredit', '220.001')->get();
+                    
+                    $rekap = Detail_jurnal_umum::select(DB::raw('sum( banyaknya ) as tonase'), DB::raw('avg( harga ) as harga_rata'), DB::raw('sum( if( kode_akun_debit = "610.001" , sub_total , -sub_total)) as total_pks'), DB::raw('cast(sum( if( kode_akun_debit = "610.001" , sub_total , -sub_total))*0.99 as decimal(65,0)) as total_petani'))->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])->where('kode_akun_kredit', '220.001')->get();
                     $rekap[0]->offsetSet('periode', $period );
                     $petani['tedy'] = $rekap[0]->total_petani * 0.125;
                     $petani['sony'] = $rekap[0]->total_petani * 0.125;
