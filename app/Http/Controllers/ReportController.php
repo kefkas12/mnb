@@ -638,6 +638,7 @@ class ReportController extends Controller
         
         $hutang_pajak_awal = Perkiraan::select('kode_akun','nama_perkiraan','normal_balance', DB::raw('cast(saldo_awal_debet as decimal(65,2)) as saldo_awal_debet'), DB::raw('cast(-saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun', '230.001')->Where('tipe_akun', 'Detail')->first();
         $modal = Perkiraan::select('kode_akun','nama_perkiraan','normal_balance', DB::raw('cast(saldo_awal_debet as decimal(65,2)) as saldo_awal_debet'), DB::raw('cast(saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun', '310.001')->Where('tipe_akun', 'Detail')->first();
+        //
         $laba_ditahan = Perkiraan::select('kode_akun','nama_perkiraan','normal_balance', DB::raw('cast(-saldo_awal_debet as decimal(65,2)) as saldo_awal_debet'), DB::raw('cast(-saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun', '310.002')->Where('tipe_akun', 'Detail')->first();
         
         $piutang_dagang = Kwitansi::select(DB::raw('cast(SUM(total_dpp_kwitansi+total_ppn_kwitansi) as decimal(65,2)) as piutang_dagang'))->whereDate('tanggal_kwitansi','<=',$to)->first();
