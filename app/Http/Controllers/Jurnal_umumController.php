@@ -194,6 +194,7 @@ class Jurnal_umumController extends Controller
     {
         $jurnal_umum = Jurnal_umum::find($id);
         $jurnal_umum->delete();
+        $detail_jurnal_umum = Detail_jurnal_umum::where('id_jurnal_umum', $id)->delete();
 
         return $jurnal_umum;
     }

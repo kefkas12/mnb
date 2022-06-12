@@ -190,9 +190,9 @@ class KwitansiController extends Controller
     }
     public function delete(Request $request, $id)
     {
-        $detail_kwitansi = Detail_kwitansi::where('id_kwitansi', $id)->delete();
         $kwitansi = Kwitansi::find($id);
         $kwitansi->delete();
+        $detail_kwitansi = Detail_kwitansi::where('id_kwitansi', $id)->delete();
 
         return $kwitansi;
     }
