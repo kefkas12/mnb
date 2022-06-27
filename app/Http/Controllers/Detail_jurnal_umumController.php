@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Detail_jurnal_umum;
+use App\Jurnal_umum;
+use App\Laporan_bank;
+use App\Laporan_kas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -142,6 +145,44 @@ class Detail_jurnal_umumController extends Controller
         $detail_jurnal_umum->motor = $request->motor;
         $detail_jurnal_umum->save();
 
+        if($request->kode_akun_debit == '111.001'){
+            $jurnal_umum = Jurnal_umum::where('id',$request->id_jurnal_umum)->first();
+            $laporan_kas = new Laporan_kas;
+            $laporan_kas->id_detail_jurnal_umum = $detail_jurnal_umum->id_jurnal_umum;
+            $laporan_kas->tanggal_jurnal = $jurnal_umum->tanggal_jurnal;
+            $laporan_kas->nomor_bukti = $jurnal_umum->nomor_bukti;
+            $laporan_kas->keterangan = $request->keterangan;
+            $laporan_kas->debet = $request->sub_total;
+            $laporan_kas->save();
+        }elseif($request->kode_akun_kredit == '111.001'){
+            $jurnal_umum = Jurnal_umum::where('id',$request->id_jurnal_umum)->first();
+            $laporan_kas = new Laporan_kas;
+            $laporan_kas->id_detail_jurnal_umum = $detail_jurnal_umum->id_jurnal_umum;
+            $laporan_kas->tanggal_jurnal = $jurnal_umum->tanggal_jurnal;
+            $laporan_kas->nomor_bukti = $jurnal_umum->nomor_bukti;
+            $laporan_kas->keterangan = $request->keterangan;
+            $laporan_kas->kredit = $request->sub_total;
+            $laporan_kas->save();
+        }elseif($request->kode_akun_debit == '112.101'){
+            $jurnal_umum = Jurnal_umum::where('id',$request->id_jurnal_umum)->first();
+            $laporan_bank = new Laporan_bank;
+            $laporan_bank->id_detail_jurnal_umum = $detail_jurnal_umum->id_jurnal_umum;
+            $laporan_bank->tanggal_jurnal = $jurnal_umum->tanggal_jurnal;
+            $laporan_bank->nomor_bukti = $jurnal_umum->nomor_bukti;
+            $laporan_bank->keterangan = $request->keterangan;
+            $laporan_bank->debet = $request->sub_total;
+            $laporan_bank->save();
+        }elseif($request->kode_akun_kredit == '112.101'){
+            $jurnal_umum = Jurnal_umum::where('id',$request->id_jurnal_umum)->first();
+            $laporan_bank = new Laporan_bank;
+            $laporan_bank->id_detail_jurnal_umum = $detail_jurnal_umum->id_jurnal_umum;
+            $laporan_bank->tanggal_jurnal = $jurnal_umum->tanggal_jurnal;
+            $laporan_bank->nomor_bukti = $jurnal_umum->nomor_bukti;
+            $laporan_bank->keterangan = $request->keterangan;
+            $laporan_bank->kredit = $request->sub_total;
+            $laporan_bank->save();
+        }
+
         return $detail_jurnal_umum;
     }
     public function edit(Request $request, $id)
@@ -169,6 +210,12 @@ class Detail_jurnal_umumController extends Controller
         $detail_jurnal_umum->mobil = $request->mobil;
         $detail_jurnal_umum->motor = $request->motor;
         $detail_jurnal_umum->save();
+
+        $laporan_kas = new Laporan_kas;
+        $laporan_kas->generate_laporan_kas();
+
+        $laporan_bank = new Laporan_bank;
+        $laporan_bank->generate_laporan_bank();
 
         return $detail_jurnal_umum;
     }
