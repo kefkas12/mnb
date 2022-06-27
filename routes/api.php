@@ -182,7 +182,7 @@ Route::get('/bukti_kas/{id_jurnal_umum}', 'Jurnal_umumController@bukti_kas');
 //Route::get('/all_jurnal', 'Jurnal_umumController@all_jurnal');
 
 // Route::get('export/jurnal', 'Jurnal_umumController@jurnal');
-Route::get('export/jurnal/{id}', 'Jurnal_umumController@select_jurnal');
+Route::get('export/jurnal/{id}', 'Jurnal_umumController@select_jurnal_kas');
 
 Route::get('/jurnal_penyesuaian', 'Jurnal_penyesuaianController@index');
 Route::get('/jurnal_penyesuaian/{id}', 'Jurnal_penyesuaianController@select');
