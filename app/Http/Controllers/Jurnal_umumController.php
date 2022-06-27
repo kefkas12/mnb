@@ -239,21 +239,6 @@ class Jurnal_umumController extends Controller
 
         return $jurnal;
     }
-    public function select_jurnal_kas(Request $request, $id)
-    {
-        $jurnal = Jurnal_umum::leftjoin('detail_jurnal_umum', 'jurnal_umum.id', '=', 'detail_jurnal_umum.id_jurnal_umum')->leftjoin('perkiraan', 'detail_jurnal_umum.kode_akun_debit', '=', 'perkiraan.kode_akun')->leftjoin('perkiraan as pk', 'jurnal_umum.kode_akun_kredit', '=', 'pk.kode_akun')->select('jurnal_umum.id', 'jurnal_umum.tanggal_jurnal', 'jurnal_umum.nomor_jurnal_induk', 'jurnal_umum.nomor_bukti', 'jurnal_umum.kode_akun_kredit as kode_akun','jurnal_umum.detail_kode_akun_kredit as detail_kode_akun', DB::raw('SUM(detail_jurnal_umum.sub_total) as total_kredit'))->groupBy('jurnal_umum.id', 'jurnal_umum.tanggal_jurnal', 'jurnal_umum.nomor_jurnal_induk', 'jurnal_umum.nomor_bukti', 'jurnal_umum.kode_akun_kredit', 'pk.nama_perkiraan','jurnal_umum.detail_kode_akun_kredit' )->where('jurnal_umum.id', $id)->with(['detail_jurnal_umum' => function ($query) {
-            $query->select('id', 'id_jurnal_umum', 'nomor_jurnal', 'kode_detail', 'banyaknya', 'nama_satuan', 'harga', 'sub_total', 'keterangan', 'kode_akun_debit as kode_akun', 'detail_kode_akun_debit as detail_kode_akun', 'nama_perusahaan_supplier', 'nama_perusahaan_customer', 'nama_karyawan', 'alat_berat', 'peralatan', 'truck', 'mobil', 'motor');
-        }])->where('jurnal_umum.kode_akun_kredit','111.001')->get();
-        dd(1);
-        $detail_jurnal_umum = new Detail_jurnal_umum;
-        $bukti_kas = Detail_jurnal_umum::select(DB::raw('group_concat(keterangan SEPARATOR ", ") as keterangan'), DB::raw('SUM(sub_total) as sub_total'), DB::raw('group_concat(tanggal_jurnal SEPARATOR ", ") as tanggal_jurnal'))->where('id_jurnal_umum', $id)->get();
-        $bukti_kas[0]->offsetSet('terbilang', $detail_jurnal_umum->terbilang($bukti_kas[0]->sub_total));
-
-        $jenis_pembayaran = Jurnal_umum::select('jenis_pembayaran')->where('id', $id)->get();
-        $bukti_kas[0]->offsetSet('jenis_pembayaran', $jenis_pembayaran[0]->jenis_pembayaran);
-
-        return $jurnal;
-    }
     public function select_last_jurnal(Request $request)
     {
         $data['jurnal'] = Jurnal_umum::orderBy("created_at", "desc")->first();
