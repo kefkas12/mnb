@@ -224,7 +224,7 @@ class ReportController extends Controller
             $data['report'] = Detail_jurnal_umum::select('nama_perusahaan_supplier','kode_akun_debit','kode_akun_kredit','keterangan',DB::raw('if(kode_akun_debit = "220.001", sub_total, 0)as debit'), DB::raw('if(kode_akun_kredit = "220.001", sub_total, 0) as kredit'))->where('nama_perusahaan_supplier',$supplier)->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])->where(function($query) {
                 $query->where('kode_akun_kredit', '220.001')
                       ->orWhere('kode_akun_debit', '220.001');
-            })->orderBy('jurnal_umum.created_at','ASC')->get();
+            })->orderBy('detail_jurnal_umum.created_at','ASC')->get();
             $saldo_awal = Detail_jurnal_umum::select(DB::raw('sum( if( kode_akun_debit = "610.001" , sub_total , -sub_total)) as saldo'))->Where('kode_akun_kredit', '220.001')->whereDate('tanggal_jurnal','<',$from)->first();
             $data['saldo_awal'] = $saldo_awal->saldo;
         }elseif($dir == 'piutang_customer'){
@@ -250,15 +250,15 @@ class ReportController extends Controller
             
             $data['saldo_awal'] = $saldo_awal->debet + $report->debet;
             
-            $data['jk'] = Detail_jurnal_pengeluaran_kas::select('tanggal_jurnal','keterangan',DB::raw('cast(sub_total as decimal(65,2)) as debet'))->whereBetween('tanggal_jurnal', [$from, $to])->Where('kode_akun_debit', $kode)->orderBy('jurnal_umum.created_at','DESC')->get();
+            $data['jk'] = Detail_jurnal_pengeluaran_kas::select('tanggal_jurnal','keterangan',DB::raw('cast(sub_total as decimal(65,2)) as debet'))->whereBetween('tanggal_jurnal', [$from, $to])->Where('kode_akun_debit', $kode)->orderBy('detail_jurnal_pengeluaran_kas.created_at','DESC')->get();
         
-            $data['report'] = Detail_jurnal_umum::select('tanggal_jurnal', 'keterangan',DB::raw('cast(sub_total as decimal(65,2)) as debet'))->whereBetween('tanggal_jurnal', [$from, $to])->Where('kode_akun_debit', $kode)->orderBy('jurnal_umum.created_at','DESC')->get();
+            $data['report'] = Detail_jurnal_umum::select('tanggal_jurnal', 'keterangan',DB::raw('cast(sub_total as decimal(65,2)) as debet'))->whereBetween('tanggal_jurnal', [$from, $to])->Where('kode_akun_debit', $kode)->orderBy('detail_jurnal_umum.created_at','DESC')->get();
             
         }elseif($dir == 'hutang_dagang'){
             $kode = $_GET['kode'];
             
             // $data['report'] = Detail_jurnal_umum::select('tanggal_jurnal','keterangan','sub_total')->Where('kode_akun_kredit', $kode)->whereBetween('tanggal_jurnal', [$from, $to])->get();
-            $data['report'] = Detail_jurnal_umum::select('tanggal_jurnal','keterangan',DB::raw('if(kode_akun_debit = "'.$kode.'", sub_total, 0)as debit'), DB::raw('if(kode_akun_kredit = "'.$kode.'", sub_total, 0) as kredit'))->where('kode_akun_kredit', $kode)->orWhere('kode_akun_debit', $kode)->whereDate('tanggal_jurnal','>=',$from)->whereDate('tanggal_jurnal','<=',$to)->orderBy('jurnal_umum.created_at','DESC')->get();
+            $data['report'] = Detail_jurnal_umum::select('tanggal_jurnal','keterangan',DB::raw('if(kode_akun_debit = "'.$kode.'", sub_total, 0)as debit'), DB::raw('if(kode_akun_kredit = "'.$kode.'", sub_total, 0) as kredit'))->where('kode_akun_kredit', $kode)->orWhere('kode_akun_debit', $kode)->whereDate('tanggal_jurnal','>=',$from)->whereDate('tanggal_jurnal','<=',$to)->orderBy('detail_jurnal_umum.created_at','DESC')->get();
             
             $saldo_awal = Detail_jurnal_umum::select(DB::raw('sum( if( kode_akun_debit = "610.001" , sub_total , -sub_total)) as saldo'))->Where('kode_akun_kredit', $kode)->whereDate('tanggal_jurnal','<',$from)->first();
             if($saldo_awal->saldo){

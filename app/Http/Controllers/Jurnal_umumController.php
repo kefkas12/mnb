@@ -182,8 +182,8 @@ class Jurnal_umumController extends Controller
         $jurnal_umum->nomor_rekening_pengirim = $request->nomor_rekening_pengirim;
         $jurnal_umum->nomor_rekening_penerima = $request->nomor_rekening_penerima;
         $jurnal_umum->deskripsi = $request->deskripsi;
-        $jurnal_umum->kode_akun_kredit = $request->kode_akun_kredit;
-        $jurnal_umum->detail_kode_akun_kredit = $request->detail_kode_akun_kredit;
+        // $jurnal_umum->kode_akun_kredit = $request->kode_akun_kredit;
+        // $jurnal_umum->detail_kode_akun_kredit = $request->detail_kode_akun_kredit;
         $jurnal_umum->id_supplier = $request->id_supplier;
         $jurnal_umum->id_customer = $request->id_customer;
         $jurnal_umum->save();
