@@ -187,6 +187,7 @@ class Detail_jurnal_umumController extends Controller
     }
     public function edit(Request $request, $id)
     {
+        //
         $detail_jurnal_umum = Detail_jurnal_umum::find($id);
         $detail_jurnal_umum->id_jurnal_umum = $request->id_jurnal_umum;
         $detail_jurnal_umum->nomor_jurnal = $request->nomor_jurnal;
