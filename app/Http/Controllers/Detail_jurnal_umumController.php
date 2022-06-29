@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Detail_jurnal_umum;
 use App\Jurnal_umum;
 use App\Laporan_bank;
+use App\Laporan_hutang;
 use App\Laporan_kas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -18,11 +19,35 @@ class Detail_jurnal_umumController extends Controller
     public function index()
     {
 
-            if($_GET['per_page'] == -1){
-                $detail_jurnal_umum = Detail_jurnal_umum::count();
-                $_GET['per_page'] = $detail_jurnal_umum;
-            }
-            if (isset($_GET['search'])) {
+        if ($_GET['per_page'] == -1) {
+            $detail_jurnal_umum = Detail_jurnal_umum::count();
+            $_GET['per_page'] = $detail_jurnal_umum;
+        }
+        if (isset($_GET['search'])) {
+            $detail_jurnal_umum = Detail_jurnal_umum::Where('id_jurnal_umum', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('nomor_jurnal', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('tanggal_jurnal', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('kode_akun_kredit', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('detail_kode_akun_kredit', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('kode_detail', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('banyaknya', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('nama_satuan', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('harga', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('sub_total', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('keterangan', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('kode_akun_debit', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('detail_kode_akun_debit', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('nama_perusahaan_supplier', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('nama_perusahaan_customer', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('nama_karyawan', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('alat_berat', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('peralatan', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('truck', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('mobil', 'like', '%' . $_GET['search'] . '%')
+                ->orWhere('motor', 'like', '%' . $_GET['search'] . '%')
+                ->orderBy('created_at', 'desc')
+                ->paginate($_GET['per_page']);
+            if (isset($_GET['sort'])) {
                 $detail_jurnal_umum = Detail_jurnal_umum::Where('id_jurnal_umum', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('nomor_jurnal', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('tanggal_jurnal', 'like', '%' . $_GET['search'] . '%')
@@ -44,9 +69,9 @@ class Detail_jurnal_umumController extends Controller
                     ->orWhere('truck', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('mobil', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('motor', 'like', '%' . $_GET['search'] . '%')
-                    ->orderBy('created_at', 'desc')
+                    ->orderBy($_GET['sort'], 'desc')
                     ->paginate($_GET['per_page']);
-                if (isset($_GET['sort'])) {
+                if (isset($_GET['order'])) {
                     $detail_jurnal_umum = Detail_jurnal_umum::Where('id_jurnal_umum', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('nomor_jurnal', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('tanggal_jurnal', 'like', '%' . $_GET['search'] . '%')
@@ -68,40 +93,16 @@ class Detail_jurnal_umumController extends Controller
                         ->orWhere('truck', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('mobil', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('motor', 'like', '%' . $_GET['search'] . '%')
-                        ->orderBy($_GET['sort'], 'desc')
-                        ->paginate($_GET['per_page']);
-                    if (isset($_GET['order'])) {
-                        $detail_jurnal_umum = Detail_jurnal_umum::Where('id_jurnal_umum', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('nomor_jurnal', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('tanggal_jurnal', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('kode_akun_kredit', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('detail_kode_akun_kredit', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('kode_detail', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('banyaknya', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('nama_satuan', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('harga', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('sub_total', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('keterangan', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('kode_akun_debit', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('detail_kode_akun_debit', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('nama_perusahaan_supplier', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('nama_perusahaan_customer', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('nama_karyawan', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('alat_berat', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('peralatan', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('truck', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('mobil', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('motor', 'like', '%' . $_GET['search'] . '%')
-                            ->orderBy($_GET['sort'], $_GET['order'])
-                            ->paginate($_GET['per_page']);
-                    }
-                }
-            } else {
-                if (isset($_GET['sort']) && isset($_GET['order'])) {
-                    $detail_jurnal_umum = Detail_jurnal_umum::orderBy($_GET['sort'], $_GET['order'])
+                        ->orderBy($_GET['sort'], $_GET['order'])
                         ->paginate($_GET['per_page']);
                 }
             }
+        } else {
+            if (isset($_GET['sort']) && isset($_GET['order'])) {
+                $detail_jurnal_umum = Detail_jurnal_umum::orderBy($_GET['sort'], $_GET['order'])
+                    ->paginate($_GET['per_page']);
+            }
+        }
 
 
         return $detail_jurnal_umum;
@@ -145,8 +146,8 @@ class Detail_jurnal_umumController extends Controller
         $detail_jurnal_umum->motor = $request->motor;
         $detail_jurnal_umum->save();
 
-        if($request->kode_akun_debit == '111.001'){
-            $jurnal_umum = Jurnal_umum::where('id',$request->id_jurnal_umum)->first();
+        if ($request->kode_akun_debit == '111.001') {
+            $jurnal_umum = Jurnal_umum::where('id', $request->id_jurnal_umum)->first();
             $laporan_kas = new Laporan_kas;
             $laporan_kas->id_detail_jurnal_umum = $detail_jurnal_umum->id_jurnal_umum;
             $laporan_kas->tanggal_jurnal = $jurnal_umum->tanggal_jurnal;
@@ -154,8 +155,8 @@ class Detail_jurnal_umumController extends Controller
             $laporan_kas->keterangan = $request->keterangan;
             $laporan_kas->debet = $request->sub_total;
             $laporan_kas->save();
-        }elseif($request->kode_akun_kredit == '111.001'){
-            $jurnal_umum = Jurnal_umum::where('id',$request->id_jurnal_umum)->first();
+        } elseif ($request->kode_akun_kredit == '111.001') {
+            $jurnal_umum = Jurnal_umum::where('id', $request->id_jurnal_umum)->first();
             $laporan_kas = new Laporan_kas;
             $laporan_kas->id_detail_jurnal_umum = $detail_jurnal_umum->id_jurnal_umum;
             $laporan_kas->tanggal_jurnal = $jurnal_umum->tanggal_jurnal;
@@ -163,8 +164,8 @@ class Detail_jurnal_umumController extends Controller
             $laporan_kas->keterangan = $request->keterangan;
             $laporan_kas->kredit = $request->sub_total;
             $laporan_kas->save();
-        }elseif($request->kode_akun_debit == '112.101'){
-            $jurnal_umum = Jurnal_umum::where('id',$request->id_jurnal_umum)->first();
+        } elseif ($request->kode_akun_debit == '112.101') {
+            $jurnal_umum = Jurnal_umum::where('id', $request->id_jurnal_umum)->first();
             $laporan_bank = new Laporan_bank;
             $laporan_bank->id_detail_jurnal_umum = $detail_jurnal_umum->id_jurnal_umum;
             $laporan_bank->tanggal_jurnal = $jurnal_umum->tanggal_jurnal;
@@ -172,8 +173,8 @@ class Detail_jurnal_umumController extends Controller
             $laporan_bank->keterangan = $request->keterangan;
             $laporan_bank->debet = $request->sub_total;
             $laporan_bank->save();
-        }elseif($request->kode_akun_kredit == '112.101'){
-            $jurnal_umum = Jurnal_umum::where('id',$request->id_jurnal_umum)->first();
+        } elseif ($request->kode_akun_kredit == '112.101') {
+            $jurnal_umum = Jurnal_umum::where('id', $request->id_jurnal_umum)->first();
             $laporan_bank = new Laporan_bank;
             $laporan_bank->id_detail_jurnal_umum = $detail_jurnal_umum->id_jurnal_umum;
             $laporan_bank->tanggal_jurnal = $jurnal_umum->tanggal_jurnal;
@@ -181,6 +182,30 @@ class Detail_jurnal_umumController extends Controller
             $laporan_bank->keterangan = $request->keterangan;
             $laporan_bank->kredit = $request->sub_total;
             $laporan_bank->save();
+        } elseif ($request->kode_akun_debit == '220.001') {
+            $jurnal_umum = Jurnal_umum::where('id', $request->id_jurnal_umum)->first();
+            $laporan_hutang = new Laporan_hutang;
+            $laporan_hutang->id_detail_jurnal_umum = $detail_jurnal_umum->id_jurnal_umum;
+            $laporan_hutang->tanggal_jurnal = $jurnal_umum->tanggal_jurnal;
+            if ($jurnal_umum->id_supplier)
+                $laporan_hutang->supplier = $jurnal_umum->id_supplier;
+            else
+                $laporan_hutang->supplier = $detail_jurnal_umum->nama_perusahaan_supplier;
+            $laporan_hutang->keterangan = $request->keterangan;
+            $laporan_hutang->debet = $request->sub_total;
+            $laporan_hutang->save();
+        } elseif ($request->kode_akun_kredit == '220.001') {
+            $jurnal_umum = Jurnal_umum::where('id', $request->id_jurnal_umum)->first();
+            $laporan_hutang = new Laporan_hutang;
+            $laporan_hutang->id_detail_jurnal_umum = $detail_jurnal_umum->id_jurnal_umum;
+            $laporan_hutang->tanggal_jurnal = $jurnal_umum->tanggal_jurnal;
+            if ($jurnal_umum->id_supplier)
+                $laporan_hutang->supplier = $jurnal_umum->id_supplier;
+            else
+                $laporan_hutang->supplier = $detail_jurnal_umum->nama_perusahaan_supplier;
+            $laporan_hutang->keterangan = $request->keterangan;
+            $laporan_hutang->kredit = $request->sub_total;
+            $laporan_hutang->save();
         }
 
         return $detail_jurnal_umum;
@@ -212,11 +237,14 @@ class Detail_jurnal_umumController extends Controller
         $detail_jurnal_umum->motor = $request->motor;
         $detail_jurnal_umum->save();
 
-        $laporan_kas = new Laporan_kas;
-        $laporan_kas->generate_laporan_kas();
+        // $laporan_kas = new Laporan_kas;
+        // $laporan_kas->generate_laporan_kas();
 
-        $laporan_bank = new Laporan_bank;
-        $laporan_bank->generate_laporan_bank();
+        // $laporan_bank = new Laporan_bank;
+        // $laporan_bank->generate_laporan_bank();
+
+        // $laporan_hutang = new Laporan_hutang;
+        // $laporan_hutang->generate_laporan_hutang();
 
         return $detail_jurnal_umum;
     }

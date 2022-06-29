@@ -207,6 +207,7 @@ Route::get('/report/jurnal', 'Jurnal_umumController@jurnal');
 ///////////////////////////////////
 Route::get('/laporan/kas', 'LaporanController@kas');
 Route::get('/laporan/bank', 'LaporanController@bank');
+Route::get('/laporan/hutang', 'LaporanController@hutang');
 
 ///////////////////////////////////
 Route::get('/report/buku_besar', 'ReportController@buku_besar');

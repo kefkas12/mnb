@@ -288,8 +288,11 @@ class ReportController extends Controller
             if($supplier == ''){
                 
                 $data['report'] = Detail_jurnal_umum::select('nama_perusahaan_supplier')->Where('kode_akun_kredit', '220.001')->groupBy('nama_perusahaan_supplier')->get();
+                dd($data);
                 $no = 0;
                 foreach( $data['report'] as $v ){
+                    $data['nama_perusahaan_supplier'] = [];
+                    array_push($data['nama_perusahaan_supplier'],$v->nama_perusahaan_supplier);
                     $saldo_awal = Detail_jurnal_umum::select('nama_perusahaan_supplier', DB::raw('sum( if( kode_akun_debit = "610.001" , sub_total , -sub_total)) as saldo_awal'))->where('nama_perusahaan_supplier',$data['report'][$no]->nama_perusahaan_supplier)->Where('kode_akun_kredit', '220.001')->groupBy('nama_perusahaan_supplier')->whereDate('detail_jurnal_umum.tanggal_jurnal','<',$from)->first();
                     
                     if($saldo_awal){
@@ -313,6 +316,8 @@ class ReportController extends Controller
                     }
                     $no++;
                 }
+
+               
                 
             }else{
                 // dd($supplier);

@@ -21,6 +21,7 @@ class Laporan_kas extends Model
                 $laporan_kas->nomor_bukti = $jurnal_umum->nomor_bukti;
                 $laporan_kas->keterangan = $v->keterangan;
                 $laporan_kas->debet = $v->sub_total;
+                $laporan_kas->kredit = 0;
                 $laporan_kas->save();
             }elseif($v->kode_akun_kredit == '111.001'){
                 $jurnal_umum = Jurnal_umum::where('id',$v->id_jurnal_umum)->first();
@@ -30,9 +31,11 @@ class Laporan_kas extends Model
                 
                 $laporan_kas->nomor_bukti = $jurnal_umum->nomor_bukti;
                 $laporan_kas->keterangan = $v->keterangan;
+                $laporan_kas->debet = 0;
                 $laporan_kas->kredit = $v->sub_total;
                 $laporan_kas->save();
             }
         }
+        
     }
 }
