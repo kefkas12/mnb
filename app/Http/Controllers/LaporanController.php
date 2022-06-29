@@ -19,8 +19,8 @@ class LaporanController extends Controller
     }
     public function kas(Request $request)
     {
-        $laporan_kas = new Laporan_kas;
-        $laporan_kas->generate_laporan_kas();
+        // $laporan_kas = new Laporan_kas;
+        // $laporan_kas->generate_laporan_kas();
 
         $from = date("Y-m-d", strtotime($_GET['tanggal_dari']));
         $to = date("Y-m-d", strtotime($_GET['tanggal_sampai']));
@@ -29,8 +29,8 @@ class LaporanController extends Controller
     }
     public function bank(Request $request)
     {
-        $laporan_bank = new Laporan_bank;
-        $laporan_bank->generate_laporan_bank();
+        // $laporan_bank = new Laporan_bank;
+        // $laporan_bank->generate_laporan_bank();
 
         $from = date("Y-m-d", strtotime($_GET['tanggal_dari']));
         $to = date("Y-m-d", strtotime($_GET['tanggal_sampai']));
