@@ -100,7 +100,6 @@ class LaporanController extends Controller
         }
         $laporan = Laporan_hutang::whereBetween('tanggal_jurnal', [$from, $to])->get();
 
-
         return $data;
     }
 }
