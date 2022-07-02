@@ -113,13 +113,13 @@ class LaporanController extends Controller
         $all = $_GET['all'];
         if ($all == '') {
             if ($supplier == '') {
-                $report = Laporan_hutang::select('supplier', DB::raw('sum(debet) as debit'), DB::raw('sum(kredit) as kredit'))->whereBetween('tanggal_jurnal', [$from, $to])->groupBy('supplier')->get();
+                $data['report'] = Laporan_hutang::select('supplier', DB::raw('sum(debet) as debit'), DB::raw('sum(kredit) as kredit'))->whereBetween('tanggal_jurnal', [$from, $to])->groupBy('supplier')->get();
 
-                $data_report=[];
+                // $data_report=[];
 
-                foreach($report as $v){
-                    $data_report = $v;
-                }
+                // foreach($report as $v){
+                //     $data_report = $v;
+                // }
                 
                 
 
