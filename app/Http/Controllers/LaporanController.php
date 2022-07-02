@@ -102,26 +102,7 @@ class LaporanController extends Controller
         }
         return $data;
     }
-
-    public function kas(Request $request)
-    {
-        $from = date("Y-m-d", strtotime($_GET['tanggal_dari']));
-        $to = date("Y-m-d", strtotime($_GET['tanggal_sampai']));
-        $saldo_awal = Perkiraan::select('kode_akun', 'nama_perkiraan', 'normal_balance', DB::raw('cast(saldo_awal_debet as decimal(65,2)) as saldo_awal_debet'), DB::raw('cast(saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun', '111.001')->Where('tipe_akun', 'Detail')->first();
-        $data['saldo_awal'] = $saldo_awal->saldo_awal_debet;
-
-        $data['report'] = Laporan_kas::whereBetween('tanggal_jurnal', [$from, $to])->get();
-        return $data;
-    }
-    public function bank(Request $request)
-    {
-        $from = date("Y-m-d", strtotime($_GET['tanggal_dari']));
-        $to = date("Y-m-d", strtotime($_GET['tanggal_sampai']));
-        $saldo_awal = Perkiraan::select('kode_akun', 'nama_perkiraan', 'normal_balance', DB::raw('cast(saldo_awal_debet as decimal(65,2)) as saldo_awal_debet'), DB::raw('cast(saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun', '112.101')->Where('tipe_akun', 'Detail')->first();
-        $data['saldo_awal'] = $saldo_awal->saldo_awal_kredit;
-        $data['report'] = Laporan_bank::whereBetween('tanggal_jurnal', [$from, $to])->get();
-        return $data;
-    }
+    
     public function hutang(Request $request)
     {
 

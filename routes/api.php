@@ -210,12 +210,12 @@ Route::get('/laporan/bank', 'LaporanController@bank');
 
 Route::get('/report/kas-bank', 'LaporanController@kas_bank');
 
-Route::get('/laporan/hutang', 'LaporanController@hutang');
+Route::get('/report/hutang', 'LaporanController@hutang');
 
 ///////////////////////////////////
 Route::get('/report/buku_besar', 'ReportController@buku_besar');
 
-Route::get('/report/hutang', 'ReportController@hutang');
+// Route::get('/report/hutang', 'ReportController@hutang');
 Route::get('/report/piutang', 'ReportController@piutang');
 Route::get('/report/giro', 'ReportController@giro');
 Route::get('/report/pajak_masukan', 'ReportController@pajak_masukan');
