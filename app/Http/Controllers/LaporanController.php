@@ -7,6 +7,7 @@ use App\Jurnal_umum;
 use App\Laporan_bank;
 use App\Laporan_hutang;
 use App\Laporan_kas;
+use App\Perkiraan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -28,19 +29,21 @@ class LaporanController extends Controller
     }
     public function kas(Request $request)
     {
-
+        $saldo_awal = Perkiraan::select('kode_akun', 'nama_perkiraan', 'normal_balance', DB::raw('cast(saldo_awal_debet as decimal(65,2)) as saldo_awal_debet'), DB::raw('cast(saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun', '111.001')->Where('tipe_akun', 'Detail')->first();
+        $data['saldo_awal'] = $saldo_awal->saldo_awal_debet;
         $from = date("Y-m-d", strtotime($_GET['tanggal_dari']));
         $to = date("Y-m-d", strtotime($_GET['tanggal_sampai']));
-        $laporan = Laporan_kas::whereBetween('tanggal_jurnal', [$from, $to])->get();
-        return $laporan;
+        $data['report'] = Laporan_kas::whereBetween('tanggal_jurnal', [$from, $to])->get();
+        return $data;
     }
     public function bank(Request $request)
     {
-
+        $saldo_awal = Perkiraan::select('kode_akun', 'nama_perkiraan', 'normal_balance', DB::raw('cast(saldo_awal_debet as decimal(65,2)) as saldo_awal_debet'), DB::raw('cast(saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun', '112.101')->Where('tipe_akun', 'Detail')->first();
+        $data['saldo_awal'] = $saldo_awal->saldo_awal_kredit;
         $from = date("Y-m-d", strtotime($_GET['tanggal_dari']));
         $to = date("Y-m-d", strtotime($_GET['tanggal_sampai']));
-        $laporan = Laporan_bank::whereBetween('tanggal_jurnal', [$from, $to])->get();
-        return $laporan;
+        $data['report'] = Laporan_bank::whereBetween('tanggal_jurnal', [$from, $to])->get();
+        return $data;
     }
     public function hutang(Request $request)
     {
