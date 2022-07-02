@@ -102,7 +102,7 @@ class LaporanController extends Controller
         }
         return $data;
     }
-    
+
     public function hutang(Request $request)
     {
 
@@ -113,7 +113,15 @@ class LaporanController extends Controller
         $all = $_GET['all'];
         if ($all == '') {
             if ($supplier == '') {
-                $data['report'] = Laporan_hutang::select('supplier', DB::raw('sum(debet) as debit'), DB::raw('sum(kredit) as kredit'))->whereBetween('tanggal_jurnal', [$from, $to])->groupBy('supplier')->get();
+                $report = Laporan_hutang::select('supplier', DB::raw('sum(debet) as debit'), DB::raw('sum(kredit) as kredit'))->whereBetween('tanggal_jurnal', [$from, $to])->groupBy('supplier')->get();
+
+                $data_report=[];
+
+                foreach($report as $v){
+                    $data_report = $v;
+                }
+                
+                
 
                 $saldo_awal_debit = Laporan_hutang::select(DB::raw('sum(debet) as debit'))->whereDate('tanggal_jurnal', '<', $from)->first();
                 if ($saldo_awal_debit) {

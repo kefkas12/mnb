@@ -302,7 +302,7 @@ class ReportController extends Controller
             if ($supplier == '') {
 
                 $data['report'] = Detail_jurnal_umum::select('nama_perusahaan_supplier')->Where('kode_akun_kredit', '220.001')->groupBy('nama_perusahaan_supplier')->get();
-                dd($data);
+                // dd($data);
                 $no = 0;
                 foreach ($data['report'] as $v) {
                     $data['nama_perusahaan_supplier'] = [];
