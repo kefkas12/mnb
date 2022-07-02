@@ -245,10 +245,10 @@ class ReportController extends Controller
         } elseif ($dir == 'piutang_customer') {
             $customer = $_GET['customer'];
 
-            $data['debit'] = Kwitansi::select('tanggal_kwitansi as tanggal', 'keterangan_kwitansi as keterangan', DB::raw('(total_dpp_kwitansi + total_ppn_kwitansi) as debit '))->whereBetween('tanggal_kwitansi', [$from, $to])->where('nama_customer', $customer)->orderBy('tanggal_kwitansi', 'DESC')->get();
+            $data['debit'] = Kwitansi::select('tanggal_kwitansi as tanggal', 'keterangan_kwitansi as keterangan', DB::raw('(total_dpp_kwitansi + total_ppn_kwitansi) as debit '))->whereBetween('tanggal_kwitansi', [$from, $to])->where('nama_customer', $customer)->orderBy('created_at', 'DESC')->get();
 
-            $data['kredit'] = Detail_jurnal_umum::select('tanggal_jurnal as tanggal', 'keterangan', DB::raw('sub_total as kredit'))->where('kode_akun_kredit', '113.101')->whereBetween('tanggal_jurnal', [$from, $to])->where('nama_perusahaan_customer', $customer)->orderBy('tanggal_jurnal', 'DESC')->get();
-
+            $data['kredit'] = Detail_jurnal_umum::select('tanggal_jurnal as tanggal', 'keterangan', DB::raw('sub_total as kredit'))->where('kode_akun_kredit', '113.101')->whereBetween('tanggal_jurnal', [$from, $to])->where('nama_perusahaan_customer', $customer)->orderBy('created_at', 'DESC')->get();
+                
             $saldo_awal = Kwitansi::select(DB::raw('sum( total_dpp_kwitansi + total_ppn_kwitansi) as debit'))->where('nama_customer', $customer)->whereDate('tanggal_kwitansi', '<', $from)->first();
 
             if ($saldo_awal->debit) {
