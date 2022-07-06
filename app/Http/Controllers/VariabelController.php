@@ -43,7 +43,7 @@ class VariabelController extends Controller
     {
         $ppn = Variabel::where('nama_variabel','ppn')->first();
         $ppn = Variabel::find($ppn->id);
-        $ppn->nilai = $request->ppn;
+        $ppn->nilai = $request->nilai;
         $ppn->save();
 
         return $ppn;
@@ -59,7 +59,7 @@ class VariabelController extends Controller
     {
         $pph = Variabel::where('nama_variabel','pph')->first();
         $pph = Variabel::find($pph->id);
-        $pph->nilai = $request->pph;
+        $pph->nilai = $request->nilai;
         $pph->save();
 
         return $pph;
