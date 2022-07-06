@@ -33,19 +33,35 @@ class VariabelController extends Controller
         return $keuntungan;
     }
     
-    public function pajak_get(Request $request)
+    public function ppn_get(Request $request)
     {
-        $pajak = Variabel::where('nama_variabel','pajak')->get();
+        $ppn = Variabel::where('nama_variabel','ppn')->get();
 
-        return $pajak;
+        return $ppn;
     }
-    public function pajak_insert(Request $request)
+    public function ppn_insert(Request $request)
     {
-        $pajak = Variabel::where('nama_variabel','pajak')->first();
-        $pajak = Variabel::find($pajak->id);
-        $pajak->nilai = $request->pajak;
-        $pajak->save();
+        $ppn = Variabel::where('nama_variabel','ppn')->first();
+        $ppn = Variabel::find($ppn->id);
+        $ppn->nilai = $request->ppn;
+        $ppn->save();
 
-        return $pajak;
+        return $ppn;
+    }
+
+    public function pph_get(Request $request)
+    {
+        $pph = Variabel::where('nama_variabel','pph')->get();
+
+        return $pph;
+    }
+    public function pph_insert(Request $request)
+    {
+        $pph = Variabel::where('nama_variabel','pph')->first();
+        $pph = Variabel::find($pph->id);
+        $pph->nilai = $request->pph;
+        $pph->save();
+
+        return $pph;
     }
 }

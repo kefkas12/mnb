@@ -102,8 +102,11 @@ Route::delete('/master/kode_akun_kredit/{id}', 'Kode_akun_kreditController@delet
 Route::get('/kwitansi/keuntungan', 'VariabelController@keuntungan_get');
 Route::post('/kwitansi/keuntungan', 'VariabelController@keuntungan_insert');
 
-Route::get('/kwitansi/pajak', 'VariabelController@pajak_get');
-Route::post('/kwitansi/pajak', 'VariabelController@pajak_insert');
+Route::get('/kwitansi/ppn', 'VariabelController@ppn_get');
+Route::post('/kwitansi/ppn', 'VariabelController@ppn_insert');
+
+Route::get('/kwitansi/pph', 'VariabelController@pph_get');
+Route::post('/kwitansi/pph', 'VariabelController@pph_insert');
 
 Route::get('/kwitansi', 'KwitansiController@index');
 Route::get('/kwitansi/{id}', 'KwitansiController@select');
