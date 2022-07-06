@@ -99,8 +99,11 @@ Route::post('/master/kode_akun_kredit', 'Kode_akun_kreditController@insert');
 Route::put('/master/kode_akun_kredit/{id}', 'Kode_akun_kreditController@edit');
 Route::delete('/master/kode_akun_kredit/{id}', 'Kode_akun_kreditController@delete');
 
-Route::get('/kwitansi/keuntungan', 'KwitansiController@keuntungan_get');
-Route::post('/kwitansi/keuntungan', 'KwitansiController@keuntungan_insert');
+Route::get('/kwitansi/keuntungan', 'VariabelController@keuntungan_get');
+Route::post('/kwitansi/keuntungan', 'VariabelController@keuntungan_insert');
+
+Route::get('/kwitansi/pajak', 'VariabelController@pajak_get');
+Route::post('/kwitansi/pajak', 'VariabelController@pajak_insert');
 
 Route::get('/kwitansi', 'KwitansiController@index');
 Route::get('/kwitansi/{id}', 'KwitansiController@select');

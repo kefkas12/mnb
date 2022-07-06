@@ -128,20 +128,7 @@ class KwitansiController extends Controller
 
         return $kwitansi;
     }
-    public function keuntungan_get(Request $request)
-    {
-        $keuntungan = Keuntungan::get();
 
-        return $keuntungan;
-    }
-    public function keuntungan_insert(Request $request)
-    {
-        $keuntungan = Keuntungan::find(1);
-        $keuntungan->keuntungan = $request->keuntungan;
-        $keuntungan->save();
-
-        return $keuntungan;
-    }
     public function insert(Request $request)
     {
         $kwitansi = new Kwitansi;
