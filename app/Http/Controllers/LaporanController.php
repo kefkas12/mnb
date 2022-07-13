@@ -54,7 +54,7 @@ class LaporanController extends Controller
 
                 $jk = Detail_jurnal_pengeluaran_kas::select(DB::raw('cast(sum(sub_total) as decimal(65,2)) as total'))->whereBetween('tanggal_jurnal', [$from, $to])->first();
 
-                $report_kas = Laporan_kas::select(DB::raw('cast(sum(debet) as decimal(65,2)) as debet'), DB::raw('cast(sum(kredit) as decimal(65,2)) as kredit'))->whereBetween('tanggal_jurnal', [$from, $to])->first();
+                $report_kas = Laporan_kas::select(DB::raw('cast(sum(debet) as decimal(65,2)) as debit'), DB::raw('cast(sum(kredit) as decimal(65,2)) as kredit'))->whereBetween('tanggal_jurnal', [$from, $to])->first();
 
                 $saldo_awal_kas_total = 0;
                 $jk_kas_total = 0;
@@ -79,7 +79,7 @@ class LaporanController extends Controller
 
                 $jm = Detail_jurnal_penerimaan_kas::select(DB::raw('cast(sum(sub_total) as decimal(65,2)) as total'))->whereBetween('tanggal_jurnal', [$from, $to])->first();
 
-                $report_bank = Laporan_bank::select(DB::raw('cast(sum(debet) as decimal(65,2)) as debet'), DB::raw('cast(sum(kredit) as decimal(65,2)) as kredit'))->whereBetween('tanggal_jurnal', [$from, $to])->first();
+                $report_bank = Laporan_bank::select(DB::raw('cast(sum(debet) as decimal(65,2)) as debit'), DB::raw('cast(sum(kredit) as decimal(65,2)) as kredit'))->whereBetween('tanggal_jurnal', [$from, $to])->first();
 
                 $saldo_awal_bank_total = 0;
                 $jk_bank_total = 0;
