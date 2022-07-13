@@ -182,11 +182,18 @@ class Jurnal_umumController extends Controller
         $jurnal_umum->nomor_rekening_pengirim = $request->nomor_rekening_pengirim;
         $jurnal_umum->nomor_rekening_penerima = $request->nomor_rekening_penerima;
         $jurnal_umum->deskripsi = $request->deskripsi;
-        // $jurnal_umum->kode_akun_kredit = $request->kode_akun_kredit;
-        // $jurnal_umum->detail_kode_akun_kredit = $request->detail_kode_akun_kredit;
+        $jurnal_umum->kode_akun_kredit = $request->kode_akun_kredit;
+        $jurnal_umum->detail_kode_akun_kredit = $request->detail_kode_akun_kredit;
         $jurnal_umum->id_supplier = $request->id_supplier;
         $jurnal_umum->id_customer = $request->id_customer;
         $jurnal_umum->save();
+
+        $detail_jurnal_umum = Detail_jurnal_umum::where('id_jurnal_umum',$jurnal_umum->id)->first();
+        $detail_jurnal_umum = Detail_jurnal_umum::find($detail_jurnal_umum->id);
+        $detail_jurnal_umum->tanggal_jurnal = date("Y-m-d", strtotime($request->tanggal_jurnal));
+        $detail_jurnal_umum->kode_akun_kredit = $request->kode_akun_kredit;
+        $detail_jurnal_umum->detail_kode_akun_kredit = $request->detail_kode_akun_kredit;
+        $detail_jurnal_umum->save();
 
         return $jurnal_umum;
     }
