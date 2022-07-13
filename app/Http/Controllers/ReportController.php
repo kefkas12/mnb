@@ -262,7 +262,7 @@ class ReportController extends Controller
 
             // $data['jk'] = Detail_jurnal_pengeluaran_kas::select('tanggal_jurnal', 'keterangan', DB::raw('cast(sub_total as decimal(65,2)) as debet'))->whereBetween('tanggal_jurnal', [$from, $to])->Where('kode_akun_debit', $kode)->orderBy('detail_jurnal_pengeluaran_kas.created_at', 'DESC')->get();
 
-            $debit = Detail_jurnal_umum::select('tanggal_jurnal', 'keterangan', DB::raw('cast(sub_total as decimal(65,2)) as debet'))->whereBetween('tanggal_jurnal', [$from, $to])->Where('kode_akun_debit', $kode)->orderBy('detail_jurnal_umum.created_at', 'DESC')->get();
+            $debit = Detail_jurnal_umum::select('tanggal_jurnal', 'keterangan', DB::raw('cast(sub_total as decimal(65,2)) as debit'))->whereBetween('tanggal_jurnal', [$from, $to])->Where('kode_akun_debit', $kode)->orderBy('detail_jurnal_umum.created_at', 'DESC')->get();
 
             $kredit = Detail_jurnal_umum::select('tanggal_jurnal', 'keterangan', DB::raw('cast(sub_total as decimal(65,2)) as kredit'))->whereBetween('tanggal_jurnal', [$from, $to])->Where('kode_akun_kredit', $kode)->orderBy('detail_jurnal_umum.created_at', 'DESC')->get();
 
