@@ -269,7 +269,7 @@ class ReportController extends Controller
             $debit = $debit->toArray();
             $kredit = $kredit->toArray();
 
-            dd($kredit);
+            
 
             // $data['report'] = $kredit->merge($debit);
             $data['report'] = array_merge($debit, $kredit);
