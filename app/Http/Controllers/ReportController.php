@@ -761,12 +761,18 @@ class ReportController extends Controller
 
         if ($jm) {
             $jm_2 = $jm->total;
+        }else{
+            $jm_2 = 0;
         }
         if ($report_debit_bank) {
             $report_debit_2 = $report_debit_bank->total;
+        }else{
+            $report_debit_2 = 0;
         }
         if ($report_kredit_bank) {
             $report_kredit_2 = $report_kredit_bank->total;
+        }else{
+            $report_kredit_2 = 0;
         }
 
         $bank_akhir = number_format($bank_awal + $jm_2 - $report_debit_2 + $report_kredit_2, 2, ".", "");
