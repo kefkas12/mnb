@@ -223,20 +223,24 @@ class ReportController extends Controller
         $dir = $_GET['dir'];
         if ($dir == 'hutang_supplier') {
             $supplier = $_GET['supplier'];
-            $data['report'] = Laporan_hutang::select(DB::raw('sum(debet) as debit'), DB::raw('sum(kredit) as kredit'))->where('supplier', $supplier)->whereBetween('tanggal_jurnal', [$from, $to])->groupBy('supplier')->get()->all();
 
-            $saldo_awal_debit = Laporan_hutang::select(DB::raw('sum(debet) as debit'))->where('supplier', $supplier)->whereDate('tanggal_jurnal', '<', $from)->first();
-            if ($saldo_awal_debit->debit) {
-                $data['debit'] = $saldo_awal_debit->debit;
-            } else {
-                $data['debit'] = 0;
-            }
-            $saldo_awal_kredit = Laporan_hutang::select(DB::raw('sum(kredit) as kredit'))->where('supplier', $supplier)->whereDate('tanggal_jurnal', '<', $from)->first();
-            if ($saldo_awal_kredit->kredit) {
-                $data['kredit'] = $saldo_awal_kredit->kredit;
-            } else {
-                $data['kredit'] = 0;
-            }
+            $data['report'] = Detail_jurnal_umum::select('nama_perusahaan_supplier','kode_akun_debit','kode_akun_kredit','keterangan',DB::raw('if(kode_akun_debit = "220.001", sub_total, 0)as debit'), DB::raw('if(kode_akun_kredit = "220.001", sub_total, 0) as kredit'))->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])->Where('kode_akun_kredit', '220.001')->orWhere('kode_akun_debit', '220.001')->where('nama_perusahaan_supplier',$supplier)->get();
+            $saldo_awal = Detail_jurnal_umum::select(DB::raw('sum( if( kode_akun_debit = "610.001" , sub_total , -sub_total)) as saldo'))->Where('kode_akun_kredit', '220.001')->whereDate('tanggal_jurnal','<',$from)->first();
+            $data['saldo_awal'] = $saldo_awal->saldo;
+            // $data['report'] = Laporan_hutang::select(DB::raw('sum(debet) as debit'), DB::raw('sum(kredit) as kredit'))->where('supplier', $supplier)->whereBetween('tanggal_jurnal', [$from, $to])->groupBy('supplier')->get()->all();
+
+            // $saldo_awal_debit = Laporan_hutang::select(DB::raw('sum(debet) as debit'))->where('supplier', $supplier)->whereDate('tanggal_jurnal', '<', $from)->first();
+            // if ($saldo_awal_debit->debit) {
+            //     $data['debit'] = $saldo_awal_debit->debit;
+            // } else {
+            //     $data['debit'] = 0;
+            // }
+            // $saldo_awal_kredit = Laporan_hutang::select(DB::raw('sum(kredit) as kredit'))->where('supplier', $supplier)->whereDate('tanggal_jurnal', '<', $from)->first();
+            // if ($saldo_awal_kredit->kredit) {
+            //     $data['kredit'] = $saldo_awal_kredit->kredit;
+            // } else {
+            //     $data['kredit'] = 0;
+            // }
         } elseif ($dir == 'piutang_customer') {
             $customer = $_GET['customer'];
 
@@ -268,8 +272,6 @@ class ReportController extends Controller
 
             $debit = $debit->toArray();
             $kredit = $kredit->toArray();
-
-            
 
             // $data['report'] = $kredit->merge($debit);
             $data['report'] = array_merge($debit, $kredit);
@@ -566,7 +568,7 @@ class ReportController extends Controller
                     $report_kredit_2 = $report_kredit_bank->total;
                 }
 
-                $data['report_bank'] = number_format(-$saldo_awal_2 + $jm_2 - $report_debit_2 + $report_kredit_2, 2, ",", ".");
+                $data['report_bank'] = number_format($saldo_awal_2 - $jm_2 + $report_debit_2 - $report_kredit_2, 2, ",", ".");
             } else {
                 if ($kode_akun == '111.001') {
                     $data['jurnal_pengeluaran'] = Detail_jurnal_pengeluaran_kas::leftJoin('jurnal_pengeluaran_kas', 'detail_jurnal_pengeluaran_kas.id_jurnal_pengeluaran_kas', '=', 'jurnal_pengeluaran_kas.id')->select('detail_jurnal_pengeluaran_kas.tanggal_jurnal', 'jurnal_pengeluaran_kas.nomor_bukti', 'detail_jurnal_pengeluaran_kas.kode_akun_debit', 'detail_jurnal_pengeluaran_kas.keterangan', 'detail_jurnal_pengeluaran_kas.sub_total')->whereBetween('detail_jurnal_pengeluaran_kas.tanggal_jurnal', [$from, $to])->orderBy('detail_jurnal_pengeluaran_kas.tanggal_jurnal', 'DESC')->get();
