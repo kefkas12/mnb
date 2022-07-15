@@ -19,6 +19,7 @@ class Jurnal_umum extends Model
     {
         return $this->hasMany('App\Detail_jurnal_umum','id_jurnal_umum');
     }
+    
     public function last_kode_induk(){
         if (!$this->jurnal_umum()) {
             return 'JGN-' . date('Y') . '-000001-MNB';

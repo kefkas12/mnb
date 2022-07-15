@@ -669,6 +669,8 @@ class ReportController extends Controller
         //
         $laba_ditahan = Perkiraan::select('kode_akun', 'nama_perkiraan', 'normal_balance', DB::raw('cast(-saldo_awal_debet as decimal(65,2)) as saldo_awal_debet'), DB::raw('cast(-saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun', '310.002')->Where('tipe_akun', 'Detail')->first();
 
+        $piutang_dagang_awal = Perkiraan::select('kode_akun', 'nama_perkiraan', 'normal_balance', DB::raw('cast(-saldo_awal_debet as decimal(65,2)) as saldo_awal_debet'), DB::raw('cast(-saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun', '113.100')->Where('tipe_akun', 'Detail')->first();
+
         $piutang_dagang = Kwitansi::select(DB::raw('cast(SUM(total_dpp_kwitansi+total_ppn_kwitansi) as decimal(65,2)) as piutang_dagang'))->whereDate('tanggal_kwitansi', '<=', $to)->first();
         if ($piutang_dagang->piutang_dagang) {
             $piutang_dagang = $piutang_dagang->piutang_dagang;
@@ -761,6 +763,7 @@ class ReportController extends Controller
 
         $bank_akhir = number_format($bank_awal + $jm_2 - $report_debit_2 + $report_kredit_2, 2, ".", "");
         //////////////////bank////////////////////
+        $piutang_dagang = number_format($piutang_dagang_awal->saldo_awal_debet + $piutang_dagang, 2, ".", "");
 
         $hutang_pajak_akhir = $hutang_pajak_awal->saldo_awal_kredit + $hutang_pajak;
         $hutang_pajak_akhir = number_format($hutang_pajak_akhir, 2, ".", "");
