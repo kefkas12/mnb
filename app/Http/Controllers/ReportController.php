@@ -678,6 +678,8 @@ class ReportController extends Controller
             $piutang_dagang = 0;
         }
 
+        $uang_muka_pajak_awal = Perkiraan::select('kode_akun', 'nama_perkiraan', 'normal_balance', DB::raw('cast(saldo_awal_debet as decimal(65,2)) as saldo_awal_debet'), DB::raw('cast(-saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun', '540.003')->Where('tipe_akun', 'Detail')->first();
+
         $uang_muka_pajak = Detail_jurnal_umum::select(DB::raw('cast(SUM(sub_total) as decimal(65,2)) as uang_muka_pajak'))->whereDate('tanggal_jurnal', '<=', $to)->where('kode_akun_debit', '540.003')->first();
 
         if ($uang_muka_pajak->uang_muka_pajak) {
@@ -764,6 +766,8 @@ class ReportController extends Controller
         $bank_akhir = number_format($bank_awal + $jm_2 - $report_debit_2 + $report_kredit_2, 2, ".", "");
         //////////////////bank////////////////////
         $piutang_dagang = number_format($piutang_dagang_awal->saldo_awal_debet + $piutang_dagang, 2, ".", "");
+
+        $uang_muka_pajak = number_format($piutang_dagang_awal->saldo_awal_kredit + $uang_muka_pajak, 2, ".", "");
 
         $hutang_pajak_akhir = $hutang_pajak_awal->saldo_awal_kredit + $hutang_pajak;
         $hutang_pajak_akhir = number_format($hutang_pajak_akhir, 2, ".", "");
