@@ -232,13 +232,13 @@ class KwitansiController extends Controller
 
         $pph = Variabel::where('nama_variabel','pph')->first();
 
-        $data['pph'] = $jumlah*$pph->nilai/100;
+        $data['pph'] = floor($jumlah*$pph->nilai/100);
 
         $data['selisih'] = $data['jumlah_dpp'] - $data['pph'];
 
         $ppn = Variabel::where('nama_variabel','ppn')->first();
 
-        $data['ppn'] = $jumlah*$ppn->nilai/100;
+        $data['ppn'] = floor($jumlah*$ppn->nilai/100);
 
         $data['kwitansi'] = Kwitansi::leftJoin('customer', 'kwitansi.nama_customer', '=', 'customer.nama_perusahaan')->where('kwitansi.id', $id)->first();
 
@@ -247,6 +247,18 @@ class KwitansiController extends Controller
     public function inv_min_ppn(Request $request, $id)
     {
         $data['detail_kwitansi'] = Detail_kwitansi::select('tanggal', 'nomor', 'berat_bruto', 'satuan_berat_bruto', 'potongan', 'satuan_potongan', 'berat_bersih', 'satuan_berat_bersih', 'harga_satuan', DB::raw('berat_bersih*harga_satuan  as jumlah'))->where('id_kwitansi', $id)->get();
+
+        $jumlah = 0;
+        foreach($data['detail_kwitansi'] as $v){
+            $jumlah += $v->jumlah;
+        }
+        $data['jumlah_dpp'] = $jumlah;
+
+        $pph = Variabel::where('nama_variabel','pph')->first();
+
+        $data['pph'] = floor($jumlah*$pph->nilai/100);
+
+        $data['selisih'] = $data['jumlah_dpp'] - $data['pph'];
 
         $data['kwitansi'] = Kwitansi::leftJoin('customer', 'kwitansi.nama_customer', '=', 'customer.nama_perusahaan')->where('kwitansi.id', $id)->first();
 
