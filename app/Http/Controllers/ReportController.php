@@ -785,7 +785,11 @@ class ReportController extends Controller
 
         $laba_tahun_berjalan_awal = $laba_tahun_berjalan_awal->saldo_awal_debet;
 
-        $laba_ditahan_akhir = number_format($laba_ditahan_awal + $laba_tahun_berjalan_awal + $laba_tahun_berjalan, 2, ".", "");
+        $laba_ditahan = number_format($laba_ditahan_awal, 2, ".", "");
+
+        $laba_tahun_berjalan = number_format( $laba_tahun_berjalan_awal + $laba_tahun_berjalan, 2, ".","");
+
+
 
         $data['kas'] = $kas_akhir; //done
         $data['bank'] = $bank_akhir; //done
@@ -795,7 +799,7 @@ class ReportController extends Controller
         $data['hutang_dagang'] = $hutang_dagang; //done
         $data['hutang_pajak'] = $hutang_pajak_akhir; //done
         $data['modal'] = $modal_awal; //done
-        $data['laba_ditahan'] = $laba_ditahan_akhir; //done
+        $data['laba_ditahan'] = $laba_ditahan; //done
         $data['laba_tahun_berjalan'] = $laba_tahun_berjalan; //done
         return $data;
     }
