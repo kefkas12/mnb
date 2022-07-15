@@ -707,6 +707,8 @@ class ReportController extends Controller
 
         $laba_ditahan = Perkiraan::select('kode_akun', 'nama_perkiraan', 'normal_balance', DB::raw('cast(saldo_awal_debet as decimal(65,2)) as saldo_awal_debet'), DB::raw('cast(-saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun', '310.002')->Where('tipe_akun', 'Detail')->first();
 
+        $laba_tahun_berjalan_awal = Perkiraan::select('kode_akun', 'nama_perkiraan', 'normal_balance', DB::raw('cast(saldo_awal_debet as decimal(65,2)) as saldo_awal_debet'), DB::raw('cast(-saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun', '310.003')->Where('tipe_akun', 'Detail')->first();
+
         $laba_tahun_berjalan = Detail_kwitansi::select(DB::raw('cast(SUM((harga_satuan-harga_beli)*berat_bersih) as decimal(65,2)) as laba_tahun_berjalan'))->whereDate('tanggal', '<=', $to)->first();
         if ($laba_tahun_berjalan->laba_tahun_berjalan) {
             $laba_tahun_berjalan = $laba_tahun_berjalan->laba_tahun_berjalan;
@@ -780,7 +782,10 @@ class ReportController extends Controller
 
         $modal_awal = $modal->saldo_awal_kredit;
         $laba_ditahan_awal = $laba_ditahan->saldo_awal_debet;
-        $laba_ditahan_akhir = number_format($laba_ditahan_awal + $laba_tahun_berjalan, 2, ".", "");
+
+        $laba_tahun_berjalan_awal = $laba_tahun_berjalan_awal->saldo_awal_debet;
+
+        $laba_ditahan_akhir = number_format($laba_ditahan_awal + $laba_tahun_berjalan_awal + $laba_tahun_berjalan, 2, ".", "");
 
         $data['kas'] = $kas_akhir; //done
         $data['bank'] = $bank_akhir; //done
