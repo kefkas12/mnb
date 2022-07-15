@@ -745,7 +745,7 @@ class ReportController extends Controller
         //////////////////kas/////////////////////
 
         //////////////////bank////////////////////
-        $bank = Perkiraan::select(DB::raw('cast(saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun', '112.101')->Where('tipe_akun', 'Detail')->first();
+        $bank = Perkiraan::select(DB::raw('cast(CEIL(saldo_awal_kredit, 0) as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun', '112.101')->Where('tipe_akun', 'Detail')->first();
 
         $jm = Detail_jurnal_penerimaan_kas::select(DB::raw('cast(sum(sub_total) as decimal(65,2)) as total'))->whereDate('tanggal_jurnal', '<=', $to)->first();
 
