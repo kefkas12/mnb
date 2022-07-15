@@ -767,7 +767,7 @@ class ReportController extends Controller
         //////////////////bank////////////////////
         $piutang_dagang = number_format($piutang_dagang_awal->saldo_awal_debet + $piutang_dagang, 2, ".", "");
 
-        $uang_muka_pajak = number_format($piutang_dagang_awal->saldo_awal_kredit + $uang_muka_pajak, 2, ".", "");
+        $uang_muka_pajak = number_format($uang_muka_pajak_awal->saldo_awal_kredit + $uang_muka_pajak, 2, ".", "");
 
         $hutang_pajak_akhir = $hutang_pajak_awal->saldo_awal_kredit + $hutang_pajak;
         $hutang_pajak_akhir = number_format($hutang_pajak_akhir, 2, ".", "");
