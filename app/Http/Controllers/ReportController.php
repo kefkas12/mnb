@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Customer;
 use App\Kwitansi;
 use App\Detail_kwitansi;
 use App\Perkiraan;
@@ -255,17 +256,24 @@ class ReportController extends Controller
         } elseif ($dir == 'piutang_customer') {
             $customer = $_GET['customer'];
 
-            $data['debit'] = Kwitansi::select('tanggal_kwitansi as tanggal', 'keterangan_kwitansi as keterangan', DB::raw('(total_dpp_kwitansi + total_ppn_kwitansi) as debit '))->whereBetween('tanggal_kwitansi', [$from, $to])->where('nama_customer', $customer)->orderBy('created_at', 'DESC')->get();
+            // $data['debit'] = Kwitansi::select('tanggal_kwitansi as tanggal', 'keterangan_kwitansi as keterangan', DB::raw('(total_dpp_kwitansi + total_ppn_kwitansi) as debit '))->whereBetween('tanggal_kwitansi', [$from, $to])->where('nama_customer', $customer)->orderBy('created_at', 'DESC')->get();
 
-            $data['kredit'] = Detail_jurnal_umum::select('tanggal_jurnal as tanggal', 'keterangan', DB::raw('sub_total as kredit'))->where('kode_akun_kredit', '113.101')->whereBetween('tanggal_jurnal', [$from, $to])->where('nama_perusahaan_customer', $customer)->orderBy('created_at', 'DESC')->get();
+            // $data['kredit'] = Detail_jurnal_umum::select('tanggal_jurnal as tanggal', 'keterangan', DB::raw('sub_total as kredit'))->where('kode_akun_kredit', '113.101')->whereBetween('tanggal_jurnal', [$from, $to])->where('nama_perusahaan_customer', $customer)->orderBy('created_at', 'DESC')->get();
 
-            $saldo_awal = Kwitansi::select(DB::raw('sum( total_dpp_kwitansi + total_ppn_kwitansi) as debit'))->where('nama_customer', $customer)->whereDate('tanggal_kwitansi', '<', $from)->first();
+            $data['report'] = Detail_jurnal_umum::select('tanggal_jurnal','kode_akun_debit','kode_akun_kredit','keterangan',DB::raw('if(kode_akun_debit = "113.101", sub_total, 0)as debit'), DB::raw('if(kode_akun_kredit = "113.101", sub_total, 0) as kredit'))->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])->Where('kode_akun_kredit', '113.101')->orWhere('kode_akun_debit', '113.101')->where('nama_perusahaan_customer',$customer)->orderBy('tanggal_jurnal','ASC')->get();
 
-            if ($saldo_awal->debit) {
-                $data['saldo_awal'] = $saldo_awal->debit;
+            $kwitansi_awal = Customer::where('nama_perusahaan',$customer)->first();
+
+            $kwitansi = Kwitansi::select(DB::raw('sum( total_dpp_kwitansi + total_ppn_kwitansi) as debit'))->where('nama_customer', $customer)->whereDate('tanggal_kwitansi', '<', $from)->first();
+
+            if ($kwitansi->debit) {
+                $kwitansi = $kwitansi->debit;
             } else {
-                $data['saldo_awal'] = 0;
+                $kwitansi = 0;
             }
+
+            $data['saldo_awal'] = number_format($kwitansi_awal->saldo_awal + $kwitansi, 2, ".", "");
+
         } elseif ($dir == 'biaya') {
             $kode = $_GET['kode'];
 

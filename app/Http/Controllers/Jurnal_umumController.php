@@ -193,6 +193,8 @@ class Jurnal_umumController extends Controller
         $detail_jurnal_umum->tanggal_jurnal = date("Y-m-d", strtotime($request->tanggal_jurnal));
         $detail_jurnal_umum->kode_akun_kredit = $request->kode_akun_kredit;
         $detail_jurnal_umum->detail_kode_akun_kredit = $request->detail_kode_akun_kredit;
+        $detail_jurnal_umum->nama_perusahaan_supplier = $request->id_supplier;
+        $detail_jurnal_umum->nama_perusahaan_customer = $request->id_customer;
         $detail_jurnal_umum->save();
 
         return $jurnal_umum;
