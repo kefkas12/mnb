@@ -11,6 +11,7 @@ use App\Detail_jurnal_pengeluaran_kas;
 use App\Detail_jurnal_penerimaan_kas;
 use App\Jurnal_umum;
 use App\Laporan_hutang;
+use App\Supplier;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -224,9 +225,19 @@ class ReportController extends Controller
         if ($dir == 'hutang_supplier') {
             $supplier = $_GET['supplier'];
 
-            $data['report'] = Detail_jurnal_umum::select('nama_perusahaan_supplier','kode_akun_debit','kode_akun_kredit','keterangan',DB::raw('if(kode_akun_debit = "220.001", sub_total, 0)as debit'), DB::raw('if(kode_akun_kredit = "220.001", sub_total, 0) as kredit'))->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])->Where('kode_akun_kredit', '220.001')->orWhere('kode_akun_debit', '220.001')->where('nama_perusahaan_supplier',$supplier)->get();
-            $saldo_awal = Detail_jurnal_umum::select(DB::raw('sum( if( kode_akun_debit = "610.001" , sub_total , -sub_total)) as saldo'))->Where('kode_akun_kredit', '220.001')->whereDate('tanggal_jurnal','<',$from)->first();
-            $data['saldo_awal'] = $saldo_awal->saldo;
+            $data['report'] = Detail_jurnal_umum::select('tanggal_jurnal','kode_akun_debit','kode_akun_kredit','keterangan',DB::raw('if(kode_akun_debit = "220.001", sub_total, 0)as debit'), DB::raw('if(kode_akun_kredit = "220.001", sub_total, 0) as kredit'))->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])->Where('kode_akun_kredit', '220.001')->orWhere('kode_akun_debit', '220.001')->where('nama_perusahaan_supplier',$supplier)->orderBy('tanggal_jurnal','ASC')->get();
+
+            $hutang_supplier_awal = Supplier::where('nama_perusahaan',$supplier)->first();
+
+            $hutang_supplier = Detail_jurnal_umum::select(DB::raw('sum( if( kode_akun_debit = "610.001" , sub_total , -sub_total)) as saldo'))->Where('kode_akun_kredit', '220.001')->whereDate('tanggal_jurnal','<',$from)->first();
+            if($hutang_supplier->saldo != null){
+                $hutang_supplier = $hutang_supplier->saldo;
+            }else{
+                $hutang_supplier = 0;
+            }
+                
+            $data['saldo_awal'] = number_format($hutang_supplier_awal->saldo_awal + $hutang_supplier, 2, ".", "");
+
             // $data['report'] = Laporan_hutang::select(DB::raw('sum(debet) as debit'), DB::raw('sum(kredit) as kredit'))->where('supplier', $supplier)->whereBetween('tanggal_jurnal', [$from, $to])->groupBy('supplier')->get()->all();
 
             // $saldo_awal_debit = Laporan_hutang::select(DB::raw('sum(debet) as debit'))->where('supplier', $supplier)->whereDate('tanggal_jurnal', '<', $from)->first();
