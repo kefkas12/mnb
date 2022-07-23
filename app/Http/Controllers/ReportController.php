@@ -225,8 +225,12 @@ class ReportController extends Controller
         $dir = $_GET['dir'];
         if ($dir == 'hutang_supplier') {
             $supplier = $_GET['supplier'];
+            //$data['report'] = Detail_jurnal_umum::select('tanggal_jurnal', 'kode_akun_debit', 'kode_akun_kredit', 'keterangan', DB::raw('if(kode_akun_debit = "220.001", sub_total, 0)as debit'), DB::raw('if(kode_akun_kredit = "220.001", sub_total, 0) as kredit'))->where('nama_perusahaan_supplier',$supplier)->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])->Where('kode_akun_kredit', '220.001')->orWhere('kode_akun_debit', '220.001')->orderBy('tanggal_jurnal', 'ASC')->get();
 
-            $data['report'] = Detail_jurnal_umum::select('tanggal_jurnal', 'kode_akun_debit', 'kode_akun_kredit', 'keterangan', DB::raw('if(kode_akun_debit = "220.001", sub_total, 0)as debit'), DB::raw('if(kode_akun_kredit = "220.001", sub_total, 0) as kredit'))->where('nama_perusahaan_supplier',$supplier)->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])->Where('kode_akun_kredit', '220.001')->orWhere('kode_akun_debit', '220.001')->orderBy('tanggal_jurnal', 'ASC')->get();
+	    $data['report'] = Detail_jurnal_umum::select('tanggal_jurnal', 'kode_akun_debit', 'kode_akun_kredit', 'keterangan', DB::raw('if(kode_akun_debit = "220.001", sub_total, 0)as debit'), DB::raw('if(kode_akun_kredit = "220.001", sub_total, 0) as kredit'))->where('nama_perusahaan_supplier', $supplier)->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])->where(function ($query){
+                        $query->where('kode_akun_kredit', '220.001')
+                              ->orWhere('kode_akun_debit', '220.001');
+                    })->orderBy('tanggal_jurnal', 'ASC')->get();
 
             $hutang_supplier_awal = Supplier::where('nama_perusahaan', $supplier)->first();
 
