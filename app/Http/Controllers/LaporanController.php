@@ -42,6 +42,18 @@ class LaporanController extends Controller
                     $saldo_awal = Perkiraan::select('kode_akun', 'nama_perkiraan', 'normal_balance', DB::raw('cast(saldo_awal_debet as decimal(65,2)) as saldo_awal_debet'), DB::raw('cast(saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun', $kode_akun)->Where('tipe_akun', 'Detail')->first();
                     $data['saldo_awal'] = $saldo_awal->saldo_awal_debet;
 
+		    $saldo_awal_debit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('sum(detail_jurnal_umum.sub_total) as debit'))->where('detail_jurnal_umum.kode_akun_debit', $kode_akun)->where('jurnal_umum.tanggal_jurnal','<', $from)->first();
+
+                    if($saldo_awal_debit){
+                        $data['saldo_awal'] = $data['saldo_awal'] + $saldo_awal_debit->debit;
+                    }
+
+                    $saldo_awal_kredit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('sum(detail_jurnal_umum.sub_total) as kredit'))->where('detail_jurnal_umum.kode_akun_kredit', $kode_akun)->where('jurnal_umum.tanggal_jurnal','<', $from)->first();
+
+                    if($saldo_awal_kredit){
+                        $data['saldo_awal'] = $data['saldo_awal'] - $saldo_awal_kredit->kredit;
+                    }
+
                     $debit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select('jurnal_umum.tanggal_jurnal', 'jurnal_umum.nomor_bukti', 'detail_jurnal_umum.keterangan', 'detail_jurnal_umum.sub_total as debit', DB::raw('0 as kredit'), 'jurnal_umum.created_at as created_at', 'jurnal_umum.updated_at as updated_at')->where('detail_jurnal_umum.kode_akun_debit', $kode_akun)->whereBetween('jurnal_umum.tanggal_jurnal', [$from, $to])->get();
 
                     $kredit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select('jurnal_umum.tanggal_jurnal', 'jurnal_umum.nomor_bukti', 'detail_jurnal_umum.keterangan', DB::raw('0 as debit'), 'detail_jurnal_umum.sub_total as kredit', 'jurnal_umum.created_at as created_at', 'jurnal_umum.updated_at as updated_at')->where('detail_jurnal_umum.kode_akun_kredit', $kode_akun)->whereBetween('jurnal_umum.tanggal_jurnal', [$from, $to])->get();
@@ -55,9 +67,21 @@ class LaporanController extends Controller
                     $saldo_awal = Perkiraan::select('kode_akun', 'nama_perkiraan', 'normal_balance', DB::raw('cast(saldo_awal_debet as decimal(65,2)) as saldo_awal_debet'), DB::raw('cast(saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun', $kode_akun)->Where('tipe_akun', 'Detail')->first();
                     $data['saldo_awal'] = $saldo_awal->saldo_awal_kredit;
                     
-                    $debit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select('jurnal_umum.tanggal_jurnal', 'jurnal_umum.nomor_bukti', 'detail_jurnal_umum.keterangan', 'detail_jurnal_umum.sub_total as debit', DB::raw('0 as kredit'), 'jurnal_umum.created_at as created_at','jurnal_umum.updated_at as updated_at')->where('detail_jurnal_umum.kode_akun_debit', $kode_akun)->whereBetween('jurnal_umum.tanggal_jurnal', [$from, $to])->get();
+		    $saldo_awal_debit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('sum(detail_jurnal_umum.sub_total) as debit'))->where('detail_jurnal_umum.kode_akun_debit', $kode_akun)->where('jurnal_umum.tanggal_jurnal', '<',$from)->first();
 
-                    $kredit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select('jurnal_umum.tanggal_jurnal', 'jurnal_umum.nomor_bukti', 'detail_jurnal_umum.keterangan', DB::raw('0 as debit'), 'detail_jurnal_umum.sub_total as kredit', 'jurnal_umum.created_at as created_at','jurnal_umum.updated_at as updated_at')->where('detail_jurnal_umum.kode_akun_kredit', $kode_akun)->whereBetween('jurnal_umum.tanggal_jurnal', [$from, $to])->get();
+                    if($saldo_awal_debit){
+                        $data['saldo_awal'] = $data['saldo_awal'] + $saldo_awal_debit->debit;
+                    }
+
+                    $saldo_awal_kredit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select( DB::raw('sum(detail_jurnal_umum.sub_total) as kredit'))->where('detail_jurnal_umum.kode_akun_kredit', $kode_akun)->where('jurnal_umum.tanggal_jurnal', '<',$from)->first();
+
+                    if($saldo_awal_kredit){
+                        $data['saldo_awal'] = $data['saldo_awal'] - $saldo_awal_kredit->kredit;
+                    }
+
+                    $debit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select('jurnal_umum.tanggal_jurnal', 'jurnal_umum.nomor_bukti', 'detail_jurnal_umum.keterangan', 'detail_jurnal_umum.sub_total as debit', DB::raw('0 as kredit'), 'detail_jurnal_umum.created_at as created_at','detail_jurnal_umum.updated_at as updated_at')->where('detail_jurnal_umum.kode_akun_debit', $kode_akun)->whereBetween('jurnal_umum.tanggal_jurnal', [$from, $to])->get();
+
+                    $kredit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select('jurnal_umum.tanggal_jurnal', 'jurnal_umum.nomor_bukti', 'detail_jurnal_umum.keterangan', DB::raw('0 as debit'), 'detail_jurnal_umum.sub_total as kredit', 'detail_jurnal_umum.created_at as created_at','detail_jurnal_umum.updated_at as updated_at')->where('detail_jurnal_umum.kode_akun_kredit', $kode_akun)->whereBetween('jurnal_umum.tanggal_jurnal', [$from, $to])->get();
 
                     $debit = $debit->toArray();
                     $kredit = $kredit->toArray();

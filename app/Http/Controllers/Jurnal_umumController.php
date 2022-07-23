@@ -188,14 +188,16 @@ class Jurnal_umumController extends Controller
         $jurnal_umum->id_customer = $request->id_customer;
         $jurnal_umum->save();
 
-        $detail_jurnal_umum = Detail_jurnal_umum::where('id_jurnal_umum',$jurnal_umum->id)->first();
-        $detail_jurnal_umum = Detail_jurnal_umum::find($detail_jurnal_umum->id);
-        $detail_jurnal_umum->tanggal_jurnal = date("Y-m-d", strtotime($request->tanggal_jurnal));
-        $detail_jurnal_umum->kode_akun_kredit = $request->kode_akun_kredit;
-        $detail_jurnal_umum->detail_kode_akun_kredit = $request->detail_kode_akun_kredit;
-        $detail_jurnal_umum->nama_perusahaan_supplier = $request->id_supplier;
-        $detail_jurnal_umum->nama_perusahaan_customer = $request->id_customer;
-        $detail_jurnal_umum->save();
+        $detail_jurnal_umum = Detail_jurnal_umum::where('id_jurnal_umum',$jurnal_umum->id)->get();
+	foreach($detail_jurnal_umum as $v){
+        	$detail_jurnal_umum = Detail_jurnal_umum::find($v->id);
+        	$detail_jurnal_umum->tanggal_jurnal = date("Y-m-d", strtotime($request->tanggal_jurnal));
+        	$detail_jurnal_umum->kode_akun_kredit = $request->kode_akun_kredit;
+        	$detail_jurnal_umum->detail_kode_akun_kredit = $request->detail_kode_akun_kredit;
+        	$detail_jurnal_umum->nama_perusahaan_supplier = $request->id_supplier;
+        	$detail_jurnal_umum->nama_perusahaan_customer = $request->id_customer;
+        	$detail_jurnal_umum->save();
+	}
 
         return $jurnal_umum;
     }
