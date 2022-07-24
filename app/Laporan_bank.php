@@ -20,7 +20,7 @@ class Laporan_bank extends Model
                 
                 $laporan_bank->nomor_bukti = $jurnal_umum->nomor_bukti;
                 $laporan_bank->keterangan = $v->keterangan;
-                $laporan_bank->debet = $v->sub_total;
+                $laporan_bank->debit = $v->sub_total;
                 $laporan_bank->kredit = 0;
                 $laporan_bank->save();
             }elseif($v->kode_akun_kredit == '112.101'){
@@ -31,7 +31,7 @@ class Laporan_bank extends Model
                 
                 $laporan_bank->nomor_bukti = $jurnal_umum->nomor_bukti;
                 $laporan_bank->keterangan = $v->keterangan;
-                $laporan_bank->debet = 0;
+                $laporan_bank->debit = 0;
                 $laporan_bank->kredit = $v->sub_total;
                 $laporan_bank->save();
             }

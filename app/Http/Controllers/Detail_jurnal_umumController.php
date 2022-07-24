@@ -153,7 +153,7 @@ class Detail_jurnal_umumController extends Controller
             $laporan_kas->tanggal_jurnal = $jurnal_umum->tanggal_jurnal;
             $laporan_kas->nomor_bukti = $jurnal_umum->nomor_bukti;
             $laporan_kas->keterangan = $request->keterangan;
-            $laporan_kas->debet = $request->sub_total;
+            $laporan_kas->debit = $request->sub_total;
             $laporan_kas->save();
         } elseif ($request->kode_akun_kredit == '111.001') {
             $jurnal_umum = Jurnal_umum::where('id', $request->id_jurnal_umum)->first();
@@ -171,7 +171,7 @@ class Detail_jurnal_umumController extends Controller
             $laporan_bank->tanggal_jurnal = $jurnal_umum->tanggal_jurnal;
             $laporan_bank->nomor_bukti = $jurnal_umum->nomor_bukti;
             $laporan_bank->keterangan = $request->keterangan;
-            $laporan_bank->debet = $request->sub_total;
+            $laporan_bank->debit = $request->sub_total;
             $laporan_bank->save();
         } elseif ($request->kode_akun_kredit == '112.101') {
             $jurnal_umum = Jurnal_umum::where('id', $request->id_jurnal_umum)->first();
@@ -192,7 +192,7 @@ class Detail_jurnal_umumController extends Controller
             else
                 $laporan_hutang->supplier = $detail_jurnal_umum->nama_perusahaan_supplier;
             $laporan_hutang->keterangan = $request->keterangan;
-            $laporan_hutang->debet = $request->sub_total;
+            $laporan_hutang->debit = $request->sub_total;
             $laporan_hutang->save();
         } elseif ($request->kode_akun_kredit == '220.001') {
             $jurnal_umum = Jurnal_umum::where('id', $request->id_jurnal_umum)->first();

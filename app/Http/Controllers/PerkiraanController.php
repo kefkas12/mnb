@@ -26,11 +26,11 @@ class PerkiraanController extends Controller
                     ->orWhere('kode_akun_induk', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('nama_perkiraan', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('neraca', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('saldo_awal_debet', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('saldo_awal_debit', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('saldo_awal_kredit', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('posisi', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('normal_balance', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('saldo_awal_debet_r', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('saldo_awal_debit_r', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('saldo_awal_kredit_r', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
                     ->orderBy('created_at', 'desc')
@@ -41,11 +41,11 @@ class PerkiraanController extends Controller
                         ->orWhere('kode_akun_induk', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('nama_perkiraan', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('neraca', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('saldo_awal_debet', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('saldo_awal_debit', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('saldo_awal_kredit', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('posisi', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('normal_balance', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('saldo_awal_debet_r', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('saldo_awal_debit_r', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('saldo_awal_kredit_r', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
                         ->orderBy($_GET['sort'], 'desc')
@@ -56,11 +56,11 @@ class PerkiraanController extends Controller
                             ->orWhere('kode_akun_induk', 'like', '%' . $_GET['search'] . '%')
                             ->orWhere('nama_perkiraan', 'like', '%' . $_GET['search'] . '%')
                             ->orWhere('neraca', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('saldo_awal_debet', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('saldo_awal_debit', 'like', '%' . $_GET['search'] . '%')
                             ->orWhere('saldo_awal_kredit', 'like', '%' . $_GET['search'] . '%')
                             ->orWhere('posisi', 'like', '%' . $_GET['search'] . '%')
                             ->orWhere('normal_balance', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('saldo_awal_debet_r', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('saldo_awal_debit_r', 'like', '%' . $_GET['search'] . '%')
                             ->orWhere('saldo_awal_kredit_r', 'like', '%' . $_GET['search'] . '%')
                             ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
                             ->orderBy($_GET['sort'], $_GET['order'])
@@ -81,11 +81,11 @@ class PerkiraanController extends Controller
                     ->orWhere('kode_akun_induk', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('nama_perkiraan', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('neraca', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('saldo_awal_debet', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('saldo_awal_debit', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('saldo_awal_kredit', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('posisi', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('normal_balance', 'like', '%' . $_GET['search'] . '%')
-                    ->orWhere('saldo_awal_debet_r', 'like', '%' . $_GET['search'] . '%')
+                    ->orWhere('saldo_awal_debit_r', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('saldo_awal_kredit_r', 'like', '%' . $_GET['search'] . '%')
                     ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
                     ->orderBy('created_at', 'desc')
@@ -96,11 +96,11 @@ class PerkiraanController extends Controller
                         ->orWhere('kode_akun_induk', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('nama_perkiraan', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('neraca', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('saldo_awal_debet', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('saldo_awal_debit', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('saldo_awal_kredit', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('posisi', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('normal_balance', 'like', '%' . $_GET['search'] . '%')
-                        ->orWhere('saldo_awal_debet_r', 'like', '%' . $_GET['search'] . '%')
+                        ->orWhere('saldo_awal_debit_r', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('saldo_awal_kredit_r', 'like', '%' . $_GET['search'] . '%')
                         ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
                         ->orderBy($_GET['sort'], 'desc')
@@ -111,11 +111,11 @@ class PerkiraanController extends Controller
                             ->orWhere('kode_akun_induk', 'like', '%' . $_GET['search'] . '%')
                             ->orWhere('nama_perkiraan', 'like', '%' . $_GET['search'] . '%')
                             ->orWhere('neraca', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('saldo_awal_debet', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('saldo_awal_debit', 'like', '%' . $_GET['search'] . '%')
                             ->orWhere('saldo_awal_kredit', 'like', '%' . $_GET['search'] . '%')
                             ->orWhere('posisi', 'like', '%' . $_GET['search'] . '%')
                             ->orWhere('normal_balance', 'like', '%' . $_GET['search'] . '%')
-                            ->orWhere('saldo_awal_debet_r', 'like', '%' . $_GET['search'] . '%')
+                            ->orWhere('saldo_awal_debit_r', 'like', '%' . $_GET['search'] . '%')
                             ->orWhere('saldo_awal_kredit_r', 'like', '%' . $_GET['search'] . '%')
                             ->orWhere('status', 'like', '%' . $_GET['search'] . '%')
                             ->orderBy($_GET['sort'], $_GET['order'])
@@ -146,7 +146,7 @@ class PerkiraanController extends Controller
     {
         $perkiraan = Perkiraan::where('status', 'Active')->get();
 
-        $debit = Perkiraan::where('status', 'Active')->sum('saldo_awal_debet');
+        $debit = Perkiraan::where('status', 'Active')->sum('saldo_awal_debit');
         $kredit = Perkiraan::where('status', 'Active')->sum('saldo_awal_kredit');
 
         $perkiraan->offsetSet('total_debit', $debit);
@@ -172,11 +172,11 @@ class PerkiraanController extends Controller
         $perkiraan->nama_perkiraan_akun_induk = $request->nama_perkiraan_akun_induk;
         $perkiraan->nama_perkiraan = $request->nama_perkiraan;
         $perkiraan->neraca = $request->neraca;
-        $perkiraan->saldo_awal_debet = $request->saldo_awal_debet;
+        $perkiraan->saldo_awal_debit = $request->saldo_awal_debit;
         $perkiraan->saldo_awal_kredit = $request->saldo_awal_kredit;
         $perkiraan->posisi = $request->posisi;
         $perkiraan->normal_balance = $request->normal_balance;
-        $perkiraan->saldo_awal_debet_r = $request->saldo_awal_debet_r;
+        $perkiraan->saldo_awal_debit_r = $request->saldo_awal_debit_r;
         $perkiraan->saldo_awal_kredit_r = $request->saldo_awal_kredit_r;
         $perkiraan->status = $request->status;
         $perkiraan->save();
@@ -193,11 +193,11 @@ class PerkiraanController extends Controller
         $perkiraan->nama_perkiraan_akun_induk = $request->nama_perkiraan_akun_induk;
         $perkiraan->nama_perkiraan = $request->nama_perkiraan;
         $perkiraan->neraca = $request->neraca;
-        $perkiraan->saldo_awal_debet = $request->saldo_awal_debet;
+        $perkiraan->saldo_awal_debit = $request->saldo_awal_debit;
         $perkiraan->saldo_awal_kredit = $request->saldo_awal_kredit;
         $perkiraan->posisi = $request->posisi;
         $perkiraan->normal_balance = $request->normal_balance;
-        $perkiraan->saldo_awal_debet_r = $request->saldo_awal_debet_r;
+        $perkiraan->saldo_awal_debit_r = $request->saldo_awal_debit_r;
         $perkiraan->saldo_awal_kredit_r = $request->saldo_awal_kredit_r;
         $perkiraan->status = $request->status;
         $perkiraan->save();
