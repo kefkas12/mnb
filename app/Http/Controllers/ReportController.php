@@ -264,9 +264,14 @@ class ReportController extends Controller
 
             // $data['kredit'] = Detail_jurnal_umum::select('tanggal_jurnal as tanggal', 'keterangan', DB::raw('sub_total as kredit'))->where('kode_akun_kredit', '113.101')->whereBetween('tanggal_jurnal', [$from, $to])->where('nama_perusahaan_customer', $customer)->orderBy('created_at', 'DESC')->get();
 
-            $data['debit'] = Kwitansi::select('tanggal_kwitansi as tanggal', 'keterangan_kwitansi as keterangan', DB::raw('(total_dpp_kwitansi + total_ppn_kwitansi) as debit '))->where('nama_customer', $customer)->whereBetween('tanggal_kwitansi', [$from, $to])->orderBy('tanggal', 'ASC')->get();
+            $debit = Kwitansi::select('tanggal_kwitansi as tanggal_jurnal', 'keterangan_kwitansi as keterangan', DB::raw('(total_dpp_kwitansi + total_ppn_kwitansi) as debit '), DB::raw('0 as kredit'))->where('nama_customer', $customer)->whereBetween('tanggal_kwitansi', [$from, $to])->orderBy('tanggal', 'ASC')->get();
 
-            $data['kredit'] = Detail_jurnal_umum::select('tanggal_jurnal', 'kode_akun_debit', 'kode_akun_kredit', 'keterangan', DB::raw('if(kode_akun_debit = "113.101", sub_total, 0)as debit'), DB::raw('if(kode_akun_kredit = "113.101", sub_total, 0) as kredit'))->where('nama_perusahaan_customer', $customer)->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])->Where('kode_akun_kredit', '113.101')->orWhere('kode_akun_debit', '113.101')->orderBy('tanggal_jurnal', 'ASC')->get();
+            $kredit = Detail_jurnal_umum::select('tanggal_jurnal', 'kode_akun_debit', 'kode_akun_kredit', 'keterangan', DB::raw('if(kode_akun_debit = "113.101", sub_total, 0)as debit'), DB::raw('if(kode_akun_kredit = "113.101", sub_total, 0) as kredit'))->where('nama_perusahaan_customer', $customer)->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])->Where('kode_akun_kredit', '113.101')->orWhere('kode_akun_debit', '113.101')->orderBy('tanggal_jurnal', 'ASC')->get();
+
+            $debit = $debit->toArray();
+            $kredit = $kredit->toArray();
+
+            $data['report'] = array_merge($debit, $kredit);
 
             $kwitansi_awal = Customer::where('nama_perusahaan', $customer)->first();
 
