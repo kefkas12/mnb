@@ -234,7 +234,7 @@ class ReportController extends Controller
 
             $hutang_supplier_awal = Supplier::where('nama_perusahaan', $supplier)->first();
 
-            $hutang_supplier = Detail_jurnal_umum::select(DB::raw('sum( if( kode_akun_debit = "610.001" , sub_total , -sub_total)) as saldo'))->Where('kode_akun_kredit', '220.001')->whereDate('tanggal_jurnal', '<', $from)->first();
+            $hutang_supplier = Detail_jurnal_umum::select(DB::raw('sum( if( kode_akun_debit = "610.001" , sub_total , -sub_total)) as saldo'))->where('nama_perusahaan_supplier',$supplier)->Where('kode_akun_kredit', '220.001')->whereDate('tanggal_jurnal', '<', $from)->first();
             if ($hutang_supplier->saldo != null) {
                 $hutang_supplier = $hutang_supplier->saldo;
             } else {
