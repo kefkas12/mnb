@@ -42,7 +42,7 @@ class LaporanController extends Controller
                     $saldo_awal = Perkiraan::select('kode_akun', 'nama_perkiraan', 'normal_balance', DB::raw('cast(saldo_awal_debit as decimal(65,2)) as saldo_awal_debit'), DB::raw('cast(saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun', $kode_akun)->Where('tipe_akun', 'Detail')->first();
                     $data['saldo_awal'] = $saldo_awal->saldo_awal_debit;
 
-		    $saldo_awal_debit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('sum(detail_jurnal_umum.sub_total) as debit'))->where('detail_jurnal_umum.kode_akun_debit', $kode_akun)->where('jurnal_umum.tanggal_jurnal','<', $from)->first();
+		            $saldo_awal_debit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('sum(detail_jurnal_umum.sub_total) as debit'))->where('detail_jurnal_umum.kode_akun_debit', $kode_akun)->where('jurnal_umum.tanggal_jurnal','<', $from)->first();
 
                     if($saldo_awal_debit){
                         $data['saldo_awal'] = $data['saldo_awal'] + $saldo_awal_debit->debit;
