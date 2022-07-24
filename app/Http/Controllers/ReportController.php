@@ -248,7 +248,7 @@ class ReportController extends Controller
                 $hutang_supplier_kredit = $saldo_awal_kredit->kredit;
             }
 
-            $data['saldo_awal'] = number_format($hutang_supplier_awal->saldo_awal + $hutang_supplier_debit - $hutang_supplier_kredit, 2, ".", "");
+            $data['saldo_awal'] = number_format($hutang_supplier_awal->saldo_awal - $hutang_supplier_debit + $hutang_supplier_kredit, 2, ".", "");
 
             // $data['report'] = Laporan_hutang::select(DB::raw('sum(debit) as debit'), DB::raw('sum(kredit) as kredit'))->where('supplier', $supplier)->whereBetween('tanggal_jurnal', [$from, $to])->groupBy('supplier')->get()->all();
 
