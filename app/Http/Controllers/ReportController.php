@@ -734,7 +734,16 @@ class ReportController extends Controller
 
         // $data['biaya_pajak'] = Detail_jurnal_umum::select(DB::raw('cast(sum(sub_total) as decimal(65,2)) as saldo'), 'kode_akun_debit', 'detail_kode_akun_debit')->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])->Where('kode_akun_debit', 'like', '54%')->groupBy('kode_akun_debit', 'detail_kode_akun_debit')->get();
 
-        $data['saldo_awal_biaya'] = Perkiraan::select('kode_akun', 'nama_perkiraan', 'normal_balance', DB::raw('cast(saldo_awal_debit as decimal(65,2)) as saldo_awal_debit'), DB::raw('cast(saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun','like', '55%')->orderBy('kode_akun','ASC')->get();
+        $saldo_awal_biaya = Perkiraan::select('kode_akun', 'nama_perkiraan', 'normal_balance', DB::raw('cast(saldo_awal_debit as decimal(65,2)) as saldo_awal_debit'), DB::raw('cast(saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun','like', '55%')->orderBy('kode_akun','ASC')->get();
+        $data['biaya'] = [];
+        foreach($saldo_awal_biaya as $v){
+            $saldo_awal_debit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('sum(detail_jurnal_umum.sub_total) as debit'))->where('detail_jurnal_umum.kode_akun_debit', $v->kode_akun)->where('jurnal_umum.tanggal_jurnal','<', $from)->first();
+
+            $saldo_awal_kredit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('sum(detail_jurnal_umum.sub_total) as kredit'))->where('detail_jurnal_umum.kode_akun_kredit', $v->kode_akun)->where('jurnal_umum.tanggal_jurnal','<', $from)->first();
+
+            array_push($data['biaya'],$v->saldo_awal_debit + $saldo_awal_debit->debit - $saldo_awal_kredit->kredit);
+        }
+        
 
         // $data['biaya_lain'] = Detail_jurnal_umum::select(DB::raw('cast(sub_total as decimal(65,2)) as saldo'), 'kode_akun_debit', 'detail_kode_akun_debit')->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])->Where('kode_akun_debit', 'like', '55%')->get();
         return $data;
