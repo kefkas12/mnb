@@ -22,7 +22,7 @@ class Laporan_hutang extends Model
                 else
                     $laporan_hutang->supplier = $v->nama_perusahaan_supplier;
                 $laporan_hutang->keterangan = $v->keterangan;
-                $laporan_hutang->debet = $v->sub_total;
+                $laporan_hutang->debit = $v->sub_total;
                 $laporan_hutang->kredit = 0;
                 $laporan_hutang->save();
             }elseif($v->kode_akun_kredit == '220.001'){
@@ -32,7 +32,7 @@ class Laporan_hutang extends Model
                 $laporan_hutang->tanggal_jurnal = $jurnal_umum->tanggal_jurnal;
                 $laporan_hutang->supplier = $jurnal_umum->id_supplier;
                 $laporan_hutang->keterangan = $v->keterangan;
-                $laporan_hutang->debet = 0;
+                $laporan_hutang->debit = 0;
                 $laporan_hutang->kredit = $v->sub_total;
                 $laporan_hutang->save();
             }
