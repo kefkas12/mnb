@@ -264,7 +264,7 @@ class ReportController extends Controller
 
             // $data['kredit'] = Detail_jurnal_umum::select('tanggal_jurnal as tanggal', 'keterangan', DB::raw('sub_total as kredit'))->where('kode_akun_kredit', '113.101')->whereBetween('tanggal_jurnal', [$from, $to])->where('nama_perusahaan_customer', $customer)->orderBy('created_at', 'DESC')->get();
 
-            $data['report'] = Detail_jurnal_umum::select('tanggal_jurnal', 'kode_akun_debit', 'kode_akun_kredit', 'keterangan', DB::raw('if(kode_akun_debit = "113.101", sub_total, 0)as debit'), DB::raw('if(kode_akun_kredit = "113.101", sub_total, 0) as kredit'))->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])->Where('kode_akun_kredit', '113.101')->orWhere('kode_akun_debit', '113.101')->where('nama_perusahaan_customer', $customer)->orderBy('tanggal_jurnal', 'ASC')->get();
+            $data['kredit'] = Detail_jurnal_umum::select('tanggal_jurnal', 'kode_akun_debit', 'kode_akun_kredit', 'keterangan', DB::raw('if(kode_akun_debit = "113.101", sub_total, 0)as debit'), DB::raw('if(kode_akun_kredit = "113.101", sub_total, 0) as kredit'))->where('nama_perusahaan_customer', $customer)->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])->Where('kode_akun_kredit', '113.101')->orWhere('kode_akun_debit', '113.101')->orderBy('tanggal_jurnal', 'ASC')->get();
 
             $kwitansi_awal = Customer::where('nama_perusahaan', $customer)->first();
 
@@ -677,10 +677,12 @@ class ReportController extends Controller
         $from = date("Y-m-d", strtotime($_GET['tanggal_dari']));
         $to = date("Y-m-d", strtotime($_GET['tanggal_sampai']));
 
-        $data['penjualan'] = Detail_kwitansi::select(DB::raw('SUM(berat_bersih*harga_satuan) as penjualan'))->whereBetween('tanggal_tagihan', [$from, $to])->first();
+        $data['penjualan'] = Detail_kwitansi::select(DB::raw('SUM(berat_bruto*harga_satuan) as penjualan'))->whereBetween('tanggal_tagihan', [$from, $to])->first();
 
         $data['penjualan'] = $data['penjualan']->penjualan;
         //pendapatan_lainnya
+
+        $saldo_awal_perkiraan = Perkiraan::select('kode_akun', 'nama_perkiraan', 'normal_balance', DB::raw('cast(saldo_awal_debit as decimal(65,2)) as saldo_awal_debit'), DB::raw('cast(saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun', '420.001')->orderBy('kode_akun','ASC')->first();
 
         $saldo_awal = Detail_jurnal_umum::select(DB::raw('cast(sum(sub_total) as decimal(65,2)) as saldo'))->Where('kode_akun_kredit', '420.001')->whereDate('detail_jurnal_umum.tanggal_jurnal', '<', $from)->first();
         if ($saldo_awal->saldo) {
@@ -701,7 +703,7 @@ class ReportController extends Controller
             $pendapatan_lainnya = 0;
         }
 
-        $data['pendapatan_lainnya'] = $saldo_awal + $jm + $pendapatan_lainnya;
+        $data['pendapatan_lainnya'] = $saldo_awal_perkiraan->saldo_awal_debit+$saldo_awal + $jm + $pendapatan_lainnya;
 
         //pendapatan_bunga_bank
 
