@@ -231,16 +231,17 @@ class ReportController extends Controller
             $hutang_supplier_awal = Supplier::where('nama_perusahaan', $supplier)->first();
 
             // $hutang_supplier = Detail_jurnal_umum::select(DB::raw('sum( if( kode_akun_debit = "610.001" , sub_total , -sub_total)) as saldo'))->where('nama_perusahaan_supplier',$supplier)->Where('kode_akun_kredit', '220.001')->whereDate('tanggal_jurnal', '<', $from)->first();
-            $hutang_supplier = Detail_jurnal_umum::select(DB::raw('sum( if( kode_akun_debit = "220.001" , sub_total , 0)) as debit'),DB::raw('sum( if( kode_akun_kredit = "220.001" , sub_total , 0)) as kredit'))->where('nama_perusahaan_supplier',$supplier)->Where('kode_akun_kredit', '220.001')->whereDate('tanggal_jurnal', '<', $from)->first();
-            if ($hutang_supplier->debit != null) {
-                $hutang_supplier_debit = $hutang_supplier->debit;
-            } else {
-                $hutang_supplier_debit = 0;
+
+            $saldo_awal_debit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('sum(detail_jurnal_umum.sub_total) as debit'))->where('nama_perusahaan_supplier',$supplier)->where('detail_jurnal_umum.kode_akun_debit', '220.001')->where('jurnal_umum.tanggal_jurnal','<', $from)->first();
+
+            if($saldo_awal_debit){
+                $hutang_supplier_debit = $saldo_awal_debit->debit;
             }
-            if ($hutang_supplier->kredit != null) {
-                $hutang_supplier_kredit = $hutang_supplier->kredit;
-            } else {
-                $hutang_supplier_kredit = 0;
+
+            $saldo_awal_kredit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('sum(detail_jurnal_umum.sub_total) as kredit'))->where('nama_perusahaan_supplier',$supplier)->where('detail_jurnal_umum.kode_akun_kredit', '220.001')->where('jurnal_umum.tanggal_jurnal','<', $from)->first();
+
+            if($saldo_awal_kredit){
+                $hutang_supplier_kredit = $saldo_awal_kredit->kredit;
             }
 
             $data['saldo_awal'] = number_format($hutang_supplier_awal->saldo_awal + $hutang_supplier_debit - $hutang_supplier_kredit, 2, ".", "");
