@@ -746,7 +746,7 @@ class ReportController extends Controller
             array_push($data_biaya, array('nama_perkiraan' => $v->nama_perkiraan));
             array_push($data_biaya, array('saldo' => $v->saldo_awal_debit + $saldo_awal_debit->debit - $saldo_awal_kredit->kredit));
 
-            array_push($data['biaya'],(object) $data_biaya);
+            array_push($data['biaya'],json_decode(json_encode($data_biaya, FALSE);
             $data_biaya = [];
         }
 
