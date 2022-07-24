@@ -274,7 +274,7 @@ class ReportController extends Controller
                 $kwitansi_debit = 0;
             }
 
-            $kwitansi_kredit = Detail_jurnal_umum::select(DB::raw('sum(sub_total) as kredit'))->where('nama_perusahaan_customer', $customer)->whereBetween('detail_jurnal_umum.tanggal_jurnal','<',$from)->Where('kode_akun_kredit', '113.101')->orderBy('tanggal_jurnal', 'ASC')->first();
+            $kwitansi_kredit = Detail_jurnal_umum::select(DB::raw('sum(sub_total) as kredit'))->where('nama_perusahaan_customer', $customer)->where('detail_jurnal_umum.tanggal_jurnal','<',$from)->Where('kode_akun_kredit', '113.101')->orderBy('tanggal_jurnal', 'ASC')->first();
 
             if ($kwitansi_kredit->kredit) {
                 $kwitansi_kredit = $kwitansi_kredit->kredit;
