@@ -230,14 +230,20 @@ class ReportController extends Controller
 
             $hutang_supplier_awal = Supplier::where('nama_perusahaan', $supplier)->first();
 
-            $hutang_supplier = Detail_jurnal_umum::select(DB::raw('sum( if( kode_akun_debit = "610.001" , sub_total , -sub_total)) as saldo'))->where('nama_perusahaan_supplier',$supplier)->Where('kode_akun_kredit', '220.001')->whereDate('tanggal_jurnal', '<', $from)->first();
-            if ($hutang_supplier->saldo != null) {
-                $hutang_supplier = $hutang_supplier->saldo;
+            // $hutang_supplier = Detail_jurnal_umum::select(DB::raw('sum( if( kode_akun_debit = "610.001" , sub_total , -sub_total)) as saldo'))->where('nama_perusahaan_supplier',$supplier)->Where('kode_akun_kredit', '220.001')->whereDate('tanggal_jurnal', '<', $from)->first();
+            $hutang_supplier = Detail_jurnal_umum::select(DB::raw('sum( if( kode_akun_debit = "220.001" , sub_total , 0)) as debit'),DB::raw('sum( if( kode_akun_kredit = "220.001" , sub_total , 0)) as kredit'))->where('nama_perusahaan_supplier',$supplier)->Where('kode_akun_kredit', '220.001')->whereDate('tanggal_jurnal', '<', $from)->first();
+            if ($hutang_supplier->debit != null) {
+                $hutang_supplier_debit = $hutang_supplier->debit;
             } else {
-                $hutang_supplier = 0;
+                $hutang_supplier_debit = 0;
+            }
+            if ($hutang_supplier->kredit != null) {
+                $hutang_supplier_kredit = $hutang_supplier->kredit;
+            } else {
+                $hutang_supplier_kredit = 0;
             }
 
-            $data['saldo_awal'] = number_format($hutang_supplier_awal->saldo_awal + $hutang_supplier, 2, ".", "");
+            $data['saldo_awal'] = number_format($hutang_supplier_awal->saldo_awal + $hutang_supplier_debit - $hutang_supplier_kredit, 2, ".", "");
 
             // $data['report'] = Laporan_hutang::select(DB::raw('sum(debit) as debit'), DB::raw('sum(kredit) as kredit'))->where('supplier', $supplier)->whereBetween('tanggal_jurnal', [$from, $to])->groupBy('supplier')->get()->all();
 
