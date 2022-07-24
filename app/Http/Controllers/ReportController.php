@@ -746,15 +746,13 @@ class ReportController extends Controller
 
             $saldo_awal_kredit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('sum(detail_jurnal_umum.sub_total) as kredit'))->where('detail_jurnal_umum.kode_akun_kredit', $v->kode_akun)->where('jurnal_umum.tanggal_jurnal','<', $from)->first();
             
-            array_push($data_biaya,(object) array('kode_akun' => $v->kode_akun));
-            array_push($data_biaya,(object) array('nama_perkiraan' => $v->nama_perkiraan));
-            array_push($data_biaya,(object) array('saldo' => $v->saldo_awal_debit + $saldo_awal_debit->debit - $saldo_awal_kredit->kredit));
+            array_push($data_biaya, array('kode_akun' => $v->kode_akun));
+            array_push($data_biaya, array('nama_perkiraan' => $v->nama_perkiraan));
+            array_push($data_biaya, array('saldo' => $v->saldo_awal_debit + $saldo_awal_debit->debit - $saldo_awal_kredit->kredit));
 
-            array_push($data['biaya'],$data_biaya);
+            array_push($data['biaya'],(object) $data_biaya);
             $data_biaya = [];
         }
-
-        $data['biaya'] = (object) $data['biaya'];
 
         // $data['biaya_lain'] = Detail_jurnal_umum::select(DB::raw('cast(sub_total as decimal(65,2)) as saldo'), 'kode_akun_debit', 'detail_kode_akun_debit')->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])->Where('kode_akun_debit', 'like', '55%')->get();
         return $data;
