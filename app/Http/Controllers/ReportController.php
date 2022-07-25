@@ -544,9 +544,10 @@ class ReportController extends Controller
                     } else {
                         $kwitansi_kredit = 0;
                     }
-
+                    $saldo_awal_temp = 0;
                     if ($kwitansi_awal) {
-                        $data['report'][$no]->offsetSet('saldo_awal', number_format($kwitansi_awal->saldo_awal + $kwitansi_debit - $kwitansi_kredit, 2, ".", ""));
+                        $saldo_awal_temp = $kwitansi_awal->saldo_awal + $kwitansi_debit - $kwitansi_kredit;
+                        $data['report'][$no]->offsetSet('saldo_awal', number_format($saldo_awal_temp, 2, ".", ""));
                     } else {
                         $data['report'][$no]->offsetSet('saldo_awal', 0);
                     }
@@ -559,18 +560,23 @@ class ReportController extends Controller
                     // }
 
                     $debit = Kwitansi::select(DB::raw('sum( total_dpp_kwitansi + total_ppn_kwitansi) as debit'))->groupBy('nama_customer')->whereBetween('tanggal_kwitansi', [$from, $to])->where('nama_customer', $data['report'][$no]->nama_customer)->first();
+                    $debit_temp = 0;
                     if ($debit) {
-                        $data['report'][$no]->offsetSet('debit', $debit->debit);
+                        $debit_temp = $debit->debit;
+                        $data['report'][$no]->offsetSet('debit', $debit_temp);
                     } else {
                         $data['report'][$no]->offsetSet('debit', 0);
                     }
 
                     $kredit = Detail_jurnal_umum::select(DB::raw('sum(sub_total) as kredit'))->groupBy('nama_perusahaan_customer')->whereBetween('tanggal_jurnal', [$from, $to])->where('kode_akun_kredit', '113.101')->where('nama_perusahaan_customer', $data['report'][$no]->nama_customer)->first();
+                    $kredit_temp = 0;
                     if ($kredit) {
-                        $data['report'][$no]->offsetSet('kredit', $kredit->kredit);
+                        $kredit_temp = $kredit->kredit;
+                        $data['report'][$no]->offsetSet('kredit', $kredit_temp);
                     } else {
                         $data['report'][$no]->offsetSet('kredit', 0);
                     }
+                    $data['report'][$no]['saldo'] = $saldo_awal_temp + $debit_temp - $kredit_temp;
                     $no++;
                 }
             } else {
