@@ -210,6 +210,7 @@ Route::get('/report/pendapatan/pendapatan_usaha', 'ReportController@pendapatan_u
 Route::get('/report/pendapatan/pendapatan_lain', 'ReportController@pendapatan_lain');
 Route::get('/report/pendapatan/pendapatan_uang_muka', 'ReportController@pendapatan_uang_muka');
 Route::get('/report/jurnal', 'Jurnal_umumController@jurnal');
+
 ///////////////////////////////////
 Route::get('/laporan/kas', 'LaporanController@kas');
 Route::get('/laporan/bank', 'LaporanController@bank');
