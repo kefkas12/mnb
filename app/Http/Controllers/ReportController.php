@@ -290,8 +290,6 @@ class ReportController extends Controller
                 $kwitansi_debit = 0;
             }
 
-            // $kwitansi_kredit = Detail_jurnal_umum::select(DB::raw('sum(sub_total) as kredit'))->where('nama_perusahaan_customer', $customer)->where('detail_jurnal_umum.tanggal_jurnal','<',$from)->Where('kode_akun_kredit', '113.101')->orderBy('tanggal_jurnal', 'ASC')->groupBy('sub_total')->first();
-
             $kwitansi_kredit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('sum(detail_jurnal_umum.sub_total) as kredit'))->where('nama_perusahaan_customer', $customer)->where('detail_jurnal_umum.kode_akun_kredit', '113.101')->where('jurnal_umum.tanggal_jurnal', '<', $from)->first();
 
             if ($kwitansi_kredit) {
@@ -529,12 +527,36 @@ class ReportController extends Controller
                 $data['report'] = Kwitansi::select('nama_customer')->groupBy('nama_customer')->get();
                 $no = 0;
                 foreach ($data['report'] as $v) {
-                    $saldo_awal = Kwitansi::select('nama_customer', DB::raw('sum( total_dpp_kwitansi + total_ppn_kwitansi) as saldo_awal'))->where('nama_customer', $data['report'][$no]->nama_customer)->groupBy('nama_customer')->whereDate('tanggal_kwitansi', '<', $from)->first();
-                    if ($saldo_awal) {
-                        $data['report'][$no]->offsetSet('saldo_awal', $saldo_awal->saldo_awal);
+                    $kwitansi_awal = Customer::where('nama_perusahaan', $data['report'][$no]->nama_customer)->first();
+
+                    $kwitansi_debit = Kwitansi::select(DB::raw('sum( total_dpp_kwitansi + total_ppn_kwitansi) as debit'))->where('nama_customer', $data['report'][$no]->nama_customer)->whereDate('tanggal_kwitansi', '<', $from)->first();
+
+                    if ($kwitansi_debit->debit) {
+                        $kwitansi_debit = $kwitansi_debit->debit;
+                    } else {
+                        $kwitansi_debit = 0;
+                    }
+
+                    $kwitansi_kredit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('sum(detail_jurnal_umum.sub_total) as kredit'))->where('nama_perusahaan_customer', $data['report'][$no]->nama_customer)->where('detail_jurnal_umum.kode_akun_kredit', '113.101')->where('jurnal_umum.tanggal_jurnal', '<', $from)->first();
+
+                    if ($kwitansi_kredit) {
+                        $kwitansi_kredit = $kwitansi_kredit->kredit;
+                    } else {
+                        $kwitansi_kredit = 0;
+                    }
+
+                    if ($kwitansi_awal) {
+                        $data['report'][$no]->offsetSet('saldo_awal', number_format($kwitansi_awal->saldo_awal + $kwitansi_debit - $kwitansi_kredit, 2, ".", ""));
                     } else {
                         $data['report'][$no]->offsetSet('saldo_awal', 0);
                     }
+
+                    // $saldo_awal = Kwitansi::select('nama_customer', DB::raw('sum( total_dpp_kwitansi + total_ppn_kwitansi) as saldo_awal'))->where('nama_customer', $data['report'][$no]->nama_customer)->groupBy('nama_customer')->whereDate('tanggal_kwitansi', '<', $from)->first();
+                    // if ($saldo_awal) {
+                    //     $data['report'][$no]->offsetSet('saldo_awal', $saldo_awal->saldo_awal);
+                    // } else {
+                    //     $data['report'][$no]->offsetSet('saldo_awal', 0);
+                    // }
 
                     $debit = Kwitansi::select(DB::raw('sum( total_dpp_kwitansi + total_ppn_kwitansi) as debit'))->groupBy('nama_customer')->whereBetween('tanggal_kwitansi', [$from, $to])->where('nama_customer', $data['report'][$no]->nama_customer)->first();
                     if ($debit) {
