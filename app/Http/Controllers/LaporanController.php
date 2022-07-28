@@ -152,7 +152,7 @@ class LaporanController extends Controller
         $all = $_GET['all'];
         if ($all == '') {
             if ($supplier == '') {
-                $data['report'] = Supplier::select('nama_perusahaan')->get();
+                $data['report'] = Supplier::select('nama_perusahaan as nama_perusahaan_supplier')->get();
                 // dd($data);
                 $no = 0;
                 foreach ($data['report'] as $v) {
