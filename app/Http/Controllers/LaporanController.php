@@ -205,7 +205,7 @@ class LaporanController extends Controller
                     } else {
                         $data['report'][$no]->offsetSet('kredit', 0);
                     }
-                    $data['report'][$no]['saldo'] = $saldo_awal_temp + $debit_temp - $kredit_temp;
+                    $data['report'][$no]['saldo'] = $saldo_awal_temp - $debit_temp + $kredit_temp;
                     $no++;
                 }
             } else {
