@@ -189,18 +189,23 @@ class LaporanController extends Controller
                     //
 
                     $debit = Detail_jurnal_umum::select(DB::raw('sum(sub_total) as debit'))->groupBy('nama_perusahaan_supplier')->whereBetween('tanggal_jurnal', [$from, $to])->where('kode_akun_debit', '220.001')->where('nama_perusahaan_supplier', $data['report'][$no]->nama_perusahaan)->first();
+                    $debit_temp = 0;
                     if ($debit) {
+                        $debit_temp = $debit->debit;
                         $data['report'][$no]->offsetSet('debit', $debit->debit);
                     } else {
                         $data['report'][$no]->offsetSet('debit', 0);
                     }
 
                     $kredit = Detail_jurnal_umum::select(DB::raw('sum(sub_total) as kredit'))->groupBy('nama_perusahaan_supplier')->whereBetween('tanggal_jurnal', [$from, $to])->where('kode_akun_kredit', '220.001')->where('nama_perusahaan_supplier', $data['report'][$no]->nama_perusahaan)->first();
+                    $kredit_temp = 0;
                     if ($kredit) {
+                        $kredit_temp = $kredit->kredit;
                         $data['report'][$no]->offsetSet('kredit', $kredit->kredit);
                     } else {
                         $data['report'][$no]->offsetSet('kredit', 0);
                     }
+                    $data['report'][$no]['saldo'] = $saldo_awal_temp + $debit_temp - $kredit_temp;
                     $no++;
                 }
             } else {
