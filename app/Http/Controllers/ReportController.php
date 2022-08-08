@@ -44,7 +44,6 @@ class ReportController extends Controller
         }
 
         $data['tanggal'] = $from . ' ' . $to;
-
         $datediff = strtotime($to) - strtotime($from);
 
         $data['periode_hari'] = round($datediff / (60 * 60 * 24)) + 1;
@@ -62,11 +61,13 @@ class ReportController extends Controller
             if ($pks == '') {
                 $data['report'] = Detail_kwitansi::select('tanggal', 'nomor', 'nomor_polisi', 'berat_bruto', 'satuan_berat_bruto', 'potongan', 'satuan_potongan', 'berat_bersih', 'satuan_berat_bersih', 'harga_satuan', DB::raw('berat_bersih*harga_satuan  as jumlah'))->whereBetween('detail_kwitansi.tanggal_tagihan', [$from, $to])->orderBy('tanggal', 'DESC')->get();
             } else {
-                $data['report'] = Detail_kwitansi::select('tanggal', 'nomor', 'nomor_polisi', 'berat_bruto', 'satuan_berat_bruto', 'potongan', 'satuan_potongan', 'berat_bersih', 'satuan_berat_bersih', 'harga_satuan', DB::raw('berat_bersih*harga_satuan  as jumlah'))->where('detail_kwitansi.nama_customer', $pks)->whereBetween('detail_kwitansi.tanggal_tagihan', [$from, $to])->orderBy('tanggal', 'DESC')->get();
+                $data['report'] = Detail_kwitansi::select('tanggal', 'nomor', 'nomor_polisi', 'berat_bruto', 'satuan_berat_bruto', 'potongan', 'satuan_potongan', 'berat_bersih', 'satuan_berat_bersih', 'harga_satuan', DB::raw('berat_bersih*harga_satuan  as jumlah'))->where('nama_customer', $pks)->whereBetween('detail_kwitansi.tanggal_tagihan', [$from, $to])->orderBy('tanggal', 'DESC')->get();
+                dd($data);
             }
         } else {
             $data['report'] = Detail_kwitansi::select('nama_customer', DB::raw('cast(sum(berat_bruto) as decimal(65,2)) as berat_bruto'), 'satuan_berat_bruto', DB::raw('cast(sum(potongan) as decimal(65,2)) as potongan'), 'satuan_potongan', DB::raw('cast(sum(berat_bersih) as decimal(65,2)) as berat_bersih'), 'satuan_berat_bersih', DB::raw('cast(sum(berat_bersih*harga_satuan) as decimal(65,2)) as jumlah'))->groupBy('nama_customer', 'satuan_berat_bruto', 'satuan_potongan', 'satuan_berat_bersih')->whereBetween('detail_kwitansi.tanggal_tagihan', [$from, $to])->get();
         }
+        
         $data['tanggal'] = $from . ' ' . $to;
 
         $datediff = strtotime($to) - strtotime($from);
