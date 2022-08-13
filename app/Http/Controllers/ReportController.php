@@ -1022,7 +1022,8 @@ class ReportController extends Controller
             $report_kredit_2 = 0;
         }
 
-        $bank_akhir = number_format($saldo_awal_bank + $jm_2 - $report_debit_2 + $report_kredit_2, 2, ".", "");
+        $bank_akhir = number_format($saldo_awal_bank, 2, ".", "");
+        // $bank_akhir = number_format($saldo_awal_bank + $jm_2 - $report_debit_2 + $report_kredit_2, 2, ".", "");
         //////////////////bank////////////////////
         $piutang_dagang = number_format($piutang_dagang_awal->saldo_awal_debit + $piutang_dagang, 2, ".", "");
 
