@@ -1013,11 +1013,9 @@ class ReportController extends Controller
         } else {
             $report_kredit_2 = 0;
         }
-        $data['report_debit_bank'] = $report_debit_bank;
-        $data['report_kredit_bank'] = $report_kredit_bank;
 
         // $bank_akhir = number_format($saldo_awal_bank, 2, ".", "");
-        $bank_akhir = number_format($saldo_awal_bank - $report_debit_2 + $report_kredit_2, 2, ".", "");
+        $bank_akhir = number_format($saldo_awal_bank + $report_debit_2 - $report_kredit_2, 2, ".", "");
         //////////////////bank////////////////////
         $piutang_dagang = number_format($piutang_dagang_awal->saldo_awal_debit + $piutang_dagang, 2, ".", "");
 
