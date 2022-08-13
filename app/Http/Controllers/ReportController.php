@@ -785,9 +785,6 @@ class ReportController extends Controller
 
         $saldo_awal_perkiraan = Perkiraan::select('kode_akun', 'nama_perkiraan', 'normal_balance', DB::raw('cast(saldo_awal_debit as decimal(65,2)) as saldo_awal_debit'), DB::raw('cast(saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun', '444.100')->orderBy('kode_akun', 'ASC')->first();
 
-
-        // $data['penjualan'] = Detail_kwitansi::select(DB::raw('SUM(berat_bruto*harga_satuan) as penjualan'))->whereBetween('tanggal_tagihan', [$from, $to])->first();
-
         $saldo_awal = Detail_kwitansi::select(DB::raw('cast(SUM(berat_bruto*harga_satuan) as decimal(65,2)) as saldo'))->whereDate('tanggal_tagihan', '<', $from)->first();
         if ($saldo_awal->saldo) {
             $saldo_awal = $saldo_awal->saldo;
@@ -797,8 +794,15 @@ class ReportController extends Controller
 
         $data['penjualan'] = Detail_kwitansi::select(DB::raw('SUM(berat_bruto*harga_satuan) as penjualan'))->whereBetween('tanggal_tagihan', [$from, $to])->first();
 
-        $data['penjualan'] = $saldo_awal_perkiraan->saldo_awal_debit + $saldo_awal + $data['penjualan']->penjualan;
+        // if($to < '2022-04-01'){
+        //     $data['penjualan'] = $saldo_awal_perkiraan->saldo_awal_debit ;
+        // }else{
+        //     $data['penjualan'] = $data['penjualan']->penjualan;
+        // }
+        // $data['penjualan'] = $saldo_awal_perkiraan->saldo_awal_debit + $saldo_awal + $data['penjualan']->penjualan;
         //pendapatan_lainnya
+
+        $data['penjualan'] = $data['penjualan']->penjualan;
 
         $saldo_awal_perkiraan = Perkiraan::select('kode_akun', 'nama_perkiraan', 'normal_balance', DB::raw('cast(saldo_awal_debit as decimal(65,2)) as saldo_awal_debit'), DB::raw('cast(saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun', '444.500')->orderBy('kode_akun', 'ASC')->first();
 
@@ -1013,7 +1017,7 @@ class ReportController extends Controller
         } else {
             $report_kredit_2 = 0;
         }
-
+        $data['bank_akhir'] = $saldo_awal_bank;
         // $bank_akhir = number_format($saldo_awal_bank, 2, ".", "");
         $bank_akhir = number_format($saldo_awal_bank + $report_debit_2 - $report_kredit_2, 2, ".", "");
         //////////////////bank////////////////////
