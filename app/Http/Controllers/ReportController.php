@@ -983,6 +983,7 @@ class ReportController extends Controller
 
 
         $kas_akhir = number_format($saldo_awal_kas - $jk_1 + $report_debit_1 - $report_kredit_1, 2, ".", "");
+        dd($kas_akhir);
         //////////////////kas/////////////////////
 
         //////////////////bank////////////////////
