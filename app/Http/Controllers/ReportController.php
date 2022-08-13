@@ -959,9 +959,9 @@ class ReportController extends Controller
 
         $jk_1 = 0;
 
-        $report_debit_kas = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select('cast(sub_total as decimal(65,2)) as debit', DB::raw('0 as kredit'))->where('detail_jurnal_umum.kode_akun_debit', '111.001')->whereBetween('jurnal_umum.tanggal_jurnal', [$from, $to])->get();
+        $report_debit_kas = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select('cast(detail_jurnal_umum.sub_total as decimal(65,2)) as debit', DB::raw('0 as kredit'))->where('detail_jurnal_umum.kode_akun_debit', '111.001')->whereBetween('jurnal_umum.tanggal_jurnal', [$from, $to])->get();
 
-        $report_kredit_kas = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('0 as debit'), 'cast(sub_total as decimal(65,2)) as kredit')->where('detail_jurnal_umum.kode_akun_kredit', '111.001')->whereBetween('jurnal_umum.tanggal_jurnal', [$from, $to])->get();
+        $report_kredit_kas = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('0 as debit'), 'cast(detail_jurnal_umum.sub_total as decimal(65,2)) as kredit')->where('detail_jurnal_umum.kode_akun_kredit', '111.001')->whereBetween('jurnal_umum.tanggal_jurnal', [$from, $to])->get();
 
         $report_debit_1 = 0;
         $report_kredit_1 = 0;
