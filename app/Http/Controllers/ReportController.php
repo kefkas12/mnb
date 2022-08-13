@@ -962,6 +962,7 @@ class ReportController extends Controller
         $report_debit_kas = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('cast(sum(detail_jurnal_umum.sub_total) as decimal(65,2)) as total'))->where('detail_jurnal_umum.kode_akun_debit', '111.001')->whereBetween('jurnal_umum.tanggal_jurnal', [$from, $to])->get();
 
         $report_kredit_kas = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('cast(sum(detail_jurnal_umum.sub_total) as decimal(65,2)) as total'))->where('detail_jurnal_umum.kode_akun_kredit', '111.001')->whereBetween('jurnal_umum.tanggal_jurnal', [$from, $to])->get();
+        dd($report_debit_kas);
 
         $report_debit_1 = 0;
         $report_kredit_1 = 0;
