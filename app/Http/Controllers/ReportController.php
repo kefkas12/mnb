@@ -785,14 +785,14 @@ class ReportController extends Controller
 
         $saldo_awal_perkiraan = Perkiraan::select('kode_akun', 'nama_perkiraan', 'normal_balance', DB::raw('cast(saldo_awal_debit as decimal(65,2)) as saldo_awal_debit'), DB::raw('cast(saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun', '444.100')->orderBy('kode_akun', 'ASC')->first();
 
-        $saldo_awal = Detail_kwitansi::select(DB::raw('cast(SUM(berat_bruto*harga_satuan) as decimal(65,2)) as saldo'))->whereDate('tanggal_tagihan', '<', $from)->first();
+        $saldo_awal = Detail_kwitansi::select(DB::raw('cast(SUM(berat_bersih*harga_satuan) as decimal(65,2)) as saldo'))->whereDate('tanggal_tagihan', '<', $from)->first();
         if ($saldo_awal->saldo) {
             $saldo_awal = $saldo_awal->saldo;
         } else {
             $saldo_awal = 0;
         }
 
-        $data['penjualan'] = Detail_kwitansi::select(DB::raw('SUM(berat_bruto*harga_satuan) as penjualan'))->whereBetween('tanggal_tagihan', [$from, $to])->first();
+        $data['penjualan'] = Detail_kwitansi::select(DB::raw('SUM(berat_bersih*harga_satuan) as penjualan'))->whereBetween('tanggal_tagihan', [$from, $to])->first();
 
         // if($to < '2022-04-01'){
         //     $data['penjualan'] = $saldo_awal_perkiraan->saldo_awal_debit ;
