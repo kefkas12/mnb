@@ -995,6 +995,7 @@ class ReportController extends Controller
             $saldo_awal_bank = $saldo_awal_bank - $saldo_awal_kredit->kredit;
         }
 
+
         $jm = Detail_jurnal_penerimaan_kas::select(DB::raw('cast(sum(sub_total) as decimal(65,2)) as total'))->whereDate('tanggal_jurnal', '<=', $to)->first();
 
         $report_debit_bank = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('cast(sum(detail_jurnal_umum.sub_total) as decimal(65,2)) as total'))->where('detail_jurnal_umum.kode_akun_debit', '112.101')->whereBetween('jurnal_umum.tanggal_jurnal', [$from, $to])->first();
