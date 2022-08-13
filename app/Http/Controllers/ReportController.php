@@ -801,8 +801,11 @@ class ReportController extends Controller
         // }
         // $data['penjualan'] = $saldo_awal_perkiraan->saldo_awal_debit + $saldo_awal + $data['penjualan']->penjualan;
         //pendapatan_lainnya
-
-        $data['penjualan'] = $data['penjualan']->penjualan;
+        if($from < '2022-04-01'){
+            $data['penjualan'] = $saldo_awal_perkiraan->saldo_awal_debit + $data['penjualan']->penjualan;
+        }else{
+            $data['penjualan'] = $data['penjualan']->penjualan;
+        }
 
         $saldo_awal_perkiraan = Perkiraan::select('kode_akun', 'nama_perkiraan', 'normal_balance', DB::raw('cast(saldo_awal_debit as decimal(65,2)) as saldo_awal_debit'), DB::raw('cast(saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun', '444.500')->orderBy('kode_akun', 'ASC')->first();
 
