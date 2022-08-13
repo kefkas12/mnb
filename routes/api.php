@@ -21,7 +21,7 @@ use Illuminate\Http\Request;
 
     Route::get('users', 'UserController@index');
     Route::post('users', 'UserController@store');
-    Route::post('login', 'AuthController@login');
+    Route::post('login', 'AuthController@login')->middleware('cors');
 
 
     Route::group([
