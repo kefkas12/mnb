@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'b77d8023a0c27c134fd2da573dc0ce8cfc1d1296',
+        'reference' => '17f19aae8b7c1d1b3e722fc794c089fdfca0792c',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'asm89/stack-cors' => array(
-            'pretty_version' => 'v2.1.1',
-            'version' => '2.1.1.0',
-            'reference' => '73e5b88775c64ccc0b84fb60836b30dc9d92ac4a',
+            'pretty_version' => '2.0.0',
+            'version' => '2.0.0.0',
+            'reference' => '1913589c6de3cc09de5a9bdb4f46fbd550246b40',
             'type' => 'library',
             'install_path' => __DIR__ . '/../asm89/stack-cors',
             'aliases' => array(),
@@ -346,7 +346,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'b77d8023a0c27c134fd2da573dc0ce8cfc1d1296',
+            'reference' => '17f19aae8b7c1d1b3e722fc794c089fdfca0792c',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -631,8 +631,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0|2.0',
-                1 => '1.0.0',
+                0 => '1.0.0',
+                1 => '1.0|2.0',
             ),
         ),
         'psr/simple-cache' => array(
