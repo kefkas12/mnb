@@ -883,6 +883,8 @@ class ReportController extends Controller
             } else {
                 $kredit = 0;
             }
+            $data_biaya['debit'] = $debit;
+            $data_biaya['kredit'] = $kredit;
 
             $data_biaya['kode_akun'] = $v->kode_akun;
             $data_biaya['nama_perkiraan'] = $v->nama_perkiraan;
