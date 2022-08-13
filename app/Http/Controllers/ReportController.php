@@ -995,9 +995,6 @@ class ReportController extends Controller
             $saldo_awal_bank = $saldo_awal_bank - $saldo_awal_kredit->kredit;
         }
 
-
-        $jm = Detail_jurnal_penerimaan_kas::select(DB::raw('cast(sum(sub_total) as decimal(65,2)) as total'))->whereDate('tanggal_jurnal', '<=', $to)->first();
-
         $report_debit_bank = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('cast(sum(detail_jurnal_umum.sub_total) as decimal(65,2)) as total'))->where('detail_jurnal_umum.kode_akun_debit', '112.101')->whereBetween('jurnal_umum.tanggal_jurnal', [$from, $to])->first();
 
         $report_kredit_bank = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('cast(sum(detail_jurnal_umum.sub_total) as decimal(65,2)) as total'))->where('detail_jurnal_umum.kode_akun_kredit', '112.101')->whereBetween('jurnal_umum.tanggal_jurnal', [$from, $to])->first();
@@ -1006,11 +1003,6 @@ class ReportController extends Controller
         $report_debit_2 = 0;
         $report_kredit_2 = 0;
 
-        if ($jm) {
-            $jm_2 = $jm->total;
-        } else {
-            $jm_2 = 0;
-        }
         if ($report_debit_bank) {
             $report_debit_2 = $report_debit_bank->total;
         } else {
@@ -1021,9 +1013,11 @@ class ReportController extends Controller
         } else {
             $report_kredit_2 = 0;
         }
+        $data['report_debit_bank'] = $report_debit_bank;
+        $data['report_kredit_bank'] = $report_kredit_bank;
 
         // $bank_akhir = number_format($saldo_awal_bank, 2, ".", "");
-        $bank_akhir = number_format($saldo_awal_bank + $jm_2 - $report_debit_2 + $report_kredit_2, 2, ".", "");
+        $bank_akhir = number_format($saldo_awal_bank - $report_debit_2 + $report_kredit_2, 2, ".", "");
         //////////////////bank////////////////////
         $piutang_dagang = number_format($piutang_dagang_awal->saldo_awal_debit + $piutang_dagang, 2, ".", "");
 
