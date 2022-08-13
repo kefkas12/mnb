@@ -794,13 +794,6 @@ class ReportController extends Controller
 
         $data['penjualan'] = Detail_kwitansi::select(DB::raw('SUM(berat_bersih*harga_satuan) as penjualan'))->whereBetween('tanggal_tagihan', [$from, $to])->first();
 
-        // if($to < '2022-04-01'){
-        //     $data['penjualan'] = $saldo_awal_perkiraan->saldo_awal_debit ;
-        // }else{
-        //     $data['penjualan'] = $data['penjualan']->penjualan;
-        // }
-        // $data['penjualan'] = $saldo_awal_perkiraan->saldo_awal_debit + $saldo_awal + $data['penjualan']->penjualan;
-        //pendapatan_lainnya
         if($from < '2022-04-01'){
             $data['penjualan'] = $saldo_awal_perkiraan->saldo_awal_debit + $data['penjualan']->penjualan;
         }else{
@@ -815,20 +808,17 @@ class ReportController extends Controller
         } else {
             $saldo_awal = 0;
         }
-        $jm = Detail_jurnal_penerimaan_kas::select(DB::raw('cast(sum(sub_total) as decimal(65,2)) as total'))->whereBetween('tanggal_jurnal', [$from, $to])->where('kode_akun_kredit', '444.500')->first();
-        if ($jm->total) {
-            $jm = $jm->total;
-        } else {
-            $jm = 0;
-        }
         $pendapatan_lainnya = Detail_jurnal_umum::select(DB::raw('cast(sum(sub_total) as decimal(65,2)) as saldo'))->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])->Where('kode_akun_kredit', '444.500')->first();
         if ($pendapatan_lainnya->saldo) {
             $pendapatan_lainnya = $pendapatan_lainnya->saldo;
         } else {
             $pendapatan_lainnya = 0;
         }
-
-        $data['pendapatan_lainnya'] = $saldo_awal_perkiraan->saldo_awal_debit + $saldo_awal + $jm + $pendapatan_lainnya;
+        if($from < '2022-04-01'){
+            $data['pendapatan_lainnya'] = $saldo_awal_perkiraan->saldo_awal_debit + $pendapatan_lainnya;
+        }else{
+            $data['pendapatan_lainnya'] = $pendapatan_lainnya;
+        }
 
         //pendapatan_bunga_bank
 
@@ -853,7 +843,11 @@ class ReportController extends Controller
             $pendapatan_bunga_bank = 0;
         }
 
-        $data['pendapatan_bunga_bank'] = $saldo_awal_perkiraan->saldo_awal_debit + $saldo_awal + $jm + $pendapatan_bunga_bank;
+        if($from < '2022-04-01'){
+            $data['pendapatan_bunga_bank'] = $saldo_awal_perkiraan->saldo_awal_debit + $pendapatan_bunga_bank;
+        }else{
+            $data['pendapatan_bunga_bank'] = $pendapatan_bunga_bank;
+        }
 
         //pembelian
         $saldo_awal_perkiraan = Perkiraan::select('kode_akun', 'nama_perkiraan', 'normal_balance', DB::raw('cast(saldo_awal_debit as decimal(65,2)) as saldo_awal_debit'), DB::raw('cast(saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun', '610.001')->orderBy('kode_akun', 'ASC')->first();
