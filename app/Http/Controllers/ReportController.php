@@ -854,7 +854,11 @@ class ReportController extends Controller
 
         $data['pembelian'] = Detail_kwitansi::select(DB::raw('SUM(berat_bersih*harga_beli) as pembelian'))->whereBetween('tanggal_tagihan', [$from, $to])->first();
 
-        $data['pembelian'] = $saldo_awal_perkiraan->saldo_awal_debit + $data['pembelian']->pembelian;
+        if($from < '2022-04-01'){
+            $data['pembelian'] = $saldo_awal_perkiraan->saldo_awal_debit + $data['pembelian']->pembelian;
+        }else{
+            $data['pembelian'] = $data['pembelian']->pembelian;
+        }
 
         // $data['biaya_operasional'] = Detail_jurnal_umum::select(DB::raw('cast(sum(sub_total) as decimal(65,2)) as saldo'), 'kode_akun_debit', 'detail_kode_akun_debit')->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])->Where('kode_akun_debit', 'like', '51%')->groupBy('kode_akun_debit', 'detail_kode_akun_debit')->get();
 
