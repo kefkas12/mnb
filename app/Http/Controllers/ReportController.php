@@ -981,7 +981,7 @@ class ReportController extends Controller
 
         //////////////////bank////////////////////
         $saldo_awal = Perkiraan::select('kode_akun', 'nama_perkiraan', 'normal_balance', DB::raw('cast(saldo_awal_debit as decimal(65,2)) as saldo_awal_debit'), DB::raw('cast(saldo_awal_kredit as decimal(65,2)) as saldo_awal_kredit'))->Where('kode_akun', '112.101')->Where('tipe_akun', 'Detail')->first();
-        $saldo_awal_bank = $saldo_awal->saldo_awal_debit;
+        $saldo_awal_bank = $saldo_awal->saldo_awal_kredit;
 
         $saldo_awal_debit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('sum(detail_jurnal_umum.sub_total) as debit'))->where('detail_jurnal_umum.kode_akun_debit', '112.101')->where('jurnal_umum.tanggal_jurnal', '<', $from)->first();
 
@@ -1022,8 +1022,8 @@ class ReportController extends Controller
             $report_kredit_2 = 0;
         }
 
-        $bank_akhir = number_format($saldo_awal_bank, 2, ".", "");
-        // $bank_akhir = number_format($saldo_awal_bank + $jm_2 - $report_debit_2 + $report_kredit_2, 2, ".", "");
+        // $bank_akhir = number_format($saldo_awal_bank, 2, ".", "");
+        $bank_akhir = number_format($saldo_awal_bank + $jm_2 - $report_debit_2 + $report_kredit_2, 2, ".", "");
         //////////////////bank////////////////////
         $piutang_dagang = number_format($piutang_dagang_awal->saldo_awal_debit + $piutang_dagang, 2, ".", "");
 
