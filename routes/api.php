@@ -12,11 +12,6 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::group([
-    'middleware' => ['api', 'cors'],
-    'namespace' => $this->namespace,
-    'prefix' => 'api',
-], function ($router) {
 
     Route::get('kwitansi/refresh', 'HomeController@refresh');
 
@@ -242,4 +237,3 @@ Route::group([
 
     Route::get('/graph/kwitansi', 'GraphController@graph_kwitansi');
     Route::get('/graph/omset', 'GraphController@graph_omset');
-});
