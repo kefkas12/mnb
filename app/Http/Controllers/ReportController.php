@@ -868,30 +868,28 @@ class ReportController extends Controller
 
             $saldo_awal_kredit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('sum(detail_jurnal_umum.sub_total) as kredit'))->where('detail_jurnal_umum.kode_akun_kredit', $v->kode_akun)->where('jurnal_umum.tanggal_jurnal', '<', $from)->first();
 
-            $debit = Detail_jurnal_umum::select(DB::raw('cast(sum(sub_total) as decimal(65,2)) as debit'))->whereBetween('tanggal_jurnal', [$from, $to])->Where('kode_akun_debit', $v->kode_akun)->groupBy('sub_total')->first();
-            dd($debit);
+            $debit = Detail_jurnal_umum::select(DB::raw('cast(sum(sub_total) as decimal(65,2)) as debit'))->whereBetween('tanggal_jurnal', [$from, $to])->Where('kode_akun_debit', $v->kode_akun)->first();
+            
             if ($debit) {
-                $debit = $debit->debit;
+                $saldo_debit = $debit->debit;
             } else {
-                $debit = 0;
+                $saldo_debit = 0;
             }
 
-            $kredit = Detail_jurnal_umum::select(DB::raw('cast(sum(sub_total) as decimal(65,2)) as kredit'))->whereBetween('tanggal_jurnal', [$from, $to])->Where('kode_akun_kredit', $v->kode_akun)->groupBy('sub_total')->first();
+            $kredit = Detail_jurnal_umum::select(DB::raw('cast(sum(sub_total) as decimal(65,2)) as kredit'))->whereBetween('tanggal_jurnal', [$from, $to])->Where('kode_akun_kredit', $v->kode_akun)->first();
 
             if ($kredit) {
-                $kredit = $kredit->kredit;
+                $saldo_kredit = $kredit->kredit;
             } else {
-                $kredit = 0;
+                $saldo_kredit = 0;
             }
-            $data_biaya['debit'] = $debit;
-            $data_biaya['kredit'] = $kredit;
 
             $data_biaya['kode_akun'] = $v->kode_akun;
             $data_biaya['nama_perkiraan'] = $v->nama_perkiraan;
             if($from < '2022-04-01'){
-                $data_biaya['saldo'] = $v->saldo_awal_debit + $debit - $kredit;
+                $data_biaya['saldo'] = $v->saldo_awal_debit + $saldo_debit - $saldo_kredit;
             }else{
-                $data_biaya['saldo'] = $debit - $kredit;
+                $data_biaya['saldo'] = $saldo_debit - $saldo_kredit;
             }
             // $data_biaya['saldo'] = $v->saldo_awal_debit + $saldo_awal_debit->debit - $saldo_awal_kredit->kredit;
 
