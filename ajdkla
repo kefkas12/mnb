@@ -1,0 +1,25 @@
+[1mdiff --cc app/Http/Controllers/ReportController.php[m
+[1mindex 246f639,b5c0868..0000000[m
+[1m--- a/app/Http/Controllers/ReportController.php[m
+[1m+++ b/app/Http/Controllers/ReportController.php[m
+[36m@@@ -225,12 -225,11 +225,19 @@@[m [mclass ReportController extends Controll[m
+          $dir = $_GET['dir'];[m
+          if ($dir == 'hutang_supplier') {[m
+              $supplier = $_GET['supplier'];[m
+[31m -[m
+[32m +            //$data['report'] = Detail_jurnal_umum::select('tanggal_jurnal', 'kode_akun_debit', 'kode_akun_kredit', 'keterangan', DB::raw('if(kode_akun_debit = "220.001", sub_total, 0)as debit'), DB::raw('if(kode_akun_kredit = "220.001", sub_total, 0) as kredit'))->where('nama_perusahaan_supplier',$supplier)->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])->Where('kode_akun_kredit', '220.001')->orWhere('kode_akun_debit', '220.001')->orderBy('tanggal_jurnal', 'ASC')->get();[m
+[32m +[m
+[32m++<<<<<<< HEAD[m
+[32m +	    $data['report'] = Detail_jurnal_umum::select('tanggal_jurnal', 'kode_akun_debit', 'kode_akun_kredit', 'keterangan', DB::raw('if(kode_akun_debit = "220.001", sub_total, 0)as debit'), DB::raw('if(kode_akun_kredit = "220.001", sub_total, 0) as kredit'))->where('nama_perusahaan_supplier', $supplier)->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])->where(function ($query){[m
+[32m +                        $query->where('kode_akun_kredit', '220.001')[m
+[32m +                              ->orWhere('kode_akun_debit', '220.001');[m
+[32m +                    })->orderBy('tanggal_jurnal', 'ASC')->get();[m
+[32m++=======[m
+[32m+             $data['report'] = Detail_jurnal_umum::select('tanggal_jurnal', 'kode_akun_debit', 'kode_akun_kredit', 'keterangan', DB::raw('if(kode_akun_debit = "220.001", sub_total, 0)as debit'), DB::raw('if(kode_akun_kredit = "220.001", sub_total, 0) as kredit'))->where('nama_perusahaan_supplier', $supplier)->whereBetween('detail_jurnal_umum.tanggal_jurnal', [$from, $to])->where(function ($query) {[m
+[32m+                 $query->where('kode_akun_kredit', '220.001')[m
+[32m+                     ->orWhere('kode_akun_debit', '220.001');[m
+[32m+             })->orderBy('tanggal_jurnal', 'ASC')->get();[m
+[32m++>>>>>>> 70f6ce7915c0289db7987cca6fff86bf435b47a3[m
+  [m
+              $hutang_supplier_awal = Supplier::where('nama_perusahaan', $supplier)->first();[m
+  [m
