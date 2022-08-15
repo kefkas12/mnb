@@ -2,27 +2,14 @@
     'root' => array(
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-<<<<<<< HEAD
-        'reference' => '5c4c1fea4d0b6c9294de9a80b99da7e7de55a938',
-=======
->>>>>>> 289e1ffff8ea2df959f8840437eb2b837b79644c
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '4acfee45c3411840daf1b3216112f689ed5f1411',
+        'reference' => '57c5df16931c0906204c2282bc33545e443e9df0',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
     'versions' => array(
-        'asm89/stack-cors' => array(
-            'pretty_version' => '2.0.0',
-            'version' => '2.0.0.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../asm89/stack-cors',
-            'aliases' => array(),
-            'reference' => '1913589c6de3cc09de5a9bdb4f46fbd550246b40',
-            'dev_requirement' => false,
-        ),
         'beyondcode/laravel-dump-server' => array(
             'pretty_version' => '1.3.0',
             'version' => '1.3.0.0',
@@ -341,14 +328,10 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-<<<<<<< HEAD
-            'reference' => '5c4c1fea4d0b6c9294de9a80b99da7e7de55a938',
-=======
->>>>>>> 289e1ffff8ea2df959f8840437eb2b837b79644c
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '4acfee45c3411840daf1b3216112f689ed5f1411',
+            'reference' => '57c5df16931c0906204c2282bc33545e443e9df0',
             'dev_requirement' => false,
         ),
         'laravel/tinker' => array(
@@ -604,14 +587,8 @@
             'dev_requirement' => true,
         ),
         'psr/container' => array(
-<<<<<<< HEAD
-            'pretty_version' => '1.1.1',
-            'version' => '1.1.1.0',
-            'reference' => '8622567409010282b7aeebe4bb841fe98b58dcaf',
-=======
             'pretty_version' => '1.1.2',
             'version' => '1.1.2.0',
->>>>>>> 289e1ffff8ea2df959f8840437eb2b837b79644c
             'type' => 'library',
             'install_path' => __DIR__ . '/../psr/container',
             'aliases' => array(),
