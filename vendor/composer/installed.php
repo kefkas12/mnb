@@ -2,14 +2,10 @@
     'root' => array(
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-<<<<<<< HEAD
-        'reference' => 'b5270a904cace56472ab24d65d3134e19070fdaf',
-=======
->>>>>>> 19c5f061b01b3d0b108787cb440f28e83ba7d7ee
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'b5270a904cace56472ab24d65d3134e19070fdaf',
+        'reference' => '94a785be4597bcf5bd29f223ece7097082e17ac2',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
@@ -17,17 +13,10 @@
         'asm89/stack-cors' => array(
             'pretty_version' => 'v2.1.1',
             'version' => '2.1.1.0',
-<<<<<<< HEAD
-            'reference' => '73e5b88775c64ccc0b84fb60836b30dc9d92ac4a',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../asm89/stack-cors',
-            'aliases' => array(),
-=======
             'type' => 'library',
             'install_path' => __DIR__ . '/../asm89/stack-cors',
             'aliases' => array(),
             'reference' => '73e5b88775c64ccc0b84fb60836b30dc9d92ac4a',
->>>>>>> 19c5f061b01b3d0b108787cb440f28e83ba7d7ee
             'dev_requirement' => false,
         ),
         'beyondcode/laravel-dump-server' => array(
@@ -135,17 +124,10 @@
         'fruitcake/laravel-cors' => array(
             'pretty_version' => 'v2.0.1',
             'version' => '2.0.1.0',
-<<<<<<< HEAD
-            'reference' => 'dbfc311b25d4873c3c2382b26860be3567492bd6',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../fruitcake/laravel-cors',
-            'aliases' => array(),
-=======
             'type' => 'library',
             'install_path' => __DIR__ . '/../fruitcake/laravel-cors',
             'aliases' => array(),
             'reference' => 'dbfc311b25d4873c3c2382b26860be3567492bd6',
->>>>>>> 19c5f061b01b3d0b108787cb440f28e83ba7d7ee
             'dev_requirement' => false,
         ),
         'fzaninotto/faker' => array(
@@ -364,14 +346,10 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-<<<<<<< HEAD
-            'reference' => 'b5270a904cace56472ab24d65d3134e19070fdaf',
-=======
->>>>>>> 19c5f061b01b3d0b108787cb440f28e83ba7d7ee
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'b5270a904cace56472ab24d65d3134e19070fdaf',
+            'reference' => '94a785be4597bcf5bd29f223ece7097082e17ac2',
             'dev_requirement' => false,
         ),
         'laravel/tinker' => array(
