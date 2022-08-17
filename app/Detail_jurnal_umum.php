@@ -49,4 +49,6 @@ class Detail_jurnal_umum extends Model
 		}     		
 		return $hasil. ' Rupiah';
 	}
+
+	
 }
