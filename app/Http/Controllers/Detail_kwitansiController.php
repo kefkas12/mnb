@@ -175,6 +175,7 @@ class Detail_kwitansiController extends Controller
     }
     public function edit(Request $request, $id)
     {
+        dd($request);
         $detail_kwitansi = Detail_kwitansi::find($id);
         $kwitansi = Kwitansi::find($detail_kwitansi->id_kwitansi);
 
