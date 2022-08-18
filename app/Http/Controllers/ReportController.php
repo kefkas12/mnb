@@ -901,12 +901,10 @@ class ReportController extends Controller
 
             $kredit = Detail_jurnal_umum::select(DB::raw('sum(sub_total) as kredit'))->groupBy('nama_perusahaan_supplier')->whereBetween('tanggal_jurnal', [$from, $to])->where('kode_akun_kredit', '220.001')->where('nama_perusahaan_supplier', $report[$no]->nama_perusahaan)->first();
             $kredit = $kredit ? $kredit->kredit : 0;
-            
 
             $hutang_dagang += $saldo_awal - $debit + $kredit;
             $no++;
         }
-        
         
         $hutang_pajak = Kwitansi::select(DB::raw('cast(SUM(total_ppn_kwitansi) as decimal(65,2)) as hutang_pajak'))->whereDate('tanggal_kwitansi', '<=', $to)->first()->hutang_pajak;
 
@@ -930,13 +928,17 @@ class ReportController extends Controller
 
         $bank_kredit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('cast(sum(detail_jurnal_umum.sub_total) as decimal(65,2)) as kredit'))->where('detail_jurnal_umum.kode_akun_kredit', '112.101')->whereDate('jurnal_umum.tanggal_jurnal', '<=', $to)->first()->kredit;
 
+        $ppn_keluaran = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('cast(sum(detail_jurnal_umum.sub_total) as decimal(65,2)) as debit'))->where('detail_jurnal_umum.kode_akun_debit', '230.001')->whereDate('jurnal_umum.tanggal_jurnal', '<=', $to)->first()->debit;
+
+        $ppn_masukan = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('cast(sum(detail_jurnal_umum.sub_total) as decimal(65,2)) as debit'))->where('detail_jurnal_umum.kode_akun_debit', '115.001')->whereDate('jurnal_umum.tanggal_jurnal', '<=', $to)->first()->debit;
+
         $data['kas'] = number_format($kas_awal + $kas_debit - $kas_kredit, 2, ".", "");
         $data['bank'] = number_format($bank_awal + $bank_debit - $bank_kredit, 2, ".", "");
         $data['piutang_dagang'] = number_format($piutang_dagang_awal + $piutang_dagang, 2, ".", "");
         $data['uang_muka_pajak'] = number_format($uang_muka_pajak, 2, ".", "");
 
         $data['hutang_dagang'] = number_format($hutang_dagang_awal + $hutang_dagang, 2, ".", "");
-        $data['hutang_pajak'] = number_format($hutang_pajak_awal + $hutang_pajak, 2, ".", "");
+        $data['hutang_pajak'] = number_format($hutang_pajak_awal + $hutang_pajak - $ppn_keluaran - $ppn_masukan, 2, ".", "");
         $data['modal'] = $modal_awal; //done
         $data['laba_ditahan'] = number_format($laba_ditahan_awal, 2, ".", "");
         $data['laba_tahun_berjalan'] = number_format($laba_tahun_berjalan, 2, ".", "");
