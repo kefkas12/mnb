@@ -121,7 +121,6 @@ Route::get('/kode_kwitansi', 'KwitansiController@kode_kwitansi');
 Route::get('/select_last_kwitansi', 'KwitansiController@select_last_kwitansi');
 
 Route::get('/detail_kwitansi', 'Detail_kwitansiController@index');
-// Route::get('/detail_kwitansi/nomor_jurnal/{id_kwitansi}', 'Detail_kwitansiController@select_by_nomor_jurnal');
 Route::get('/detail_kwitansi/{id}', 'Detail_kwitansiController@select');
 Route::post('/detail_kwitansi', 'Detail_kwitansiController@insert');
 Route::put('/detail_kwitansi/{id}', 'Detail_kwitansiController@edit');
