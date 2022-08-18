@@ -177,8 +177,6 @@ class Detail_kwitansiController extends Controller
     {
         $detail_kwitansi = Detail_kwitansi::find($id);
         $kwitansi = Kwitansi::find($detail_kwitansi->id_kwitansi);
-        
-        $detail_kwitansi->id_kwitansi = $request->id_kwitansi;
 
         $kwitansi->total_dpp_kwitansi = $kwitansi->total_dpp_kwitansi - $detail_kwitansi->dpp + $request->dpp;
         $kwitansi->total_pph_kwitansi = $kwitansi->total_pph_kwitansi - $detail_kwitansi->pph + $request->pph;
