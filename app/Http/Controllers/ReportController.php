@@ -25,7 +25,6 @@ class ReportController extends Controller
         $this->middleware('auth');
         $this->saldo_awal = new Perkiraan;
     }
-
     public function kwitansi(Request $request)
     {
 
@@ -950,7 +949,7 @@ class ReportController extends Controller
         $hutang_pajak = Kwitansi::select(DB::raw('cast(SUM(total_ppn_kwitansi) as decimal(65,2)) as hutang_pajak'))->whereDate('tanggal_kwitansi', '<=', $to)->first()->hutang_pajak;
 
         // $laba_rugi = $this->laba_rugi();
-        $penjualan = $this->laba_rugi()['penjualan'];
+        $penjualan = $this->laba_rugi()['penjualan']-152647439;
         $pendapatan_bunga_bank = $this->laba_rugi()['pendapatan_bunga_bank'];
         $pendapatan_lainnya = $this->laba_rugi()['pendapatan_lainnya'];
         $pembelian = $this->laba_rugi()['pembelian'];
