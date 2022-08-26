@@ -949,7 +949,7 @@ class ReportController extends Controller
         $hutang_pajak = Kwitansi::select(DB::raw('cast(SUM(total_ppn_kwitansi) as decimal(65,2)) as hutang_pajak'))->whereDate('tanggal_kwitansi', '<=', $to)->first()->hutang_pajak;
 
         // $laba_rugi = $this->laba_rugi();
-        $penjualan = $this->laba_rugi()['penjualan']-152647439;
+        $penjualan = $from < '2022-04-01' ? $this->laba_rugi()['penjualan']-152647439 : $this->laba_rugi()['penjualan'];
         $pendapatan_bunga_bank = $this->laba_rugi()['pendapatan_bunga_bank'];
         $pendapatan_lainnya = $this->laba_rugi()['pendapatan_lainnya'];
         $pembelian = $this->laba_rugi()['pembelian'];
