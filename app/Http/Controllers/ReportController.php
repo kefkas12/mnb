@@ -998,7 +998,7 @@ class ReportController extends Controller
         $data['hutang_dagang'] = number_format(round($hutang_dagang), 2, ".", "");
         $data['hutang_pajak'] = number_format(round($hutang_pajak), 2, ".", "");
         $data['modal'] = $modal_awal;
-        $data['laba_tahun_berjalan'] = number_format(($laba_tahun_berjalan), 2, ".", "");
+        $data['laba_tahun_berjalan'] = number_format(round($laba_tahun_berjalan), 2, ".", "");
 
         $from_awal = $from;
 
@@ -1036,7 +1036,7 @@ class ReportController extends Controller
             $laba_ditahan = $laba_ditahan_awal + $laba_tahun_berjalan;
         }
 
-        $data['laba_ditahan'] = number_format($laba_ditahan, 2, ".", "");
+        $data['laba_ditahan'] = number_format(round($laba_ditahan), 2, ".", "");
         return $data;
     }
     public function pembagian(Request $request)
