@@ -178,22 +178,9 @@ class ReportController extends Controller
 
                 $pendapatan_usaha = $pendapatan_usaha->pendapatan_usaha ? $pendapatan_usaha->pendapatan_usaha : 0;
 
-                $debit = Detail_jurnal_umum::select(DB::raw('cast(SUM(sub_total) as decimal(65,2)) as debit'))->whereDate('tanggal_jurnal', '<', $from)->Where('kode_akun_debit', $v)->first();
-
-                $debit = $debit->debit ? $debit->debit : 0;
-
-                $kredit = Detail_jurnal_umum::select(DB::raw('cast(SUM(sub_total) as decimal(65,2)) as kredit'))->whereDate('tanggal_jurnal', '<', $from)->Where('kode_akun_kredit', $v)->first();
-
-                $kredit = $kredit->kredit ? $kredit->kredit : 0;
-
                 $saldo_awal = $pendapatan_usaha_awal + $pendapatan_usaha;
 
-                if ($_GET['pendapatan'] == 'lain-lain') {
-                    $data['report'][$no]['saldo_awal'] = $saldo_awal - $debit + $kredit;
-                }
-                if ($_GET['pendapatan'] == 'uang-muka') {
-                    $data['report'][$no]['saldo_awal'] = $saldo_awal + $debit - $kredit;
-                }
+                $data['report'][$no]['saldo_awal'] = $saldo_awal;
 
                 $debit = Detail_jurnal_umum::select(DB::raw('cast(SUM(sub_total) as decimal(65,2)) as debit'))->whereBetween('tanggal_jurnal', [$from, $to])->Where('kode_akun_debit', $v)->first();
 
