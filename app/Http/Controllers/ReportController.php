@@ -949,11 +949,11 @@ class ReportController extends Controller
         $kredit_temp = $kredit_temp ? $kredit_temp : 0;
 
         $hutang_dagang = $saldo_awal_temp - $debit_temp + $kredit_temp;
-        ///////////////////
 
-        $hutang_pajak = Kwitansi::select(DB::raw('cast(SUM(total_ppn_kwitansi) as decimal(65,2)) as hutang_pajak'))->whereDate('tanggal_kwitansi', '<=', $to)->first()->hutang_pajak;
+        // $hutang_pajak = Kwitansi::select(DB::raw('cast(SUM(total_ppn_kwitansi) as decimal(65,2)) as hutang_pajak'))->whereDate('tanggal_kwitansi', '<=', $to)->first()->hutang_pajak;
 
-        // $penjualan = $from < '2022-04-01' ? $this->laba_rugi()['penjualan'] - 152647439 : $this->laba_rugi()['penjualan'];
+        $hutang_pajak = Kwitansi::leftjoin('detail_kwitansi', 'kwitansi.id', '=', 'detail_kwitansi.id_kwitansi')->select(DB::raw('cast(SUM(detail_kwitansi.berat_bersih*detail_kwitansi.harga_satuan)*0.11 as decimal(65,2)) as ppn'))->whereBetween('kwitansi.tanggal_kwitansi', [$from, $to])->first()->ppn;
+        $hutang_pajak = $hutang_pajak ? $hutang_pajak : 0;
         
         $penjualan = Detail_kwitansi::select(DB::raw('cast(SUM(berat_bersih*harga_satuan) as decimal(65,2)) as penjualan'))->whereBetween('tanggal_tagihan', [$from, $to])->first()->penjualan;
         $penjualan = $from < '2022-04-01' ? $penjualan_awal + $penjualan : $penjualan;
@@ -996,7 +996,8 @@ class ReportController extends Controller
         $data['piutang_dagang'] = number_format($piutang_dagang_awal + $piutang_dagang_debit - $piutang_dagang_kredit, 2, ".", "");
         $data['uang_muka_pajak'] = number_format($uang_muka_pajak, 2, ".", "");
         $data['hutang_dagang'] = number_format($hutang_dagang, 2, ".", "");
-        $data['hutang_pajak'] = number_format($hutang_pajak_awal + $hutang_pajak - $ppn_keluaran - $ppn_masukan, 2, ".", "");
+        // $data['hutang_pajak'] = number_format($hutang_pajak_awal + $hutang_pajak - $ppn_keluaran - $ppn_masukan, 2, ".", "");
+        $data['hutang_pajak'] = number_format($hutang_pajak, 2, ".", "");
         $data['modal'] = $modal_awal;
         $data['laba_tahun_berjalan'] = number_format($laba_tahun_berjalan, 2, ".", "");
         $data['laba_ditahan'] = number_format($laba_ditahan_awal, 2, ".", "");
