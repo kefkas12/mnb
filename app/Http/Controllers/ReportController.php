@@ -953,7 +953,7 @@ class ReportController extends Controller
         // $hutang_pajak = Kwitansi::select(DB::raw('cast(SUM(total_ppn_kwitansi) as decimal(65,2)) as hutang_pajak'))->whereDate('tanggal_kwitansi', '<=', $to)->first()->hutang_pajak;
 
         $hutang_pajak = Kwitansi::leftjoin('detail_kwitansi', 'kwitansi.id', '=', 'detail_kwitansi.id_kwitansi')->select(DB::raw('cast(SUM(detail_kwitansi.berat_bersih*detail_kwitansi.harga_satuan)*0.11 as decimal(65,2)) as ppn'))->whereBetween('kwitansi.tanggal_kwitansi', [$from, $to])->first()->ppn;
-        $hutang_pajak = $hutang_pajak ? $hutang_pajak : 0;
+        $hutang_pajak = $hutang_pajak ? $hutang_pajak : $hutang_pajak_awal;
         
         $penjualan = Detail_kwitansi::select(DB::raw('cast(SUM(berat_bersih*harga_satuan) as decimal(65,2)) as penjualan'))->whereBetween('tanggal_tagihan', [$from, $to])->first()->penjualan;
         $penjualan = $from < '2022-04-01' ? $penjualan_awal + $penjualan : $penjualan;
