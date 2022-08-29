@@ -1033,7 +1033,13 @@ class ReportController extends Controller
 
         $laba_tahun_berjalan = $penjualan + $pendapatan_bunga_bank + $pendapatan_lainnya - $pembelian - $biaya ;
 
-        $laba_ditahan = $from < '2022-04-01' ? $laba_ditahan_awal : $laba_ditahan_awal + $laba_tahun_berjalan;
+        if($from < '2022-03-01'){
+            $laba_ditahan = 988129159;
+        }else if($from < '2022-04-01'){
+            $laba_ditahan = $laba_ditahan_awal;
+        }else{
+            $laba_ditahan = $laba_ditahan_awal + $laba_tahun_berjalan;
+        }
 
         $data['laba_ditahan'] = number_format($laba_ditahan, 2, ".", "");
         return $data;
