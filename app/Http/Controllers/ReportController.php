@@ -976,6 +976,8 @@ class ReportController extends Controller
 
         $biaya = $from < '2022-04-01' ? $saldo_awal_biaya + $biaya_debit - $biaya_kredit : $biaya_debit - $biaya_kredit;
 
+        dd($biaya);
+
         $laba_tahun_berjalan = $penjualan + $pendapatan_bunga_bank + $pendapatan_lainnya - $pembelian - $biaya;
 
         $kas_debit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('cast(sum(detail_jurnal_umum.sub_total) as decimal(65,2)) as debit'))->where('detail_jurnal_umum.kode_akun_debit', '111.001')->whereDate('jurnal_umum.tanggal_jurnal', '<=', $to)->first()->debit;
@@ -992,7 +994,7 @@ class ReportController extends Controller
         $ppn_masukan = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('cast(sum(detail_jurnal_umum.sub_total) as decimal(65,2)) as debit'))->where('detail_jurnal_umum.kode_akun_debit', '115.001')->whereDate('jurnal_umum.tanggal_jurnal', '<=', $to)->first()->debit;
 
         $data['kas'] = number_format($kas_awal + $kas_debit - $kas_kredit, 2, ".", "");
-        $data['bank'] = number_format($bank_awal + $bank_debit - $bank_kredit, 2, ".", "");
+        $data['bank'] = number_format(round($bank_awal + $bank_debit - $bank_kredit), 2, ".", "");
         $data['piutang_dagang'] = number_format($piutang_dagang_awal + $piutang_dagang_debit - $piutang_dagang_kredit, 2, ".", "");
         $data['uang_muka_pajak'] = number_format($uang_muka_pajak, 2, ".", "");
         $data['hutang_dagang'] = number_format($hutang_dagang, 2, ".", "");
@@ -1000,10 +1002,6 @@ class ReportController extends Controller
         $data['hutang_pajak'] = number_format($hutang_pajak, 2, ".", "");
         $data['modal'] = $modal_awal;
         $data['laba_tahun_berjalan'] = number_format($laba_tahun_berjalan, 2, ".", "");
-
-        // dd(date('Y-m-d',strtotime($from . " -1 days")));
-        // $date = date('Y',strtotime($from . " -1 days")).'-'.date('m',strtotime($from . " -1 days")).'-01';
-        // dd($date);
 
         $from_awal = $from;
 
