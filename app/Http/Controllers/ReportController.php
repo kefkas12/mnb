@@ -932,18 +932,6 @@ class ReportController extends Controller
         $no = 0;
         $hutang_dagang = 0;
         foreach ($report as $v) {
-            // $saldo_awal = Detail_jurnal_umum::select('nama_perusahaan_supplier', DB::raw('sum( if( kode_akun_debit = "610.001" , sub_total , -sub_total)) as saldo_awal'))->where('nama_perusahaan_supplier', $report[$no]->nama_perusahaan)->Where('kode_akun_kredit', '220.001')->groupBy('nama_perusahaan_supplier')->whereDate('detail_jurnal_umum.tanggal_jurnal', '<', $from)->first();
-
-            // $saldo_awal = $saldo_awal ? $saldo_awal->saldo_awal : 0;
-
-            // $debit = Detail_jurnal_umum::select(DB::raw('sum(sub_total) as debit'))->groupBy('nama_perusahaan_supplier')->whereBetween('tanggal_jurnal', [$from, $to])->where('kode_akun_debit', '220.001')->where('nama_perusahaan_supplier', $report[$no]->nama_perusahaan)->first();
-            // $debit = $debit ? $debit->debit : 0;
-
-            // $kredit = Detail_jurnal_umum::select(DB::raw('sum(sub_total) as kredit'))->groupBy('nama_perusahaan_supplier')->whereBetween('tanggal_jurnal', [$from, $to])->where('kode_akun_kredit', '220.001')->where('nama_perusahaan_supplier', $report[$no]->nama_perusahaan)->first();
-            // $kredit = $kredit ? $kredit->kredit : 0;
-
-            // $hutang_dagang += $saldo_awal - $debit + $kredit;
-            // $no++;
 
             $hutang_supplier_awal = Supplier::where('nama_perusahaan', $report[$no]->nama_perusahaan)->first();
             $saldo_awal_debit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('sum(detail_jurnal_umum.sub_total) as debit'))->where('nama_perusahaan_supplier', $report[$no]->nama_perusahaan)->where('detail_jurnal_umum.kode_akun_debit', '220.001')->where('jurnal_umum.tanggal_jurnal', '<', $from)->first();
@@ -1018,9 +1006,10 @@ class ReportController extends Controller
 
         $data['hutang_dagang'] = number_format($hutang_dagang, 2, ".", "");
         $data['hutang_pajak'] = number_format($hutang_pajak_awal + $hutang_pajak - $ppn_keluaran - $ppn_masukan, 2, ".", "");
-        $data['modal'] = $modal_awal; //done
-        $data['laba_ditahan'] = number_format($laba_ditahan_awal, 2, ".", "");
+        $data['modal'] = $modal_awal;
         $data['laba_tahun_berjalan'] = number_format($laba_tahun_berjalan, 2, ".", "");
+
+        $data['laba_ditahan'] = number_format($laba_ditahan_awal, 2, ".", "");
         return $data;
     }
     public function pembagian(Request $request)
