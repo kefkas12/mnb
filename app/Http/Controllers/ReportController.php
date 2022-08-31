@@ -997,7 +997,7 @@ class ReportController extends Controller
         $data['piutang_dagang'] = number_format(round($piutang_dagang_awal + $piutang_dagang_debit - $piutang_dagang_kredit), 2, ".", "");
         $data['uang_muka_pajak'] = number_format(round($uang_muka_pajak), 2, ".", "");
         $data['hutang_dagang'] = number_format(round($hutang_dagang), 2, ".", "");
-        $hutang_pajak = $from < '2022-05-01' ? $ppn_keluaran+$hutang_pajak-$hutang_pajak_awal-$ppn_masukan : $ppn_keluaran+$hutang_pajak-$hutang_pajak_awal-$ppn_masukan;
+        $hutang_pajak = $from < '2022-05-01' ? $ppn_keluaran+$hutang_pajak-$hutang_pajak_awal-$ppn_masukan : $ppn_keluaran-$ppn_masukan;
         $data['hutang_pajak'] = number_format(round($hutang_pajak), 2, ".", "");
         $data['modal'] = $modal_awal;
         $data['laba_tahun_berjalan'] = number_format(round($laba_tahun_berjalan), 2, ".", "");
