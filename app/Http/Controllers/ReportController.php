@@ -991,7 +991,7 @@ class ReportController extends Controller
 
         $ppn_masukan = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('cast(sum(detail_jurnal_umum.sub_total) as decimal(65,2)) as debit'))->where('detail_jurnal_umum.kode_akun_debit', '115.001')->whereDate('jurnal_umum.tanggal_jurnal', '<=', $to)->first()->debit;
         // dd($ppn_keluaran);
-        dd('hutang Pajak : '.$hutang_pajak. ', hutang pajak awal : '.$hutang_pajak_awal.' ppn keluaran : '.$ppn_keluaran.' ppn masukkan : '.$ppn_masukan);
+        // dd('hutang Pajak : '.$hutang_pajak. ', hutang pajak awal : '.$hutang_pajak_awal.' ppn keluaran : '.$ppn_keluaran.' ppn masukkan : '.$ppn_masukan);
         $data['kas'] = number_format(round($kas_awal + $kas_debit - $kas_kredit), 2, ".", "");
         $data['bank'] = number_format(round($bank_awal + $bank_debit - $bank_kredit), 2, ".", "");
         $data['piutang_dagang'] = number_format(round($piutang_dagang_awal + $piutang_dagang_debit - $piutang_dagang_kredit), 2, ".", "");
