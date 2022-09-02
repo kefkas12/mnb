@@ -952,7 +952,8 @@ class ReportController extends Controller
 
         // $hutang_pajak = Kwitansi::select(DB::raw('cast(SUM(total_ppn_kwitansi) as decimal(65,2)) as hutang_pajak'))->whereDate('tanggal_kwitansi', '<=', $to)->first()->hutang_pajak;
 
-        $hutang_pajak = Kwitansi::leftjoin('detail_kwitansi', 'kwitansi.id', '=', 'detail_kwitansi.id_kwitansi')->select(DB::raw('cast(SUM(detail_kwitansi.berat_bersih*detail_kwitansi.harga_satuan)*0.11 as decimal(65,2)) as ppn'))->whereBetween('kwitansi.tanggal_kwitansi', [$from, $to])->first()->ppn;
+        $hutang_pajak = Kwitansi::leftjoin('detail_kwitansi', 'kwitansi.id', '=', 'detail_kwitansi.id_kwitansi')->select( DB::raw('cast(SUM(detail_kwitansi.berat_bersih*detail_kwitansi.harga_satuan)*0.11 as decimal(65,2)) as ppn'))->whereBetween('kwitansi.tanggal_kwitansi', [$from, $to])->first()->ppn;
+
         $hutang_pajak = $hutang_pajak ? $hutang_pajak : $hutang_pajak_awal;
         
         $penjualan = Detail_kwitansi::select(DB::raw('cast(SUM(berat_bersih*harga_satuan) as decimal(65,2)) as penjualan'))->whereBetween('tanggal_tagihan', [$from, $to])->first()->penjualan;
@@ -998,7 +999,8 @@ class ReportController extends Controller
         $data['uang_muka_pajak'] = number_format(round($uang_muka_pajak), 2, ".", "");
         $data['hutang_dagang'] = number_format(round($hutang_dagang), 2, ".", "");
 
-        $hutang_pajak = $from < '2022-05-01' ? $ppn_keluaran+$hutang_pajak-$hutang_pajak_awal-$ppn_masukan : $hutang_pajak;
+        $hutang_pajak = $from < '2022-05-01' ? $hutang_pajak_awal-$ppn_keluaran-$ppn_masukan+$hutang_pajak : $hutang_pajak-$ppn_masukan;
+        
         $data['hutang_pajak'] = number_format(round($hutang_pajak), 2, ".", "");
         $data['modal'] = $modal_awal;
         $data['laba_tahun_berjalan'] = number_format(round($laba_tahun_berjalan), 2, ".", "");
