@@ -993,17 +993,17 @@ class ReportController extends Controller
         $ppn_masukan = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('cast(sum(detail_jurnal_umum.sub_total) as decimal(65,2)) as debit'))->where('detail_jurnal_umum.kode_akun_debit', '115.001')->whereBetween('jurnal_umum.tanggal_jurnal', [$from, $to])->first()->debit;
         // dd($ppn_keluaran);
         // dd('hutang Pajak : '.$hutang_pajak. ', hutang pajak awal : '.$hutang_pajak_awal.' ppn keluaran : '.$ppn_keluaran.' ppn masukkan : '.$ppn_masukan);
-        $data['kas'] = number_format(round($kas_awal + $kas_debit - $kas_kredit), 2, ".", "");
-        $data['bank'] = number_format(round($bank_awal + $bank_debit - $bank_kredit), 2, ".", "");
-        $data['piutang_dagang'] = number_format(round($piutang_dagang_awal + $piutang_dagang_debit - $piutang_dagang_kredit), 2, ".", "");
-        $data['uang_muka_pajak'] = number_format(round($uang_muka_pajak), 2, ".", "");
-        $data['hutang_dagang'] = number_format(round($hutang_dagang), 2, ".", "");
+        $data['kas'] = number_format(ceil($kas_awal + $kas_debit - $kas_kredit), 2, ".", "");
+        $data['bank'] = number_format(ceil($bank_awal + $bank_debit - $bank_kredit), 2, ".", "");
+        $data['piutang_dagang'] = number_format(ceil($piutang_dagang_awal + $piutang_dagang_debit - $piutang_dagang_kredit), 2, ".", "");
+        $data['uang_muka_pajak'] = number_format(ceil($uang_muka_pajak), 2, ".", "");
+        $data['hutang_dagang'] = number_format(ceil($hutang_dagang), 2, ".", "");
 
         $hutang_pajak = $from < '2022-05-01' ? $hutang_pajak_awal-$ppn_keluaran-$ppn_masukan+$hutang_pajak : $hutang_pajak-$ppn_masukan;
         
-        $data['hutang_pajak'] = number_format(round($hutang_pajak), 2, ".", "");
+        $data['hutang_pajak'] = number_format(ceil($hutang_pajak), 2, ".", "");
         $data['modal'] = $modal_awal;
-        $data['laba_tahun_berjalan'] = number_format(round($laba_tahun_berjalan), 2, ".", "");
+        $data['laba_tahun_berjalan'] = number_format(ceil($laba_tahun_berjalan), 2, ".", "");
 
         $from_awal = $from;
 
@@ -1041,7 +1041,7 @@ class ReportController extends Controller
             $laba_ditahan = $laba_ditahan_awal + $laba_tahun_berjalan;
         }
 
-        $data['laba_ditahan'] = number_format(round($laba_ditahan), 2, ".", "");
+        $data['laba_ditahan'] = number_format(ceil($laba_ditahan), 2, ".", "");
         return $data;
     }
     public function pembagian(Request $request)
