@@ -311,7 +311,7 @@ class KwitansiController extends Controller
         $from = date("Y-m-d", strtotime($_GET['tanggal_dari']));
         $to = date("Y-m-d", strtotime($_GET['tanggal_sampai']));
         // $customer = $_GET['customer'];
-        $data['report'] = Detail_kwitansi::select('tanggal_tagihan as tanggal', 'nomor', 'nomor_polisi', DB::raw('cast(berat_bruto as decimal(65,2)) as berat_bruto'), 'satuan_berat_bruto', DB::raw('cast(potongan as decimal(65,2)) as potongan'), 'satuan_potongan', DB::raw('cast(berat_bersih as decimal(65,2)) as berat_bersih'), 'satuan_berat_bersih', DB::raw('cast(harga_beli as decimal(65,2)) as harga_beli'), DB::raw('cast(berat_bersih*harga_beli as decimal(65,2)) as jumlah'))->whereBetween('tanggal_tagihan', [$from, $to])->orderBy('tanggal_tagihan', 'DESC')->get();
+        $data['report'] = Detail_kwitansi::select('tanggal', 'nomor', 'nomor_polisi', DB::raw('cast(berat_bruto as decimal(65,2)) as berat_bruto'), 'satuan_berat_bruto', DB::raw('cast(potongan as decimal(65,2)) as potongan'), 'satuan_potongan', DB::raw('cast(berat_bersih as decimal(65,2)) as berat_bersih'), 'satuan_berat_bersih', DB::raw('cast(harga_beli as decimal(65,2)) as harga_beli'), DB::raw('cast(berat_bersih*harga_beli as decimal(65,2)) as jumlah'))->whereBetween('tanggal_tagihan', [$from, $to])->orderBy('tanggal', 'DESC')->get();
 
         $data['tanggal'] = $from . ' ' . $to;
         return $data;
