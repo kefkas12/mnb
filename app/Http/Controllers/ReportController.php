@@ -663,7 +663,8 @@ class ReportController extends Controller
         $all = $_GET['all'];
         if ($all == '') {
             if ($customer == '') {
-                $data['report'] = Kwitansi::select('nama_customer')->groupBy('nama_customer')->get();
+                // $data['report'] = Kwitansi::select('nama_customer')->groupBy('nama_customer')->get();
+                $data['report'] = Customer::select('nama_perusahaan as nama_customer')->get();
                 $no = 0;
                 foreach ($data['report'] as $v) {
                     $kwitansi_awal = Customer::where('nama_perusahaan', $data['report'][$no]->nama_customer)->first();
@@ -987,6 +988,8 @@ class ReportController extends Controller
 
         $piutang_dagang_debit = Kwitansi::select(DB::raw('cast(sum( total_dpp_kwitansi + total_ppn_kwitansi) as decimal(65,2)) as debit'))->whereDate('tanggal_kwitansi', '<=', $to)->first()->debit;
         $piutang_dagang_kredit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('cast(sum(detail_jurnal_umum.sub_total) as decimal(65,2)) as kredit'))->where('detail_jurnal_umum.kode_akun_kredit', '113.101')->where('jurnal_umum.tanggal_jurnal', '<=', $to)->first()->kredit;
+
+        dd($piutang_dagang_debit.' '.$piutang_dagang_kredit);
 
         $ppn_keluaran = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('cast(sum(detail_jurnal_umum.sub_total) as decimal(65,2)) as debit'))->where('detail_jurnal_umum.kode_akun_debit', '230.001')->whereBetween('jurnal_umum.tanggal_jurnal', [$from, $to])->first()->debit;
 
