@@ -1000,6 +1000,7 @@ class ReportController extends Controller
         $data['hutang_dagang'] = number_format(ceil($hutang_dagang), 2, ".", "");
 
         $hutang_pajak = $from < '2022-05-01' ? $hutang_pajak_awal-$ppn_keluaran-$ppn_masukan+$hutang_pajak : $hutang_pajak-$ppn_masukan;
+        $hutang_pajak = $from < '2022-04-01' ? $hutang_pajak_awal : $hutang_pajak;
         
         $data['hutang_pajak'] = number_format(ceil($hutang_pajak), 2, ".", "");
         $data['modal'] = $modal_awal;
