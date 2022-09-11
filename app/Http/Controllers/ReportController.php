@@ -154,7 +154,9 @@ class ReportController extends Controller
     {
         $from = date("Y-m-d", strtotime($_GET['tanggal_dari']));
         $to = date("Y-m-d", strtotime($_GET['tanggal_sampai']));
-
+        /*
+        
+        */
         $kode = $_GET['kode'];
         if ($kode == '') {
             if ($_GET['pendapatan'] == 'lain-lain') {
