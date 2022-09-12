@@ -157,7 +157,6 @@ class KwitansiController extends Controller
     public function edit(Request $request, $id)
     {
         $kwitansi = Kwitansi::find($id);
-        // $kwitansi->kode_kwitansi = $request->kode_kwitansi;
         $kwitansi->tanggal_kwitansi = date("Y-m-d", strtotime($request->tanggal_kwitansi));
         $kwitansi->jenis_pembayaran = $request->jenis_pembayaran;
         $kwitansi->status_kwitansi = $request->status_kwitansi;
@@ -173,6 +172,8 @@ class KwitansiController extends Controller
         $kwitansi->total_nilai_kwitansi = $request->total_nilai_kwitansi;
         $kwitansi->keterangan_kwitansi = $request->keterangan_kwitansi;
         $kwitansi->save();
+
+        $detail_kwitansi = Detail_kwitansi::where('id_kwitansi', $id)->update(['nama_customer' => $request->nama_customer]);
 
         return $kwitansi;
     }
