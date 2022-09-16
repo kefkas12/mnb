@@ -111,16 +111,15 @@ class LaporanController extends Controller
     
                     // $pendapatan_usaha = $pendapatan_usaha->pendapatan_usaha ? $pendapatan_usaha->pendapatan_usaha : 0;
     
-                    $debit = Detail_jurnal_umum::select(DB::raw('cast(SUM(sub_total) as decimal(65,2)) as debit'))->whereDate('tanggal_jurnal', '<', $from)->Where('kode_akun_debit', $v)->first();
+                    $debit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('cast(SUM(detail_jurnal_umum.sub_total) as decimal(65,2)) as debit'))->Where('detail_jurnal_umum.kode_akun_debit', $v)->whereDate('jurnal_umum.tanggal_jurnal', '<', $from)->first();
     
                     $debit = $debit->debit ? $debit->debit : 0;
     
-                    $kredit = Detail_jurnal_umum::select(DB::raw('cast(SUM(sub_total) as decimal(65,2)) as kredit'))->whereDate('tanggal_jurnal', '<', $from)->Where('kode_akun_kredit', $v)->first();
+                    $kredit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('cast(SUM(detail_jurnal_umum.sub_total) as decimal(65,2)) as kredit'))->Where('detail_jurnal_umum.kode_akun_kredit', $v)->whereDate('jurnal_umum.tanggal_jurnal', '<', $from)->first();
     
                     $kredit = $kredit->kredit ? $kredit->kredit : 0;
     
                     $saldo_awal = $pendapatan_usaha_awal + $debit - $kredit;
-                    dd($pendapatan_usaha_awal);
     
                     $data['report'][$no]['saldo_awal'] = $saldo_awal;
 
