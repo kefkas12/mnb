@@ -945,10 +945,10 @@ class ReportController extends Controller
 
         $saldo_awal_temp = $supplier_awal - $hutang_supplier_debit + $hutang_supplier_kredit;
 
-        $debit_temp = Detail_jurnal_umum::select(DB::raw('sum(sub_total) as debit'))->whereBetween('tanggal_jurnal', [$from, $to])->where('kode_akun_debit', '220.001')->first()->debit;
+        $debit_temp = Detail_jurnal_umum::select(DB::raw('sum(sub_total) as debit'))->whereBetween('tanggal_jurnal', [$from, $to])->where('kode_akun_debit', '220.001')->where('nama_perusahaan_supplier','!=',null)->first()->debit;
         $debit_temp = $debit_temp ? $debit_temp : 0;
 
-        $kredit_temp = Detail_jurnal_umum::select(DB::raw('sum(sub_total) as kredit'))->whereBetween('tanggal_jurnal', [$from, $to])->where('kode_akun_kredit', '220.001')->first()->kredit;
+        $kredit_temp = Detail_jurnal_umum::select(DB::raw('sum(sub_total) as kredit'))->whereBetween('tanggal_jurnal', [$from, $to])->where('kode_akun_kredit', '220.001')->where('nama_perusahaan_supplier','!=',null)->first()->kredit;
         $kredit_temp = $kredit_temp ? $kredit_temp : 0;
 
         $hutang_dagang = $saldo_awal_temp - $debit_temp + $kredit_temp;
@@ -998,18 +998,18 @@ class ReportController extends Controller
         $ppn_masukan = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('cast(sum(detail_jurnal_umum.sub_total) as decimal(65,2)) as debit'))->where('detail_jurnal_umum.kode_akun_debit', '115.001')->whereBetween('jurnal_umum.tanggal_jurnal', [$from, $to])->first()->debit;
         // dd($ppn_keluaran);
         // dd('hutang Pajak : '.$hutang_pajak. ', hutang pajak awal : '.$hutang_pajak_awal.' ppn keluaran : '.$ppn_keluaran.' ppn masukkan : '.$ppn_masukan);
-        $data['kas'] = number_format(ceil($kas_awal + $kas_debit - $kas_kredit), 2, ".", "");
-        $data['bank'] = number_format(ceil($bank_awal + $bank_debit - $bank_kredit), 2, ".", "");
-        $data['piutang_dagang'] = number_format(ceil($piutang_dagang_awal + $piutang_dagang_debit - $piutang_dagang_kredit), 2, ".", "");
-        $data['uang_muka_pajak'] = number_format(ceil($uang_muka_pajak), 2, ".", "");
-        $data['hutang_dagang'] = number_format(ceil($hutang_dagang), 2, ".", "");
+        $data['kas'] = number_format(round($kas_awal + $kas_debit - $kas_kredit), 2, ".", "");
+        $data['bank'] = number_format(round($bank_awal + $bank_debit - $bank_kredit), 2, ".", "");
+        $data['piutang_dagang'] = number_format(round($piutang_dagang_awal + $piutang_dagang_debit - $piutang_dagang_kredit), 2, ".", "");
+        $data['uang_muka_pajak'] = number_format(round($uang_muka_pajak), 2, ".", "");
+        $data['hutang_dagang'] = number_format(round($hutang_dagang), 2, ".", "");
 
         $hutang_pajak = $from < '2022-05-01' ? $hutang_pajak_awal-$ppn_keluaran-$ppn_masukan+$hutang_pajak : $hutang_pajak-$ppn_masukan;
         $hutang_pajak = $from < '2022-04-01' ? $hutang_pajak_awal : $hutang_pajak;
         
-        $data['hutang_pajak'] = number_format(ceil($hutang_pajak), 2, ".", "");
+        $data['hutang_pajak'] = number_format(round($hutang_pajak), 2, ".", "");
         $data['modal'] = $modal_awal;
-        $data['laba_tahun_berjalan'] = number_format(ceil($laba_tahun_berjalan), 2, ".", "");
+        $data['laba_tahun_berjalan'] = number_format(round($laba_tahun_berjalan), 2, ".", "");
 
         $from_awal = $from;
 
@@ -1047,7 +1047,7 @@ class ReportController extends Controller
             $laba_ditahan = $laba_ditahan_awal + $laba_tahun_berjalan;
         }
 
-        $data['laba_ditahan'] = number_format(ceil($laba_ditahan), 2, ".", "");
+        $data['laba_ditahan'] = number_format(round($laba_ditahan), 2, ".", "");
         return $data;
     }
     public function pembagian(Request $request)

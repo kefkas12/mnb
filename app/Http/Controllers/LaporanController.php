@@ -145,7 +145,6 @@ class LaporanController extends Controller
 
     public function hutang(Request $request)
     {
-
         $from = date("Y-m-d", strtotime($_GET['tanggal_dari']));
         $to = date("Y-m-d", strtotime($_GET['tanggal_sampai']));
         $supplier = $_GET['supplier'];
