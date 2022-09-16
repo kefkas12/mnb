@@ -785,56 +785,70 @@ class ReportController extends Controller
             $pajak_keluaran_kredit = 0;
         }
         $data['saldo_awal'] = $pajak_keluaran_awal - $pajak_keluaran_debit + $pajak_keluaran_kredit;
-        $report = [];
-        $period = new DatePeriod(
-            new DateTime($_GET['tanggal_dari']),
-            new DateInterval('P1D'),
-            new DateTime($_GET['tanggal_sampai'])
-        );
-        $from = $_GET['tanggal_dari'];
-        $month = date("n", strtotime($_GET['tanggal_dari']));
-        foreach ($period as $key => $value) {
+        if (date("n", strtotime($_GET['tanggal_dari'])) != date("n", strtotime($_GET['tanggal_sampai']))) {
+            $report = [];
+            $period = new DatePeriod(
+                new DateTime($_GET['tanggal_dari']),
+                new DateInterval('P1D'),
+                new DateTime($_GET['tanggal_sampai'])
+            );
+            $from = $_GET['tanggal_dari'];
+            $month = date("n", strtotime($_GET['tanggal_dari']));
+            foreach ($period as $key => $value) {
 
-            if ($month == date("n", strtotime($value->format('Y-m-d')))) {
-                if ($value->format('Y-m-d') == date("Y-m-d", strtotime($value->format('Y-m-01')))) {
-                    $from = $value->format('Y-m-d');
-                }
-                if (date("Y-m-t", strtotime($value->format('Y-m-d'))) < $_GET['tanggal_sampai']) {
-                    if ($value->format('Y-m-d') == date("Y-m-d", strtotime($value->format('Y-m-t')))) {
-                        $to = $value->format('Y-m-d');
-                        $month = date("n", strtotime($value->format('Y-m-d') . '+1 days'));
-                        $debit = Detail_jurnal_umum::select('tanggal_jurnal', 'keterangan', DB::raw('cast(sub_total as decimal(65,2)) as debit'), DB::raw('0 as kredit'))->whereBetween('tanggal_jurnal', [$from, $to])->whereIn('kode_akun_debit', ['230.001', '115.001'])->orderBy('detail_jurnal_umum.tanggal_jurnal', 'ASC')->get();
-                        $debit = $debit->toArray();
-
-                        $kredit = Kwitansi::leftjoin('detail_kwitansi', 'kwitansi.id', '=', 'detail_kwitansi.id_kwitansi')->select(DB::raw('cast(SUM(detail_kwitansi.berat_bersih*detail_kwitansi.harga_satuan)*0.11 as decimal(65,2)) as ppn'))->whereBetween('kwitansi.tanggal_kwitansi', [$from, $to])->first();
-
-                        // $data['report'] = array_merge($debit, $kredit);
-                        $data_kredit['tanggal_jurnal'] = $to;
-                        $data_kredit['keterangan'] = 'PPN Bulan ' . date("F", strtotime($_GET['tanggal_dari']));
-                        $data_kredit['debit'] = 0;
-                        $data_kredit['kredit'] = $kredit->ppn;
-                        array_push($debit, $data_kredit);
-                        array_push($report, $debit);
+                if ($month == date("n", strtotime($value->format('Y-m-d')))) {
+                    if ($value->format('Y-m-d') == date("Y-m-d", strtotime($value->format('Y-m-01')))) {
+                        $from = $value->format('Y-m-d');
                     }
-                } else {
-                    $to = $_GET['tanggal_sampai'];
+                    if (date("Y-m-t", strtotime($value->format('Y-m-d'))) < $_GET['tanggal_sampai']) {
+                        if ($value->format('Y-m-d') == date("Y-m-d", strtotime($value->format('Y-m-t')))) {
+                            $to = $value->format('Y-m-d');
+                            $month = date("n", strtotime($value->format('Y-m-d') . '+1 days'));
+                            $debit = Detail_jurnal_umum::select('tanggal_jurnal', 'keterangan', DB::raw('cast(sub_total as decimal(65,2)) as debit'), DB::raw('0 as kredit'))->whereBetween('tanggal_jurnal', [$from, $to])->whereIn('kode_akun_debit', ['230.001', '115.001'])->orderBy('detail_jurnal_umum.tanggal_jurnal', 'ASC')->get();
+                            $debit = $debit->toArray();
+
+                            $kredit = Kwitansi::leftjoin('detail_kwitansi', 'kwitansi.id', '=', 'detail_kwitansi.id_kwitansi')->select(DB::raw('cast(SUM(detail_kwitansi.berat_bersih*detail_kwitansi.harga_satuan)*0.11 as decimal(65,2)) as ppn'))->whereBetween('kwitansi.tanggal_kwitansi', [$from, $to])->first();
+
+                            // $data['report'] = array_merge($debit, $kredit);
+                            $data_kredit['tanggal_jurnal'] = $to;
+                            $data_kredit['keterangan'] = 'PPN Bulan ' . date("F", strtotime($_GET['tanggal_dari']));
+                            $data_kredit['debit'] = 0;
+                            $data_kredit['kredit'] = $kredit->ppn;
+                            array_push($debit, $data_kredit);
+                            array_push($report, $debit);
+                        }
+                    } else {
+                        $to = $_GET['tanggal_sampai'];
+                    }
                 }
             }
+            $debit = Detail_jurnal_umum::select('tanggal_jurnal', 'keterangan', DB::raw('cast(sub_total as decimal(65,2)) as debit'), DB::raw('0 as kredit'))->whereBetween('tanggal_jurnal', [$from, $to])->whereIn('kode_akun_debit', ['230.001', '115.001'])->orderBy('detail_jurnal_umum.tanggal_jurnal', 'ASC')->get();
+            $debit = $debit->toArray();
+
+            $kredit = Kwitansi::leftjoin('detail_kwitansi', 'kwitansi.id', '=', 'detail_kwitansi.id_kwitansi')->select(DB::raw('cast(SUM(detail_kwitansi.berat_bersih*detail_kwitansi.harga_satuan)*0.11 as decimal(65,2)) as ppn'))->whereBetween('kwitansi.tanggal_kwitansi', [$from, $to])->first();
+
+            // $data['report'] = array_merge($debit, $kredit);
+            $data_kredit['tanggal_jurnal'] = $to;
+            $data_kredit['keterangan'] = 'PPN Bulan ' . date("F", strtotime($to));
+            $data_kredit['debit'] = 0;
+            $data_kredit['kredit'] = $kredit->ppn;
+            array_push($report[0], $debit[0], $data_kredit);
+
+            $data['report'] = $report[0];
+        } else {
+            $debit = Detail_jurnal_umum::select('tanggal_jurnal', 'keterangan', DB::raw('cast(sub_total as decimal(65,2)) as debit'), DB::raw('0 as kredit'))->whereBetween('tanggal_jurnal', [$from, $to])->whereIn('kode_akun_debit', ['230.001', '115.001'])->orderBy('detail_jurnal_umum.tanggal_jurnal', 'ASC')->get();
+            $debit = $debit->toArray();
+
+            $kredit = Kwitansi::leftjoin('detail_kwitansi', 'kwitansi.id', '=', 'detail_kwitansi.id_kwitansi')->select(DB::raw('cast(SUM(detail_kwitansi.berat_bersih*detail_kwitansi.harga_satuan)*0.11 as decimal(65,2)) as ppn'))->whereBetween('kwitansi.tanggal_kwitansi', [$from, $to])->first();
+
+            // $data['report'] = array_merge($debit, $kredit);
+            $data_kredit['tanggal_jurnal'] = $to;
+            $data_kredit['keterangan'] = 'PPN Bulan ' . date("F", strtotime($to));
+            $data_kredit['debit'] = 0;
+            $data_kredit['kredit'] = $kredit->ppn;
+            array_push($debit, $data_kredit);
+            $data['report'] = $debit;
         }
-        $debit = Detail_jurnal_umum::select('tanggal_jurnal', 'keterangan', DB::raw('cast(sub_total as decimal(65,2)) as debit'), DB::raw('0 as kredit'))->whereBetween('tanggal_jurnal', [$from, $to])->whereIn('kode_akun_debit', ['230.001', '115.001'])->orderBy('detail_jurnal_umum.tanggal_jurnal', 'ASC')->get();
-        $debit = $debit->toArray();
-
-        $kredit = Kwitansi::leftjoin('detail_kwitansi', 'kwitansi.id', '=', 'detail_kwitansi.id_kwitansi')->select(DB::raw('cast(SUM(detail_kwitansi.berat_bersih*detail_kwitansi.harga_satuan)*0.11 as decimal(65,2)) as ppn'))->whereBetween('kwitansi.tanggal_kwitansi', [$from, $to])->first();
-
-        // $data['report'] = array_merge($debit, $kredit);
-        $data_kredit['tanggal_jurnal'] = $to;
-        $data_kredit['keterangan'] = 'PPN Bulan ' . date("F", strtotime($to));
-        $data_kredit['debit'] = 0;
-        $data_kredit['kredit'] = $kredit->ppn;
-        array_push($report[0], $debit[0], $data_kredit);
-
-        $data['report'] = $report[0];
-
 
 
         return $data;
