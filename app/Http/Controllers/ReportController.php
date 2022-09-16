@@ -793,7 +793,7 @@ class ReportController extends Controller
 
         // $data['report'] = array_merge($debit, $kredit);
         $data_kredit['tanggal_jurnal'] = $to;
-        $data_kredit['keterangan'] = 'PPN Bulan April';
+        $data_kredit['keterangan'] = 'PPN Bulan '.date("F", strtotime($_GET['tanggal_dari']));
         $data_kredit['debit'] = 0;
         $data_kredit['kredit'] = $kredit->ppn;
         array_push($debit, $data_kredit);
