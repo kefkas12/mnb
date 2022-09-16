@@ -107,9 +107,9 @@ class LaporanController extends Controller
                         $pendapatan_usaha_awal = $pendapatan_usaha_awal->saldo_awal_kredit ? $pendapatan_usaha_awal->saldo_awal_kredit : 0;
                     }
     
-                    $pendapatan_usaha = Detail_jurnal_umum::select(DB::raw('cast(SUM(sub_total) as decimal(65,2)) as pendapatan_usaha'))->whereDate('tanggal_jurnal', '<', $from)->where('kode_akun_kredit', $v)->first();
+                    // $pendapatan_usaha = Detail_jurnal_umum::select(DB::raw('cast(SUM(sub_total) as decimal(65,2)) as pendapatan_usaha'))->whereDate('tanggal_jurnal', '<', $from)->where('kode_akun_kredit', $v)->first();
     
-                    $pendapatan_usaha = $pendapatan_usaha->pendapatan_usaha ? $pendapatan_usaha->pendapatan_usaha : 0;
+                    // $pendapatan_usaha = $pendapatan_usaha->pendapatan_usaha ? $pendapatan_usaha->pendapatan_usaha : 0;
     
                     $debit = Detail_jurnal_umum::select(DB::raw('cast(SUM(sub_total) as decimal(65,2)) as debit'))->whereDate('tanggal_jurnal', '<', $from)->Where('kode_akun_debit', $v)->first();
     
@@ -119,7 +119,8 @@ class LaporanController extends Controller
     
                     $kredit = $kredit->kredit ? $kredit->kredit : 0;
     
-                    $saldo_awal = $pendapatan_usaha_awal + $pendapatan_usaha + $debit - $kredit;
+                    $saldo_awal = $pendapatan_usaha_awal + $debit - $kredit;
+                    dd($pendapatan_usaha_awal);
     
                     $data['report'][$no]['saldo_awal'] = $saldo_awal;
 
@@ -221,21 +222,6 @@ class LaporanController extends Controller
                 }
 
                 $data['saldo_awal'] = number_format($hutang_supplier_awal->saldo_awal - $hutang_supplier_debit + $hutang_supplier_kredit, 2, ".", "");
-            }
-        } else {
-            $data['report'] = Laporan_hutang::select('supplier', DB::raw('sum(debit) as debit'), DB::raw('sum(kredit) as kredit'))->whereBetween('tanggal_jurnal', [$from, $to])->groupBy('supplier')->get()->all();
-
-            $saldo_awal_debit = Laporan_hutang::select(DB::raw('sum(debit) as debit'))->whereDate('tanggal_jurnal', '<', $from)->first();
-            if ($saldo_awal_debit) {
-                $data['debit'] = $saldo_awal_debit->debit;
-            } else {
-                $data['debit'] = 0;
-            }
-            $saldo_awal_kredit = Laporan_hutang::select(DB::raw('sum(kredit) as kredit'))->whereDate('tanggal_jurnal', '<', $from)->first();
-            if ($saldo_awal_kredit) {
-                $data['kredit'] = $saldo_awal_kredit->kredit;
-            } else {
-                $data['kredit'] = 0;
             }
         }
         $laporan = Laporan_hutang::whereBetween('tanggal_jurnal', [$from, $to])->get();
