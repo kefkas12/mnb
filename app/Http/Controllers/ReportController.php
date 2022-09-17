@@ -1096,9 +1096,11 @@ class ReportController extends Controller
         $data['modal'] = $modal_awal;
         $data['laba_tahun_berjalan'] = number_format(round($laba_tahun_berjalan), 2, ".", "");
 
+        $laba_sebelum = $penjualan + $pendapatan_bunga_bank + $pendapatan_lainnya - $pembelian - $biaya;
+
         $from_awal = $from;
 
-        $from = date('Y', strtotime($from_awal . " -1 days")) . '-' . date('m', strtotime($from_awal . " -1 days")) . '-01';
+        $from = '2022-04-01';
         $to = date('Y-m-d', strtotime($from_awal . " -1 days"));
 
         $penjualan = Detail_kwitansi::select(DB::raw('cast(SUM(berat_bersih*harga_satuan) as decimal(65,2)) as penjualan'))->whereBetween('tanggal_tagihan', [$from, $to])->first()->penjualan;
@@ -1129,7 +1131,7 @@ class ReportController extends Controller
         } else if ($from < '2022-04-01') {
             $laba_ditahan = $laba_ditahan_awal;
         } else {
-            $laba_ditahan = $laba_ditahan_awal + $laba_tahun_berjalan;
+            $laba_ditahan = $laba_ditahan_awal +$laba_tahun_berjalan;
         }
 
         $data['laba_ditahan'] = number_format(round($laba_ditahan), 2, ".", "");
