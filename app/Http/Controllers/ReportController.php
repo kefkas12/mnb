@@ -1106,6 +1106,8 @@ class ReportController extends Controller
 
         $hutang_pajak = $hutang_pajak - $debit->debit + $kredit->ppn ;
 
+        $hutang_pajak = $from < '2022-04-01' ? $hutang_pajak_awal : $hutang_pajak;
+
         $data['hutang_pajak'] = number_format(round($hutang_pajak), 2, ".", "");
         $data['modal'] = $modal_awal;
         $data['laba_tahun_berjalan'] = number_format(round($laba_tahun_berjalan), 2, ".", "");
