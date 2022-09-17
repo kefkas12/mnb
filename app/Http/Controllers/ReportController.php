@@ -1141,20 +1141,16 @@ class ReportController extends Controller
         $biaya = $from < '2022-04-01' ? $saldo_awal_biaya + $biaya_debit - $biaya_kredit : $biaya_debit - $biaya_kredit;
 
         $laba_tahun_berjalan = $penjualan + $pendapatan_bunga_bank + $pendapatan_lainnya - $pembelian - $biaya;
-        //152644538
-        if ($from >= '2022-03-01') {
-            //bulan 3
+        $from = date("Y-m-d", strtotime($_GET['tanggal_dari']));
+        if ($from < '2022-04-01') {
             $laba_ditahan = 988129159;
         }
-        if ($from >= '2022-04-01') {
-            //bulan 4
+         if ($from >= '2022-04-01' && $from < '2022-05-01') {
             $laba_ditahan = $laba_ditahan_awal;
         } 
-        if ($from >= '2022-05-01') {
+        if ($from >= '2022-05-01'){
             $laba_ditahan = $laba_ditahan_awal +$laba_tahun_berjalan;
-        } 
-        
-        
+        }
 
         $data['laba_ditahan'] = number_format(round($laba_ditahan), 2, ".", "");
         return $data;
