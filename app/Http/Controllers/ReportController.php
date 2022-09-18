@@ -1116,8 +1116,6 @@ class ReportController extends Controller
         $piutang_dagang_debit = Kwitansi::select(DB::raw('cast(sum( total_dpp_kwitansi + total_ppn_kwitansi) as decimal(65,2)) as debit'))->whereDate('tanggal_kwitansi', '<=', $to)->first()->debit;
         $piutang_dagang_kredit = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('cast(sum(detail_jurnal_umum.sub_total) as decimal(65,2)) as kredit'))->where('detail_jurnal_umum.kode_akun_kredit', '113.101')->where('jurnal_umum.tanggal_jurnal', '<=', $to)->first()->kredit;
 
-        // dd($piutang_dagang_debit.' '.$piutang_dagang_kredit);
-
         $ppn_keluaran = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('cast(sum(detail_jurnal_umum.sub_total) as decimal(65,2)) as debit'))->where('detail_jurnal_umum.kode_akun_debit', '230.001')->whereBetween('jurnal_umum.tanggal_jurnal', [$from, $to])->first()->debit;
 
         $ppn_masukan = Detail_jurnal_umum::leftJoin('jurnal_umum', 'detail_jurnal_umum.id_jurnal_umum', '=', 'jurnal_umum.id')->select(DB::raw('cast(sum(detail_jurnal_umum.sub_total) as decimal(65,2)) as debit'))->where('detail_jurnal_umum.kode_akun_debit', '115.001')->whereBetween('jurnal_umum.tanggal_jurnal', [$from, $to])->first()->debit;
@@ -1145,9 +1143,10 @@ class ReportController extends Controller
 
         $kredit = Kwitansi::leftjoin('detail_kwitansi', 'kwitansi.id', '=', 'detail_kwitansi.id_kwitansi')->select(DB::raw('cast(SUM(detail_kwitansi.berat_bersih*detail_kwitansi.harga_satuan)*0.11 as decimal(65,2)) as ppn'))->whereBetween('kwitansi.tanggal_kwitansi', [$from, $to])->first();
 
+        // dd($debit->debit.' '.$kredit->ppn);
         $hutang_pajak = $hutang_pajak - $debit->debit + $kredit->ppn;
 
-        $hutang_pajak = $from < '2022-04-01' ? $hutang_pajak_awal : $hutang_pajak;
+        // $hutang_pajak = $from < '2022-04-01' ? $hutang_pajak_awal : $hutang_pajak;
 
         $data['hutang_pajak'] = number_format(round($hutang_pajak), 2, ".", "");
         $data['modal'] = $modal_awal;
